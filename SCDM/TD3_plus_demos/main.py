@@ -20,12 +20,15 @@ def eval_policy(policy, env_name, seed, eval_episodes=10):
 
 	avg_reward = 0.
 	for _ in range(eval_episodes):
-		state = eval_env.reset()
+		state_dict = eval_env.reset()
 		num_steps = 0
 		prev_action = np.zeros((eval_env.action_space.shape[0],))
 		while num_steps < eval_env._max_episode_steps:
-			action = policy.select_action(np.array(state), prev_action)
-			state, reward, done, _ = eval_env.step(action)
+			state = np.concatenate((state_dict["observation"],
+										  state_dict["desired_goal"]["object_1"],
+										  state_dict["desired_goal"]["object_2"]))
+			action = policy.select_action(state, prev_action)
+			state_dict, reward, done, _ = eval_env.step(action)
 			prev_action = action.copy()
 			avg_reward += reward
 			num_steps += 1
@@ -68,6 +71,10 @@ if __name__ == "__main__":
 	parser.add_argument("--update_normaliser_every", type=int, default=20)
 	parser.add_argument("--expt_tag", type=str, default="")
 	parser.set_defaults(use_normaliser=False)
+
+	# new paramters
+	parser.add_argument("--add_symmetry", action="store_true")   # add symmetric transition to the replay buffer
+
 	args = parser.parse_args()
 
 	file_name = f"{args.policy}_{args.env}_{args.seed}_{args.expt_tag}"
@@ -87,10 +94,10 @@ if __name__ == "__main__":
 
 	demo_states = []
 	demo_prev_actions = []
-	files = os.listdir("demonstrations")
+	files = os.listdir("demonstrations"+"_"+args.expt_tag)
 	files = [file for file in files if file.endswith(".pkl")]
 	for file in files:
-		traj = joblib.load("demonstrations/" + file)
+		traj = joblib.load("demonstrations" + "_" + args.expt_tag + "/" + file)
 		for k, state in enumerate(traj["sim_states"]):
 			demo_states.append(state)
 			if k==0:
@@ -106,7 +113,9 @@ if __name__ == "__main__":
 	torch.manual_seed(args.seed)
 	np.random.seed(args.seed)
 	
-	state_dim = env_main.observation_space.shape[0]
+	state_dim = env_main.observation_space["observation"].shape[0]+\
+				env_main.observation_space["desired_goal"]["object_1"].shape[0]+\
+				env_main.observation_space["desired_goal"]["object_2"].shape[0]
 	action_dim = env_main.action_space.shape[0]
 	max_action = float(env_main.action_space.high[0])
 
@@ -163,14 +172,23 @@ if __name__ == "__main__":
 				env_demo.reset()
 				env_demo.env.sim.set_state(demo_states[ind])
 				env_demo.env.sim.forward()
-				observation = env_demo.env._get_obs()["observation"]
+				observation_dict = env_demo.env._get_obs()
+				observation = np.concatenate((observation_dict["observation"],
+											  observation_dict["desired_goal"]["object_1"],
+											  observation_dict["desired_goal"]["object_2"]))
 				prev_action = demo_prev_actions[ind]
 			elif segment_type == "pr":
-				observation = env_reset.reset()
+				observation_dict = env_reset.reset()
+				observation = np.concatenate((observation_dict["observation"],
+											  observation_dict["desired_goal"]["object_1"],
+											  observation_dict["desired_goal"]["object_2"]))
 				prev_action = np.zeros((action_dim,))
 			else:
 				prev_action = main_episode_prev_ac
-				observation = main_episode_obs
+				observation_dict = main_episode_obs
+				observation = np.concatenate((observation_dict["observation"],
+											  observation_dict["desired_goal"]["object_1"],
+											  observation_dict["desired_goal"]["object_2"]))
 
 		if t < args.start_timesteps:
 			action = (
@@ -186,14 +204,22 @@ if __name__ == "__main__":
 		total_timesteps += 1
 
 		if segment_type == "pd":
-			next_observation, reward, _, _ = env_demo.step(action)
+			next_observation_dict, reward, _, _ = env_demo.step(action)
 		elif segment_type == "pr":
-			next_observation, reward, _, _ = env_reset.step(action)
+			next_observation_dict, reward, _, _ = env_reset.step(action)
 		else:
 			main_episode_timesteps += 1
-			next_observation, reward, _, _ = env_main.step(action)
+			next_observation_dict, reward, _, _ = env_main.step(action)
 			main_episode_prev_ac = action.copy()
-			episode_obs = next_observation.copy()
+			episode_obs = np.concatenate((next_observation_dict["observation"],
+									  next_observation_dict["desired_goal"]["object_1"],
+									  next_observation_dict["desired_goal"]["object_2"]))
+
+		next_observation = np.concatenate((next_observation_dict["observation"],
+									  next_observation_dict["desired_goal"]["object_1"],
+									  next_observation_dict["desired_goal"]["object_2"]))
+		if args.add_symmetry:
+			replay_buffer.symmetric_sample_generator(observation, action, next_observation, reward, prev_action)
 		replay_buffer.add(observation, action, next_observation, reward, prev_action)
 		if args.use_normaliser:
 			policy.normaliser.update(observation)

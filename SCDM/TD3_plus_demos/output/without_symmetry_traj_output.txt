@@ -1,0 +1,3235 @@
+---------------------------------------
+Policy: TD3, Env: TwoEggCatchUnderArm-v0, Seed: 0
+---------------------------------------
+---------------------------------------
+Evaluation over 10 episodes: 0.312
+---------------------------------------
+---------------------------------------
+Evaluation over 10 episodes: 0.307
+---------------------------------------
+Evaluation after 5000 steps - average reward: 0.307488
+---------------------------------------
+Evaluation over 10 episodes: 0.308
+---------------------------------------
+Evaluation after 10000 steps - average reward: 0.307845
+---------------------------------------
+Evaluation over 10 episodes: 0.308
+---------------------------------------
+Evaluation after 15000 steps - average reward: 0.307771
+---------------------------------------
+Evaluation over 10 episodes: 0.308
+---------------------------------------
+Evaluation after 20000 steps - average reward: 0.307720
+---------------------------------------
+Evaluation over 10 episodes: 0.308
+---------------------------------------
+Evaluation after 25000 steps - average reward: 0.307709
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 30000 steps - average reward: 0.039553
+---------------------------------------
+Evaluation over 10 episodes: 0.170
+---------------------------------------
+Evaluation after 35000 steps - average reward: 0.170496
+---------------------------------------
+Evaluation over 10 episodes: 0.094
+---------------------------------------
+Evaluation after 40000 steps - average reward: 0.094237
+---------------------------------------
+Evaluation over 10 episodes: 0.128
+---------------------------------------
+Evaluation after 45000 steps - average reward: 0.127984
+---------------------------------------
+Evaluation over 10 episodes: 0.121
+---------------------------------------
+Evaluation after 50000 steps - average reward: 0.120963
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 55000 steps - average reward: 0.057372
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 60000 steps - average reward: 0.031294
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 65000 steps - average reward: 0.039628
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 70000 steps - average reward: 0.051671
+---------------------------------------
+Evaluation over 10 episodes: 0.082
+---------------------------------------
+Evaluation after 75000 steps - average reward: 0.082268
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 80000 steps - average reward: 0.065307
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 85000 steps - average reward: 0.040778
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 90000 steps - average reward: 0.056462
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 95000 steps - average reward: 0.074905
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 100000 steps - average reward: 0.058224
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 105000 steps - average reward: 0.073221
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 110000 steps - average reward: 0.047619
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 115000 steps - average reward: 0.027200
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 120000 steps - average reward: 0.035349
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 125000 steps - average reward: 0.028577
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 130000 steps - average reward: 0.041011
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 135000 steps - average reward: 0.036960
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 140000 steps - average reward: 0.026672
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 145000 steps - average reward: 0.043528
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 150000 steps - average reward: 0.050938
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 155000 steps - average reward: 0.050451
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 160000 steps - average reward: 0.024431
+---------------------------------------
+Evaluation over 10 episodes: 0.020
+---------------------------------------
+Evaluation after 165000 steps - average reward: 0.019889
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 170000 steps - average reward: 0.034939
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 175000 steps - average reward: 0.029947
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 180000 steps - average reward: 0.029825
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 185000 steps - average reward: 0.036862
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 190000 steps - average reward: 0.038706
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 195000 steps - average reward: 0.037435
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 200000 steps - average reward: 0.059131
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 205000 steps - average reward: 0.073137
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 210000 steps - average reward: 0.072536
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 215000 steps - average reward: 0.057276
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 220000 steps - average reward: 0.042902
+---------------------------------------
+Evaluation over 10 episodes: 0.085
+---------------------------------------
+Evaluation after 225000 steps - average reward: 0.085462
+---------------------------------------
+Evaluation over 10 episodes: 0.104
+---------------------------------------
+Evaluation after 230000 steps - average reward: 0.103800
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 235000 steps - average reward: 0.069730
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 240000 steps - average reward: 0.041906
+---------------------------------------
+Evaluation over 10 episodes: 0.110
+---------------------------------------
+Evaluation after 245000 steps - average reward: 0.109876
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 250000 steps - average reward: 0.073788
+---------------------------------------
+Evaluation over 10 episodes: 0.104
+---------------------------------------
+Evaluation after 255000 steps - average reward: 0.103967
+---------------------------------------
+Evaluation over 10 episodes: 0.076
+---------------------------------------
+Evaluation after 260000 steps - average reward: 0.075537
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 265000 steps - average reward: 0.040014
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 270000 steps - average reward: 0.042404
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 275000 steps - average reward: 0.062762
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 280000 steps - average reward: 0.063908
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 285000 steps - average reward: 0.063601
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 290000 steps - average reward: 0.039367
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 295000 steps - average reward: 0.031894
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 300000 steps - average reward: 0.033704
+---------------------------------------
+Evaluation over 10 episodes: 0.023
+---------------------------------------
+Evaluation after 305000 steps - average reward: 0.022806
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 310000 steps - average reward: 0.052617
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 315000 steps - average reward: 0.054620
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 320000 steps - average reward: 0.034173
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 325000 steps - average reward: 0.032505
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 330000 steps - average reward: 0.041213
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 335000 steps - average reward: 0.043621
+---------------------------------------
+Evaluation over 10 episodes: 0.088
+---------------------------------------
+Evaluation after 340000 steps - average reward: 0.087901
+---------------------------------------
+Evaluation over 10 episodes: 0.193
+---------------------------------------
+Evaluation after 345000 steps - average reward: 0.192557
+---------------------------------------
+Evaluation over 10 episodes: 0.125
+---------------------------------------
+Evaluation after 350000 steps - average reward: 0.124584
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 355000 steps - average reward: 0.093497
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 360000 steps - average reward: 0.058149
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 365000 steps - average reward: 0.054525
+---------------------------------------
+Evaluation over 10 episodes: 0.083
+---------------------------------------
+Evaluation after 370000 steps - average reward: 0.083190
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 375000 steps - average reward: 0.037048
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 380000 steps - average reward: 0.051916
+---------------------------------------
+Evaluation over 10 episodes: 0.021
+---------------------------------------
+Evaluation after 385000 steps - average reward: 0.021431
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 390000 steps - average reward: 0.040837
+---------------------------------------
+Evaluation over 10 episodes: 0.122
+---------------------------------------
+Evaluation after 395000 steps - average reward: 0.121636
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 400000 steps - average reward: 0.030065
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 405000 steps - average reward: 0.047019
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 410000 steps - average reward: 0.069983
+---------------------------------------
+Evaluation over 10 episodes: 0.080
+---------------------------------------
+Evaluation after 415000 steps - average reward: 0.080338
+---------------------------------------
+Evaluation over 10 episodes: 0.091
+---------------------------------------
+Evaluation after 420000 steps - average reward: 0.091029
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 425000 steps - average reward: 0.057160
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 430000 steps - average reward: 0.064823
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 435000 steps - average reward: 0.051089
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 440000 steps - average reward: 0.045302
+---------------------------------------
+Evaluation over 10 episodes: 0.118
+---------------------------------------
+Evaluation after 445000 steps - average reward: 0.117605
+---------------------------------------
+Evaluation over 10 episodes: 0.107
+---------------------------------------
+Evaluation after 450000 steps - average reward: 0.106607
+---------------------------------------
+Evaluation over 10 episodes: 0.077
+---------------------------------------
+Evaluation after 455000 steps - average reward: 0.076536
+---------------------------------------
+Evaluation over 10 episodes: 0.091
+---------------------------------------
+Evaluation after 460000 steps - average reward: 0.090997
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 465000 steps - average reward: 0.063418
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 470000 steps - average reward: 0.067460
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 475000 steps - average reward: 0.041674
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 480000 steps - average reward: 0.056554
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 485000 steps - average reward: 0.070971
+---------------------------------------
+Evaluation over 10 episodes: 0.081
+---------------------------------------
+Evaluation after 490000 steps - average reward: 0.080774
+---------------------------------------
+Evaluation over 10 episodes: 0.072
+---------------------------------------
+Evaluation after 495000 steps - average reward: 0.071836
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 500000 steps - average reward: 0.046238
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 505000 steps - average reward: 0.057195
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 510000 steps - average reward: 0.036626
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 515000 steps - average reward: 0.074763
+---------------------------------------
+Evaluation over 10 episodes: 0.077
+---------------------------------------
+Evaluation after 520000 steps - average reward: 0.076830
+---------------------------------------
+Evaluation over 10 episodes: 0.194
+---------------------------------------
+Evaluation after 525000 steps - average reward: 0.193532
+---------------------------------------
+Evaluation over 10 episodes: 0.082
+---------------------------------------
+Evaluation after 530000 steps - average reward: 0.082395
+---------------------------------------
+Evaluation over 10 episodes: 0.026
+---------------------------------------
+Evaluation after 535000 steps - average reward: 0.026088
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 540000 steps - average reward: 0.054891
+---------------------------------------
+Evaluation over 10 episodes: 0.077
+---------------------------------------
+Evaluation after 545000 steps - average reward: 0.077301
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 550000 steps - average reward: 0.049801
+---------------------------------------
+Evaluation over 10 episodes: 0.165
+---------------------------------------
+Evaluation after 555000 steps - average reward: 0.165275
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 560000 steps - average reward: 0.026860
+---------------------------------------
+Evaluation over 10 episodes: 0.020
+---------------------------------------
+Evaluation after 565000 steps - average reward: 0.020269
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 570000 steps - average reward: 0.045499
+---------------------------------------
+Evaluation over 10 episodes: 0.105
+---------------------------------------
+Evaluation after 575000 steps - average reward: 0.104772
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 580000 steps - average reward: 0.062542
+---------------------------------------
+Evaluation over 10 episodes: 0.084
+---------------------------------------
+Evaluation after 585000 steps - average reward: 0.084304
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 590000 steps - average reward: 0.032085
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 595000 steps - average reward: 0.039548
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 600000 steps - average reward: 0.054850
+---------------------------------------
+Evaluation over 10 episodes: 0.095
+---------------------------------------
+Evaluation after 605000 steps - average reward: 0.095115
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 610000 steps - average reward: 0.069611
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 615000 steps - average reward: 0.042443
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 620000 steps - average reward: 0.032665
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 625000 steps - average reward: 0.039598
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 630000 steps - average reward: 0.031520
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 635000 steps - average reward: 0.067226
+---------------------------------------
+Evaluation over 10 episodes: 0.090
+---------------------------------------
+Evaluation after 640000 steps - average reward: 0.090442
+---------------------------------------
+Evaluation over 10 episodes: 0.091
+---------------------------------------
+Evaluation after 645000 steps - average reward: 0.090975
+---------------------------------------
+Evaluation over 10 episodes: 0.141
+---------------------------------------
+Evaluation after 650000 steps - average reward: 0.140523
+---------------------------------------
+Evaluation over 10 episodes: 0.072
+---------------------------------------
+Evaluation after 655000 steps - average reward: 0.072262
+---------------------------------------
+Evaluation over 10 episodes: 0.082
+---------------------------------------
+Evaluation after 660000 steps - average reward: 0.081907
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 665000 steps - average reward: 0.066587
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 670000 steps - average reward: 0.038002
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 675000 steps - average reward: 0.045805
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 680000 steps - average reward: 0.053044
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 685000 steps - average reward: 0.042508
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 690000 steps - average reward: 0.046300
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 695000 steps - average reward: 0.046296
+---------------------------------------
+Evaluation over 10 episodes: 0.116
+---------------------------------------
+Evaluation after 700000 steps - average reward: 0.115751
+---------------------------------------
+Evaluation over 10 episodes: 0.205
+---------------------------------------
+Evaluation after 705000 steps - average reward: 0.204715
+---------------------------------------
+Evaluation over 10 episodes: 0.090
+---------------------------------------
+Evaluation after 710000 steps - average reward: 0.089909
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 715000 steps - average reward: 0.047613
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 720000 steps - average reward: 0.040004
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 725000 steps - average reward: 0.045880
+---------------------------------------
+Evaluation over 10 episodes: 0.144
+---------------------------------------
+Evaluation after 730000 steps - average reward: 0.143583
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 735000 steps - average reward: 0.062778
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 740000 steps - average reward: 0.093482
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 745000 steps - average reward: 0.093393
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 750000 steps - average reward: 0.078253
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 755000 steps - average reward: 0.078115
+---------------------------------------
+Evaluation over 10 episodes: 0.107
+---------------------------------------
+Evaluation after 760000 steps - average reward: 0.106594
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 765000 steps - average reward: 0.062078
+---------------------------------------
+Evaluation over 10 episodes: 0.079
+---------------------------------------
+Evaluation after 770000 steps - average reward: 0.078897
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 775000 steps - average reward: 0.063677
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 780000 steps - average reward: 0.047015
+---------------------------------------
+Evaluation over 10 episodes: 0.083
+---------------------------------------
+Evaluation after 785000 steps - average reward: 0.082870
+---------------------------------------
+Evaluation over 10 episodes: 0.077
+---------------------------------------
+Evaluation after 790000 steps - average reward: 0.077424
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 795000 steps - average reward: 0.057658
+---------------------------------------
+Evaluation over 10 episodes: 0.085
+---------------------------------------
+Evaluation after 800000 steps - average reward: 0.085388
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 805000 steps - average reward: 0.048804
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 810000 steps - average reward: 0.063259
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 815000 steps - average reward: 0.058821
+---------------------------------------
+Evaluation over 10 episodes: 0.103
+---------------------------------------
+Evaluation after 820000 steps - average reward: 0.103296
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 825000 steps - average reward: 0.052774
+---------------------------------------
+Evaluation over 10 episodes: 0.076
+---------------------------------------
+Evaluation after 830000 steps - average reward: 0.076459
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 835000 steps - average reward: 0.062278
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 840000 steps - average reward: 0.059923
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 845000 steps - average reward: 0.049093
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 850000 steps - average reward: 0.044702
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 855000 steps - average reward: 0.066969
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 860000 steps - average reward: 0.039690
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 865000 steps - average reward: 0.060823
+---------------------------------------
+Evaluation over 10 episodes: 0.076
+---------------------------------------
+Evaluation after 870000 steps - average reward: 0.075513
+---------------------------------------
+Evaluation over 10 episodes: 0.054
+---------------------------------------
+Evaluation after 875000 steps - average reward: 0.053614
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 880000 steps - average reward: 0.061388
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 885000 steps - average reward: 0.064165
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 890000 steps - average reward: 0.064121
+---------------------------------------
+Evaluation over 10 episodes: 0.081
+---------------------------------------
+Evaluation after 895000 steps - average reward: 0.081347
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 900000 steps - average reward: 0.059879
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 905000 steps - average reward: 0.062803
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 910000 steps - average reward: 0.058805
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 915000 steps - average reward: 0.030437
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 920000 steps - average reward: 0.033428
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 925000 steps - average reward: 0.049559
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 930000 steps - average reward: 0.065378
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 935000 steps - average reward: 0.046339
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 940000 steps - average reward: 0.046247
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 945000 steps - average reward: 0.060467
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 950000 steps - average reward: 0.052460
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 955000 steps - average reward: 0.072891
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 960000 steps - average reward: 0.064921
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 965000 steps - average reward: 0.051154
+---------------------------------------
+Evaluation over 10 episodes: 0.229
+---------------------------------------
+Evaluation after 970000 steps - average reward: 0.228690
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 975000 steps - average reward: 0.046504
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 980000 steps - average reward: 0.063585
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 985000 steps - average reward: 0.063659
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 990000 steps - average reward: 0.050903
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 995000 steps - average reward: 0.067688
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 1000000 steps - average reward: 0.056943
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 1005000 steps - average reward: 0.034577
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 1010000 steps - average reward: 0.039559
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 1015000 steps - average reward: 0.052494
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 1020000 steps - average reward: 0.050443
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 1025000 steps - average reward: 0.056009
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 1030000 steps - average reward: 0.059134
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1035000 steps - average reward: 0.049350
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 1040000 steps - average reward: 0.044999
+---------------------------------------
+Evaluation over 10 episodes: 0.076
+---------------------------------------
+Evaluation after 1045000 steps - average reward: 0.076299
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 1050000 steps - average reward: 0.062008
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 1055000 steps - average reward: 0.062400
+---------------------------------------
+Evaluation over 10 episodes: 0.113
+---------------------------------------
+Evaluation after 1060000 steps - average reward: 0.113327
+---------------------------------------
+Evaluation over 10 episodes: 0.076
+---------------------------------------
+Evaluation after 1065000 steps - average reward: 0.075863
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 1070000 steps - average reward: 0.073637
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 1075000 steps - average reward: 0.073784
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 1080000 steps - average reward: 0.065656
+---------------------------------------
+Evaluation over 10 episodes: 0.101
+---------------------------------------
+Evaluation after 1085000 steps - average reward: 0.100755
+---------------------------------------
+Evaluation over 10 episodes: 0.102
+---------------------------------------
+Evaluation after 1090000 steps - average reward: 0.102210
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 1095000 steps - average reward: 0.075042
+---------------------------------------
+Evaluation over 10 episodes: 0.079
+---------------------------------------
+Evaluation after 1100000 steps - average reward: 0.078753
+---------------------------------------
+Evaluation over 10 episodes: 0.104
+---------------------------------------
+Evaluation after 1105000 steps - average reward: 0.103674
+---------------------------------------
+Evaluation over 10 episodes: 0.100
+---------------------------------------
+Evaluation after 1110000 steps - average reward: 0.099970
+---------------------------------------
+Evaluation over 10 episodes: 0.089
+---------------------------------------
+Evaluation after 1115000 steps - average reward: 0.088751
+---------------------------------------
+Evaluation over 10 episodes: 0.149
+---------------------------------------
+Evaluation after 1120000 steps - average reward: 0.149094
+---------------------------------------
+Evaluation over 10 episodes: 0.079
+---------------------------------------
+Evaluation after 1125000 steps - average reward: 0.079080
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 1130000 steps - average reward: 0.067851
+---------------------------------------
+Evaluation over 10 episodes: 0.096
+---------------------------------------
+Evaluation after 1135000 steps - average reward: 0.095547
+---------------------------------------
+Evaluation over 10 episodes: 0.069
+---------------------------------------
+Evaluation after 1140000 steps - average reward: 0.068830
+---------------------------------------
+Evaluation over 10 episodes: 0.112
+---------------------------------------
+Evaluation after 1145000 steps - average reward: 0.111956
+---------------------------------------
+Evaluation over 10 episodes: 0.112
+---------------------------------------
+Evaluation after 1150000 steps - average reward: 0.112022
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 1155000 steps - average reward: 0.065557
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 1160000 steps - average reward: 0.074238
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 1165000 steps - average reward: 0.070289
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 1170000 steps - average reward: 0.051946
+---------------------------------------
+Evaluation over 10 episodes: 0.083
+---------------------------------------
+Evaluation after 1175000 steps - average reward: 0.082512
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 1180000 steps - average reward: 0.072888
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 1185000 steps - average reward: 0.071260
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 1190000 steps - average reward: 0.072562
+---------------------------------------
+Evaluation over 10 episodes: 0.132
+---------------------------------------
+Evaluation after 1195000 steps - average reward: 0.131736
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 1200000 steps - average reward: 0.028685
+---------------------------------------
+Evaluation over 10 episodes: 0.191
+---------------------------------------
+Evaluation after 1205000 steps - average reward: 0.190800
+---------------------------------------
+Evaluation over 10 episodes: 0.120
+---------------------------------------
+Evaluation after 1210000 steps - average reward: 0.120130
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 1215000 steps - average reward: 0.040241
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 1220000 steps - average reward: 0.024031
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 1225000 steps - average reward: 0.058895
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 1230000 steps - average reward: 0.054873
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 1235000 steps - average reward: 0.063997
+---------------------------------------
+Evaluation over 10 episodes: 0.130
+---------------------------------------
+Evaluation after 1240000 steps - average reward: 0.129772
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 1245000 steps - average reward: 0.064872
+---------------------------------------
+Evaluation over 10 episodes: 0.119
+---------------------------------------
+Evaluation after 1250000 steps - average reward: 0.119139
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 1255000 steps - average reward: 0.068187
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 1260000 steps - average reward: 0.060626
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 1265000 steps - average reward: 0.059424
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 1270000 steps - average reward: 0.058976
+---------------------------------------
+Evaluation over 10 episodes: 0.178
+---------------------------------------
+Evaluation after 1275000 steps - average reward: 0.177871
+---------------------------------------
+Evaluation over 10 episodes: 0.181
+---------------------------------------
+Evaluation after 1280000 steps - average reward: 0.180767
+---------------------------------------
+Evaluation over 10 episodes: 0.138
+---------------------------------------
+Evaluation after 1285000 steps - average reward: 0.138155
+---------------------------------------
+Evaluation over 10 episodes: 0.095
+---------------------------------------
+Evaluation after 1290000 steps - average reward: 0.094605
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 1295000 steps - average reward: 0.048066
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 1300000 steps - average reward: 0.066465
+---------------------------------------
+Evaluation over 10 episodes: 0.116
+---------------------------------------
+Evaluation after 1305000 steps - average reward: 0.115858
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 1310000 steps - average reward: 0.056357
+---------------------------------------
+Evaluation over 10 episodes: 0.077
+---------------------------------------
+Evaluation after 1315000 steps - average reward: 0.076985
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 1320000 steps - average reward: 0.055524
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 1325000 steps - average reward: 0.055374
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 1330000 steps - average reward: 0.046651
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 1335000 steps - average reward: 0.064327
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 1340000 steps - average reward: 0.060688
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 1345000 steps - average reward: 0.054589
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1350000 steps - average reward: 0.048728
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 1355000 steps - average reward: 0.066362
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 1360000 steps - average reward: 0.033456
+---------------------------------------
+Evaluation over 10 episodes: 0.098
+---------------------------------------
+Evaluation after 1365000 steps - average reward: 0.097663
+---------------------------------------
+Evaluation over 10 episodes: 0.136
+---------------------------------------
+Evaluation after 1370000 steps - average reward: 0.135577
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 1375000 steps - average reward: 0.067761
+---------------------------------------
+Evaluation over 10 episodes: 0.081
+---------------------------------------
+Evaluation after 1380000 steps - average reward: 0.081242
+---------------------------------------
+Evaluation over 10 episodes: 0.134
+---------------------------------------
+Evaluation after 1385000 steps - average reward: 0.133713
+---------------------------------------
+Evaluation over 10 episodes: 0.084
+---------------------------------------
+Evaluation after 1390000 steps - average reward: 0.083751
+---------------------------------------
+Evaluation over 10 episodes: 0.112
+---------------------------------------
+Evaluation after 1395000 steps - average reward: 0.111758
+---------------------------------------
+Evaluation over 10 episodes: 0.117
+---------------------------------------
+Evaluation after 1400000 steps - average reward: 0.116928
+---------------------------------------
+Evaluation over 10 episodes: 0.080
+---------------------------------------
+Evaluation after 1405000 steps - average reward: 0.080157
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 1410000 steps - average reward: 0.078179
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 1415000 steps - average reward: 0.073350
+---------------------------------------
+Evaluation over 10 episodes: 0.087
+---------------------------------------
+Evaluation after 1420000 steps - average reward: 0.087271
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 1425000 steps - average reward: 0.059557
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 1430000 steps - average reward: 0.074387
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 1435000 steps - average reward: 0.060145
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 1440000 steps - average reward: 0.056408
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 1445000 steps - average reward: 0.067297
+---------------------------------------
+Evaluation over 10 episodes: 0.088
+---------------------------------------
+Evaluation after 1450000 steps - average reward: 0.087570
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1455000 steps - average reward: 0.048942
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 1460000 steps - average reward: 0.068410
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 1465000 steps - average reward: 0.049696
+---------------------------------------
+Evaluation over 10 episodes: 0.119
+---------------------------------------
+Evaluation after 1470000 steps - average reward: 0.118715
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1475000 steps - average reward: 0.057810
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 1480000 steps - average reward: 0.052161
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1485000 steps - average reward: 0.049134
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 1490000 steps - average reward: 0.040701
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1495000 steps - average reward: 0.057863
+---------------------------------------
+Evaluation over 10 episodes: 0.089
+---------------------------------------
+Evaluation after 1500000 steps - average reward: 0.089072
+---------------------------------------
+Evaluation over 10 episodes: 0.215
+---------------------------------------
+Evaluation after 1505000 steps - average reward: 0.215410
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 1510000 steps - average reward: 0.071043
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 1515000 steps - average reward: 0.077769
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 1520000 steps - average reward: 0.062970
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 1525000 steps - average reward: 0.052992
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 1530000 steps - average reward: 0.093406
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 1535000 steps - average reward: 0.075022
+---------------------------------------
+Evaluation over 10 episodes: 0.111
+---------------------------------------
+Evaluation after 1540000 steps - average reward: 0.110855
+---------------------------------------
+Evaluation over 10 episodes: 0.090
+---------------------------------------
+Evaluation after 1545000 steps - average reward: 0.090372
+---------------------------------------
+Evaluation over 10 episodes: 0.081
+---------------------------------------
+Evaluation after 1550000 steps - average reward: 0.081127
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 1555000 steps - average reward: 0.033503
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 1560000 steps - average reward: 0.046842
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1565000 steps - average reward: 0.058316
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 1570000 steps - average reward: 0.031652
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 1575000 steps - average reward: 0.042576
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 1580000 steps - average reward: 0.029759
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 1585000 steps - average reward: 0.041211
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 1590000 steps - average reward: 0.041688
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 1595000 steps - average reward: 0.040417
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1600000 steps - average reward: 0.049058
+---------------------------------------
+Evaluation over 10 episodes: 0.081
+---------------------------------------
+Evaluation after 1605000 steps - average reward: 0.080839
+---------------------------------------
+Evaluation over 10 episodes: 0.200
+---------------------------------------
+Evaluation after 1610000 steps - average reward: 0.199897
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 1615000 steps - average reward: 0.077591
+---------------------------------------
+Evaluation over 10 episodes: 0.082
+---------------------------------------
+Evaluation after 1620000 steps - average reward: 0.081761
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 1625000 steps - average reward: 0.074026
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 1630000 steps - average reward: 0.056354
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 1635000 steps - average reward: 0.036356
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 1640000 steps - average reward: 0.031432
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 1645000 steps - average reward: 0.038806
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 1650000 steps - average reward: 0.047081
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 1655000 steps - average reward: 0.070682
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 1660000 steps - average reward: 0.071457
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 1665000 steps - average reward: 0.042275
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 1670000 steps - average reward: 0.042171
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 1675000 steps - average reward: 0.050440
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 1680000 steps - average reward: 0.062042
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 1685000 steps - average reward: 0.065112
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 1690000 steps - average reward: 0.093128
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 1695000 steps - average reward: 0.065159
+---------------------------------------
+Evaluation over 10 episodes: 0.132
+---------------------------------------
+Evaluation after 1700000 steps - average reward: 0.131505
+---------------------------------------
+Evaluation over 10 episodes: 0.126
+---------------------------------------
+Evaluation after 1705000 steps - average reward: 0.125529
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 1710000 steps - average reward: 0.060784
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 1715000 steps - average reward: 0.036916
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 1720000 steps - average reward: 0.056705
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 1725000 steps - average reward: 0.038863
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 1730000 steps - average reward: 0.047695
+---------------------------------------
+Evaluation over 10 episodes: 0.088
+---------------------------------------
+Evaluation after 1735000 steps - average reward: 0.088466
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 1740000 steps - average reward: 0.035845
+---------------------------------------
+Evaluation over 10 episodes: 0.026
+---------------------------------------
+Evaluation after 1745000 steps - average reward: 0.026327
+---------------------------------------
+Evaluation over 10 episodes: 0.054
+---------------------------------------
+Evaluation after 1750000 steps - average reward: 0.054068
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1755000 steps - average reward: 0.049124
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 1760000 steps - average reward: 0.063100
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 1765000 steps - average reward: 0.061454
+---------------------------------------
+Evaluation over 10 episodes: 0.081
+---------------------------------------
+Evaluation after 1770000 steps - average reward: 0.080676
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 1775000 steps - average reward: 0.036026
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 1780000 steps - average reward: 0.038478
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 1785000 steps - average reward: 0.050287
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 1790000 steps - average reward: 0.041207
+---------------------------------------
+Evaluation over 10 episodes: 0.077
+---------------------------------------
+Evaluation after 1795000 steps - average reward: 0.076689
+---------------------------------------
+Evaluation over 10 episodes: 0.028
+---------------------------------------
+Evaluation after 1800000 steps - average reward: 0.027766
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 1805000 steps - average reward: 0.046279
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 1810000 steps - average reward: 0.048182
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1815000 steps - average reward: 0.057822
+---------------------------------------
+Evaluation over 10 episodes: 0.101
+---------------------------------------
+Evaluation after 1820000 steps - average reward: 0.100860
+---------------------------------------
+Evaluation over 10 episodes: 0.092
+---------------------------------------
+Evaluation after 1825000 steps - average reward: 0.091675
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 1830000 steps - average reward: 0.071185
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 1835000 steps - average reward: 0.092707
+---------------------------------------
+Evaluation over 10 episodes: 0.108
+---------------------------------------
+Evaluation after 1840000 steps - average reward: 0.107824
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 1845000 steps - average reward: 0.072832
+---------------------------------------
+Evaluation over 10 episodes: 0.084
+---------------------------------------
+Evaluation after 1850000 steps - average reward: 0.084326
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 1855000 steps - average reward: 0.047306
+---------------------------------------
+Evaluation over 10 episodes: 0.086
+---------------------------------------
+Evaluation after 1860000 steps - average reward: 0.085818
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 1865000 steps - average reward: 0.062239
+---------------------------------------
+Evaluation over 10 episodes: 0.105
+---------------------------------------
+Evaluation after 1870000 steps - average reward: 0.104686
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 1875000 steps - average reward: 0.049026
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 1880000 steps - average reward: 0.034036
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 1885000 steps - average reward: 0.035815
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1890000 steps - average reward: 0.058194
+---------------------------------------
+Evaluation over 10 episodes: 0.028
+---------------------------------------
+Evaluation after 1895000 steps - average reward: 0.028152
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 1900000 steps - average reward: 0.035579
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1905000 steps - average reward: 0.057850
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 1910000 steps - average reward: 0.038658
+---------------------------------------
+Evaluation over 10 episodes: 0.087
+---------------------------------------
+Evaluation after 1915000 steps - average reward: 0.087459
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 1920000 steps - average reward: 0.034429
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 1925000 steps - average reward: 0.029327
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 1930000 steps - average reward: 0.037958
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 1935000 steps - average reward: 0.026922
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 1940000 steps - average reward: 0.039035
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 1945000 steps - average reward: 0.058168
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 1950000 steps - average reward: 0.075163
+---------------------------------------
+Evaluation over 10 episodes: 0.124
+---------------------------------------
+Evaluation after 1955000 steps - average reward: 0.123683
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 1960000 steps - average reward: 0.067650
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 1965000 steps - average reward: 0.039528
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 1970000 steps - average reward: 0.032293
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 1975000 steps - average reward: 0.034308
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 1980000 steps - average reward: 0.051007
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 1985000 steps - average reward: 0.064728
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 1990000 steps - average reward: 0.041788
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 1995000 steps - average reward: 0.047281
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2000000 steps - average reward: 0.037437
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2005000 steps - average reward: 0.043121
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2010000 steps - average reward: 0.036622
+---------------------------------------
+Evaluation over 10 episodes: 0.086
+---------------------------------------
+Evaluation after 2015000 steps - average reward: 0.086148
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 2020000 steps - average reward: 0.057492
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 2025000 steps - average reward: 0.028805
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 2030000 steps - average reward: 0.073030
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 2035000 steps - average reward: 0.050522
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 2040000 steps - average reward: 0.040952
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 2045000 steps - average reward: 0.050394
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 2050000 steps - average reward: 0.052732
+---------------------------------------
+Evaluation over 10 episodes: 0.090
+---------------------------------------
+Evaluation after 2055000 steps - average reward: 0.089983
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 2060000 steps - average reward: 0.049944
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 2065000 steps - average reward: 0.050625
+---------------------------------------
+Evaluation over 10 episodes: 0.112
+---------------------------------------
+Evaluation after 2070000 steps - average reward: 0.111940
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2075000 steps - average reward: 0.043450
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 2080000 steps - average reward: 0.070211
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2085000 steps - average reward: 0.036567
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 2090000 steps - average reward: 0.059618
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2095000 steps - average reward: 0.041507
+---------------------------------------
+Evaluation over 10 episodes: 0.119
+---------------------------------------
+Evaluation after 2100000 steps - average reward: 0.119053
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 2105000 steps - average reward: 0.065522
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 2110000 steps - average reward: 0.056515
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 2115000 steps - average reward: 0.067108
+---------------------------------------
+Evaluation over 10 episodes: 0.189
+---------------------------------------
+Evaluation after 2120000 steps - average reward: 0.188755
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 2125000 steps - average reward: 0.052707
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2130000 steps - average reward: 0.043344
+---------------------------------------
+Evaluation over 10 episodes: 0.082
+---------------------------------------
+Evaluation after 2135000 steps - average reward: 0.081614
+---------------------------------------
+Evaluation over 10 episodes: 0.099
+---------------------------------------
+Evaluation after 2140000 steps - average reward: 0.099397
+---------------------------------------
+Evaluation over 10 episodes: 0.074
+---------------------------------------
+Evaluation after 2145000 steps - average reward: 0.074323
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2150000 steps - average reward: 0.033261
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 2155000 steps - average reward: 0.048983
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 2160000 steps - average reward: 0.048104
+---------------------------------------
+Evaluation over 10 episodes: 0.086
+---------------------------------------
+Evaluation after 2165000 steps - average reward: 0.085678
+---------------------------------------
+Evaluation over 10 episodes: 0.158
+---------------------------------------
+Evaluation after 2170000 steps - average reward: 0.158499
+---------------------------------------
+Evaluation over 10 episodes: 0.069
+---------------------------------------
+Evaluation after 2175000 steps - average reward: 0.068795
+---------------------------------------
+Evaluation over 10 episodes: 0.103
+---------------------------------------
+Evaluation after 2180000 steps - average reward: 0.103247
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 2185000 steps - average reward: 0.057145
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 2190000 steps - average reward: 0.037603
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 2195000 steps - average reward: 0.065972
+---------------------------------------
+Evaluation over 10 episodes: 0.054
+---------------------------------------
+Evaluation after 2200000 steps - average reward: 0.053814
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 2205000 steps - average reward: 0.051573
+---------------------------------------
+Evaluation over 10 episodes: 0.076
+---------------------------------------
+Evaluation after 2210000 steps - average reward: 0.076306
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2215000 steps - average reward: 0.036967
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2220000 steps - average reward: 0.033486
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2225000 steps - average reward: 0.030482
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 2230000 steps - average reward: 0.028706
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 2235000 steps - average reward: 0.093483
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 2240000 steps - average reward: 0.035073
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2245000 steps - average reward: 0.030057
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 2250000 steps - average reward: 0.024476
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 2255000 steps - average reward: 0.032222
+---------------------------------------
+Evaluation over 10 episodes: 0.020
+---------------------------------------
+Evaluation after 2260000 steps - average reward: 0.020258
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2265000 steps - average reward: 0.029819
+---------------------------------------
+Evaluation over 10 episodes: 0.079
+---------------------------------------
+Evaluation after 2270000 steps - average reward: 0.079038
+---------------------------------------
+Evaluation over 10 episodes: 0.090
+---------------------------------------
+Evaluation after 2275000 steps - average reward: 0.090188
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2280000 steps - average reward: 0.047436
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 2285000 steps - average reward: 0.039346
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 2290000 steps - average reward: 0.041317
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2295000 steps - average reward: 0.042114
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2300000 steps - average reward: 0.036613
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2305000 steps - average reward: 0.042077
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 2310000 steps - average reward: 0.031460
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 2315000 steps - average reward: 0.039056
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 2320000 steps - average reward: 0.031693
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 2325000 steps - average reward: 0.024360
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 2330000 steps - average reward: 0.035073
+---------------------------------------
+Evaluation over 10 episodes: 0.026
+---------------------------------------
+Evaluation after 2335000 steps - average reward: 0.026072
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 2340000 steps - average reward: 0.032122
+---------------------------------------
+Evaluation over 10 episodes: 0.064
+---------------------------------------
+Evaluation after 2345000 steps - average reward: 0.064299
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 2350000 steps - average reward: 0.065031
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2355000 steps - average reward: 0.046838
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 2360000 steps - average reward: 0.039638
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2365000 steps - average reward: 0.036737
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 2370000 steps - average reward: 0.031354
+---------------------------------------
+Evaluation over 10 episodes: 0.134
+---------------------------------------
+Evaluation after 2375000 steps - average reward: 0.134477
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2380000 steps - average reward: 0.046623
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2385000 steps - average reward: 0.047187
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 2390000 steps - average reward: 0.062318
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 2395000 steps - average reward: 0.065884
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2400000 steps - average reward: 0.042772
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 2405000 steps - average reward: 0.040778
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 2410000 steps - average reward: 0.049105
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 2415000 steps - average reward: 0.035332
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 2420000 steps - average reward: 0.039659
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 2425000 steps - average reward: 0.044225
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 2430000 steps - average reward: 0.046275
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 2435000 steps - average reward: 0.039526
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 2440000 steps - average reward: 0.053014
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 2445000 steps - average reward: 0.044780
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 2450000 steps - average reward: 0.043506
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 2455000 steps - average reward: 0.061198
+---------------------------------------
+Evaluation over 10 episodes: 0.144
+---------------------------------------
+Evaluation after 2460000 steps - average reward: 0.143602
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2465000 steps - average reward: 0.047121
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2470000 steps - average reward: 0.042216
+---------------------------------------
+Evaluation over 10 episodes: 0.198
+---------------------------------------
+Evaluation after 2475000 steps - average reward: 0.198402
+---------------------------------------
+Evaluation over 10 episodes: 0.266
+---------------------------------------
+Evaluation after 2480000 steps - average reward: 0.266276
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 2485000 steps - average reward: 0.040702
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 2490000 steps - average reward: 0.041328
+---------------------------------------
+Evaluation over 10 episodes: 0.186
+---------------------------------------
+Evaluation after 2495000 steps - average reward: 0.186209
+---------------------------------------
+Evaluation over 10 episodes: 0.191
+---------------------------------------
+Evaluation after 2500000 steps - average reward: 0.190508
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 2505000 steps - average reward: 0.045822
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2510000 steps - average reward: 0.042663
+---------------------------------------
+Evaluation over 10 episodes: 0.090
+---------------------------------------
+Evaluation after 2515000 steps - average reward: 0.089765
+---------------------------------------
+Evaluation over 10 episodes: 0.072
+---------------------------------------
+Evaluation after 2520000 steps - average reward: 0.072196
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 2525000 steps - average reward: 0.034413
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 2530000 steps - average reward: 0.045520
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 2535000 steps - average reward: 0.045360
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 2540000 steps - average reward: 0.064784
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2545000 steps - average reward: 0.036684
+---------------------------------------
+Evaluation over 10 episodes: 0.126
+---------------------------------------
+Evaluation after 2550000 steps - average reward: 0.126348
+---------------------------------------
+Evaluation over 10 episodes: 0.116
+---------------------------------------
+Evaluation after 2555000 steps - average reward: 0.116055
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 2560000 steps - average reward: 0.059439
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 2565000 steps - average reward: 0.062697
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 2570000 steps - average reward: 0.058475
+---------------------------------------
+Evaluation over 10 episodes: 0.086
+---------------------------------------
+Evaluation after 2575000 steps - average reward: 0.086147
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 2580000 steps - average reward: 0.066047
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 2585000 steps - average reward: 0.050677
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 2590000 steps - average reward: 0.045310
+---------------------------------------
+Evaluation over 10 episodes: 0.079
+---------------------------------------
+Evaluation after 2595000 steps - average reward: 0.078510
+---------------------------------------
+Evaluation over 10 episodes: 0.054
+---------------------------------------
+Evaluation after 2600000 steps - average reward: 0.053593
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 2605000 steps - average reward: 0.027241
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 2610000 steps - average reward: 0.048441
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2615000 steps - average reward: 0.037218
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 2620000 steps - average reward: 0.044364
+---------------------------------------
+Evaluation over 10 episodes: 0.128
+---------------------------------------
+Evaluation after 2625000 steps - average reward: 0.127723
+---------------------------------------
+Evaluation over 10 episodes: 0.219
+---------------------------------------
+Evaluation after 2630000 steps - average reward: 0.218797
+---------------------------------------
+Evaluation over 10 episodes: 0.207
+---------------------------------------
+Evaluation after 2635000 steps - average reward: 0.206846
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 2640000 steps - average reward: 0.031373
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2645000 steps - average reward: 0.029713
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 2650000 steps - average reward: 0.050330
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 2655000 steps - average reward: 0.063324
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2660000 steps - average reward: 0.033113
+---------------------------------------
+Evaluation over 10 episodes: 0.097
+---------------------------------------
+Evaluation after 2665000 steps - average reward: 0.097054
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 2670000 steps - average reward: 0.048215
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 2675000 steps - average reward: 0.065419
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2680000 steps - average reward: 0.042185
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2685000 steps - average reward: 0.041842
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2690000 steps - average reward: 0.042169
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2695000 steps - average reward: 0.043481
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 2700000 steps - average reward: 0.029208
+---------------------------------------
+Evaluation over 10 episodes: 0.023
+---------------------------------------
+Evaluation after 2705000 steps - average reward: 0.023236
+---------------------------------------
+Evaluation over 10 episodes: 0.022
+---------------------------------------
+Evaluation after 2710000 steps - average reward: 0.022442
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2715000 steps - average reward: 0.029687
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2720000 steps - average reward: 0.037494
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2725000 steps - average reward: 0.032504
+---------------------------------------
+Evaluation over 10 episodes: 0.087
+---------------------------------------
+Evaluation after 2730000 steps - average reward: 0.086530
+---------------------------------------
+Evaluation over 10 episodes: 0.054
+---------------------------------------
+Evaluation after 2735000 steps - average reward: 0.053778
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2740000 steps - average reward: 0.046681
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 2745000 steps - average reward: 0.055483
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 2750000 steps - average reward: 0.024006
+---------------------------------------
+Evaluation over 10 episodes: 0.025
+---------------------------------------
+Evaluation after 2755000 steps - average reward: 0.025425
+---------------------------------------
+Evaluation over 10 episodes: 0.021
+---------------------------------------
+Evaluation after 2760000 steps - average reward: 0.020788
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2765000 steps - average reward: 0.029966
+---------------------------------------
+Evaluation over 10 episodes: 0.026
+---------------------------------------
+Evaluation after 2770000 steps - average reward: 0.025834
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 2775000 steps - average reward: 0.032209
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2780000 steps - average reward: 0.041599
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 2785000 steps - average reward: 0.049380
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 2790000 steps - average reward: 0.040183
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 2795000 steps - average reward: 0.035267
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2800000 steps - average reward: 0.037377
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 2805000 steps - average reward: 0.028693
+---------------------------------------
+Evaluation over 10 episodes: 0.025
+---------------------------------------
+Evaluation after 2810000 steps - average reward: 0.025364
+---------------------------------------
+Evaluation over 10 episodes: 0.020
+---------------------------------------
+Evaluation after 2815000 steps - average reward: 0.020055
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 2820000 steps - average reward: 0.024041
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 2825000 steps - average reward: 0.051135
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2830000 steps - average reward: 0.030044
+---------------------------------------
+Evaluation over 10 episodes: 0.028
+---------------------------------------
+Evaluation after 2835000 steps - average reward: 0.027623
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 2840000 steps - average reward: 0.074901
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 2845000 steps - average reward: 0.029525
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 2850000 steps - average reward: 0.031415
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 2855000 steps - average reward: 0.057602
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2860000 steps - average reward: 0.033079
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2865000 steps - average reward: 0.032639
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 2870000 steps - average reward: 0.038729
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 2875000 steps - average reward: 0.027491
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 2880000 steps - average reward: 0.032565
+---------------------------------------
+Evaluation over 10 episodes: 0.028
+---------------------------------------
+Evaluation after 2885000 steps - average reward: 0.027941
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 2890000 steps - average reward: 0.042588
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 2895000 steps - average reward: 0.046186
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 2900000 steps - average reward: 0.041870
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 2905000 steps - average reward: 0.053224
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 2910000 steps - average reward: 0.034666
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 2915000 steps - average reward: 0.039621
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 2920000 steps - average reward: 0.038672
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 2925000 steps - average reward: 0.037860
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 2930000 steps - average reward: 0.051917
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 2935000 steps - average reward: 0.037722
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 2940000 steps - average reward: 0.044681
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 2945000 steps - average reward: 0.046947
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 2950000 steps - average reward: 0.036946
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 2955000 steps - average reward: 0.027320
+---------------------------------------
+Evaluation over 10 episodes: 0.023
+---------------------------------------
+Evaluation after 2960000 steps - average reward: 0.023011
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 2965000 steps - average reward: 0.026696
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 2970000 steps - average reward: 0.027270
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 2975000 steps - average reward: 0.044300
+---------------------------------------
+Evaluation over 10 episodes: 0.023
+---------------------------------------
+Evaluation after 2980000 steps - average reward: 0.022538
+---------------------------------------
+Evaluation over 10 episodes: 0.021
+---------------------------------------
+Evaluation after 2985000 steps - average reward: 0.020623
+---------------------------------------
+Evaluation over 10 episodes: 0.020
+---------------------------------------
+Evaluation after 2990000 steps - average reward: 0.020275
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 2995000 steps - average reward: 0.031315
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 3000000 steps - average reward: 0.030383
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 3005000 steps - average reward: 0.031281
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 3010000 steps - average reward: 0.031664
+---------------------------------------
+Evaluation over 10 episodes: 0.079
+---------------------------------------
+Evaluation after 3015000 steps - average reward: 0.079097
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 3020000 steps - average reward: 0.054518
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3025000 steps - average reward: 0.036175
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3030000 steps - average reward: 0.044146
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3035000 steps - average reward: 0.043819
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 3040000 steps - average reward: 0.037277
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 3045000 steps - average reward: 0.030663
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 3050000 steps - average reward: 0.049693
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 3055000 steps - average reward: 0.024474
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 3060000 steps - average reward: 0.029133
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 3065000 steps - average reward: 0.036524
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 3070000 steps - average reward: 0.056945
+---------------------------------------
+Evaluation over 10 episodes: 0.054
+---------------------------------------
+Evaluation after 3075000 steps - average reward: 0.054434
+---------------------------------------
+Evaluation over 10 episodes: 0.109
+---------------------------------------
+Evaluation after 3080000 steps - average reward: 0.109021
+---------------------------------------
+Evaluation over 10 episodes: 0.093
+---------------------------------------
+Evaluation after 3085000 steps - average reward: 0.093392
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 3090000 steps - average reward: 0.058393
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 3095000 steps - average reward: 0.066832
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 3100000 steps - average reward: 0.040314
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 3105000 steps - average reward: 0.049101
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3110000 steps - average reward: 0.042818
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 3115000 steps - average reward: 0.039434
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 3120000 steps - average reward: 0.069747
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 3125000 steps - average reward: 0.061698
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 3130000 steps - average reward: 0.041156
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 3135000 steps - average reward: 0.062731
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 3140000 steps - average reward: 0.039346
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3145000 steps - average reward: 0.042557
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 3150000 steps - average reward: 0.048258
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3155000 steps - average reward: 0.042682
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 3160000 steps - average reward: 0.038552
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 3165000 steps - average reward: 0.040559
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 3170000 steps - average reward: 0.031253
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 3175000 steps - average reward: 0.023759
+---------------------------------------
+Evaluation over 10 episodes: 0.021
+---------------------------------------
+Evaluation after 3180000 steps - average reward: 0.021293
+---------------------------------------
+Evaluation over 10 episodes: 0.020
+---------------------------------------
+Evaluation after 3185000 steps - average reward: 0.020187
+---------------------------------------
+Evaluation over 10 episodes: 0.025
+---------------------------------------
+Evaluation after 3190000 steps - average reward: 0.025399
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 3195000 steps - average reward: 0.031603
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 3200000 steps - average reward: 0.031159
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 3205000 steps - average reward: 0.046954
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 3210000 steps - average reward: 0.042361
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 3215000 steps - average reward: 0.046379
+---------------------------------------
+Evaluation over 10 episodes: 0.028
+---------------------------------------
+Evaluation after 3220000 steps - average reward: 0.028457
+---------------------------------------
+Evaluation over 10 episodes: 0.022
+---------------------------------------
+Evaluation after 3225000 steps - average reward: 0.022212
+---------------------------------------
+Evaluation over 10 episodes: 0.022
+---------------------------------------
+Evaluation after 3230000 steps - average reward: 0.021846
+---------------------------------------
+Evaluation over 10 episodes: 0.021
+---------------------------------------
+Evaluation after 3235000 steps - average reward: 0.021199
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 3240000 steps - average reward: 0.045645
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3245000 steps - average reward: 0.043316
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3250000 steps - average reward: 0.035753
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 3255000 steps - average reward: 0.030435
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3260000 steps - average reward: 0.035436
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 3265000 steps - average reward: 0.041646
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3270000 steps - average reward: 0.035923
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 3275000 steps - average reward: 0.046848
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3280000 steps - average reward: 0.043852
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3285000 steps - average reward: 0.035380
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 3290000 steps - average reward: 0.034376
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 3295000 steps - average reward: 0.077633
+---------------------------------------
+Evaluation over 10 episodes: 0.070
+---------------------------------------
+Evaluation after 3300000 steps - average reward: 0.070361
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 3305000 steps - average reward: 0.068337
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 3310000 steps - average reward: 0.056979
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 3315000 steps - average reward: 0.055610
+---------------------------------------
+Evaluation over 10 episodes: 0.107
+---------------------------------------
+Evaluation after 3320000 steps - average reward: 0.106675
+---------------------------------------
+Evaluation over 10 episodes: 0.056
+---------------------------------------
+Evaluation after 3325000 steps - average reward: 0.056387
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 3330000 steps - average reward: 0.041797
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 3335000 steps - average reward: 0.040135
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 3340000 steps - average reward: 0.061590
+---------------------------------------
+Evaluation over 10 episodes: 0.117
+---------------------------------------
+Evaluation after 3345000 steps - average reward: 0.116539
+---------------------------------------
+Evaluation over 10 episodes: 0.069
+---------------------------------------
+Evaluation after 3350000 steps - average reward: 0.068969
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 3355000 steps - average reward: 0.042432
+---------------------------------------
+Evaluation over 10 episodes: 0.067
+---------------------------------------
+Evaluation after 3360000 steps - average reward: 0.066601
+---------------------------------------
+Evaluation over 10 episodes: 0.099
+---------------------------------------
+Evaluation after 3365000 steps - average reward: 0.098502
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 3370000 steps - average reward: 0.041366
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 3375000 steps - average reward: 0.039304
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 3380000 steps - average reward: 0.040690
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 3385000 steps - average reward: 0.033618
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3390000 steps - average reward: 0.035824
+---------------------------------------
+Evaluation over 10 episodes: 0.029
+---------------------------------------
+Evaluation after 3395000 steps - average reward: 0.028703
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 3400000 steps - average reward: 0.036562
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 3405000 steps - average reward: 0.050554
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 3410000 steps - average reward: 0.051742
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 3415000 steps - average reward: 0.050390
+---------------------------------------
+Evaluation over 10 episodes: 0.071
+---------------------------------------
+Evaluation after 3420000 steps - average reward: 0.071240
+---------------------------------------
+Evaluation over 10 episodes: 0.094
+---------------------------------------
+Evaluation after 3425000 steps - average reward: 0.093815
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 3430000 steps - average reward: 0.062485
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 3435000 steps - average reward: 0.055211
+---------------------------------------
+Evaluation over 10 episodes: 0.459
+---------------------------------------
+Evaluation after 3440000 steps - average reward: 0.459150
+---------------------------------------
+Evaluation over 10 episodes: 0.080
+---------------------------------------
+Evaluation after 3445000 steps - average reward: 0.080477
+---------------------------------------
+Evaluation over 10 episodes: 0.126
+---------------------------------------
+Evaluation after 3450000 steps - average reward: 0.125673
+---------------------------------------
+Evaluation over 10 episodes: 0.069
+---------------------------------------
+Evaluation after 3455000 steps - average reward: 0.068807
+---------------------------------------
+Evaluation over 10 episodes: 0.237
+---------------------------------------
+Evaluation after 3460000 steps - average reward: 0.237145
+---------------------------------------
+Evaluation over 10 episodes: 0.152
+---------------------------------------
+Evaluation after 3465000 steps - average reward: 0.151933
+---------------------------------------
+Evaluation over 10 episodes: 0.088
+---------------------------------------
+Evaluation after 3470000 steps - average reward: 0.088118
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 3475000 steps - average reward: 0.051697
+---------------------------------------
+Evaluation over 10 episodes: 0.106
+---------------------------------------
+Evaluation after 3480000 steps - average reward: 0.105712
+---------------------------------------
+Evaluation over 10 episodes: 0.086
+---------------------------------------
+Evaluation after 3485000 steps - average reward: 0.086304
+---------------------------------------
+Evaluation over 10 episodes: 0.033
+---------------------------------------
+Evaluation after 3490000 steps - average reward: 0.032678
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3495000 steps - average reward: 0.043709
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 3500000 steps - average reward: 0.030327
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 3505000 steps - average reward: 0.030096
+---------------------------------------
+Evaluation over 10 episodes: 0.037
+---------------------------------------
+Evaluation after 3510000 steps - average reward: 0.037184
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 3515000 steps - average reward: 0.057313
+---------------------------------------
+Evaluation over 10 episodes: 0.112
+---------------------------------------
+Evaluation after 3520000 steps - average reward: 0.111887
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 3525000 steps - average reward: 0.063482
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 3530000 steps - average reward: 0.052568
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 3535000 steps - average reward: 0.053109
+---------------------------------------
+Evaluation over 10 episodes: 0.083
+---------------------------------------
+Evaluation after 3540000 steps - average reward: 0.082863
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 3545000 steps - average reward: 0.062939
+---------------------------------------
+Evaluation over 10 episodes: 0.089
+---------------------------------------
+Evaluation after 3550000 steps - average reward: 0.088719
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3555000 steps - average reward: 0.044134
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3560000 steps - average reward: 0.035974
+---------------------------------------
+Evaluation over 10 episodes: 0.028
+---------------------------------------
+Evaluation after 3565000 steps - average reward: 0.028016
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3570000 steps - average reward: 0.034838
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 3575000 steps - average reward: 0.032298
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 3580000 steps - average reward: 0.062988
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3585000 steps - average reward: 0.035679
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 3590000 steps - average reward: 0.037559
+---------------------------------------
+Evaluation over 10 episodes: 0.021
+---------------------------------------
+Evaluation after 3595000 steps - average reward: 0.020914
+---------------------------------------
+Evaluation over 10 episodes: 0.031
+---------------------------------------
+Evaluation after 3600000 steps - average reward: 0.030606
+---------------------------------------
+Evaluation over 10 episodes: 0.103
+---------------------------------------
+Evaluation after 3605000 steps - average reward: 0.103219
+---------------------------------------
+Evaluation over 10 episodes: 0.134
+---------------------------------------
+Evaluation after 3610000 steps - average reward: 0.134444
+---------------------------------------
+Evaluation over 10 episodes: 0.100
+---------------------------------------
+Evaluation after 3615000 steps - average reward: 0.100091
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3620000 steps - average reward: 0.035551
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3625000 steps - average reward: 0.034662
+---------------------------------------
+Evaluation over 10 episodes: 0.032
+---------------------------------------
+Evaluation after 3630000 steps - average reward: 0.031902
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 3635000 steps - average reward: 0.040546
+---------------------------------------
+Evaluation over 10 episodes: 0.053
+---------------------------------------
+Evaluation after 3640000 steps - average reward: 0.052785
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3645000 steps - average reward: 0.042892
+---------------------------------------
+Evaluation over 10 episodes: 0.027
+---------------------------------------
+Evaluation after 3650000 steps - average reward: 0.026975
+---------------------------------------
+Evaluation over 10 episodes: 0.024
+---------------------------------------
+Evaluation after 3655000 steps - average reward: 0.024197
+---------------------------------------
+Evaluation over 10 episodes: 0.061
+---------------------------------------
+Evaluation after 3660000 steps - average reward: 0.060989
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3665000 steps - average reward: 0.043669
+---------------------------------------
+Evaluation over 10 episodes: 0.104
+---------------------------------------
+Evaluation after 3670000 steps - average reward: 0.103835
+---------------------------------------
+Evaluation over 10 episodes: 0.058
+---------------------------------------
+Evaluation after 3675000 steps - average reward: 0.057608
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 3680000 steps - average reward: 0.074730
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 3685000 steps - average reward: 0.057193
+---------------------------------------
+Evaluation over 10 episodes: 0.051
+---------------------------------------
+Evaluation after 3690000 steps - average reward: 0.051155
+---------------------------------------
+Evaluation over 10 episodes: 0.078
+---------------------------------------
+Evaluation after 3695000 steps - average reward: 0.078287
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 3700000 steps - average reward: 0.046324
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 3705000 steps - average reward: 0.059613
+---------------------------------------
+Evaluation over 10 episodes: 0.041
+---------------------------------------
+Evaluation after 3710000 steps - average reward: 0.041329
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 3715000 steps - average reward: 0.034019
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 3720000 steps - average reward: 0.030103
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3725000 steps - average reward: 0.034765
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 3730000 steps - average reward: 0.046178
+---------------------------------------
+Evaluation over 10 episodes: 0.062
+---------------------------------------
+Evaluation after 3735000 steps - average reward: 0.061645
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 3740000 steps - average reward: 0.034307
+---------------------------------------
+Evaluation over 10 episodes: 0.040
+---------------------------------------
+Evaluation after 3745000 steps - average reward: 0.040439
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 3750000 steps - average reward: 0.059952
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3755000 steps - average reward: 0.034631
+---------------------------------------
+Evaluation over 10 episodes: 0.092
+---------------------------------------
+Evaluation after 3760000 steps - average reward: 0.092027
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3765000 steps - average reward: 0.034912
+---------------------------------------
+Evaluation over 10 episodes: 0.084
+---------------------------------------
+Evaluation after 3770000 steps - average reward: 0.083945
+---------------------------------------
+Evaluation over 10 episodes: 0.034
+---------------------------------------
+Evaluation after 3775000 steps - average reward: 0.033553
+---------------------------------------
+Evaluation over 10 episodes: 0.066
+---------------------------------------
+Evaluation after 3780000 steps - average reward: 0.065868
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 3785000 steps - average reward: 0.075283
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 3790000 steps - average reward: 0.046916
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 3795000 steps - average reward: 0.041993
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 3800000 steps - average reward: 0.051778
+---------------------------------------
+Evaluation over 10 episodes: 0.063
+---------------------------------------
+Evaluation after 3805000 steps - average reward: 0.062697
+---------------------------------------
+Evaluation over 10 episodes: 0.112
+---------------------------------------
+Evaluation after 3810000 steps - average reward: 0.112456
+---------------------------------------
+Evaluation over 10 episodes: 0.075
+---------------------------------------
+Evaluation after 3815000 steps - average reward: 0.075367
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 3820000 steps - average reward: 0.065360
+---------------------------------------
+Evaluation over 10 episodes: 0.069
+---------------------------------------
+Evaluation after 3825000 steps - average reward: 0.069366
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3830000 steps - average reward: 0.035348
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3835000 steps - average reward: 0.043056
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 3840000 steps - average reward: 0.049157
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 3845000 steps - average reward: 0.034775
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 3850000 steps - average reward: 0.037800
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 3855000 steps - average reward: 0.051732
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3860000 steps - average reward: 0.043700
+---------------------------------------
+Evaluation over 10 episodes: 0.068
+---------------------------------------
+Evaluation after 3865000 steps - average reward: 0.067974
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 3870000 steps - average reward: 0.058548
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 3875000 steps - average reward: 0.047896
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 3880000 steps - average reward: 0.037825
+---------------------------------------
+Evaluation over 10 episodes: 0.045
+---------------------------------------
+Evaluation after 3885000 steps - average reward: 0.045174
+---------------------------------------
+Evaluation over 10 episodes: 0.052
+---------------------------------------
+Evaluation after 3890000 steps - average reward: 0.052449
+---------------------------------------
+Evaluation over 10 episodes: 0.036
+---------------------------------------
+Evaluation after 3895000 steps - average reward: 0.035544
+---------------------------------------
+Evaluation over 10 episodes: 0.073
+---------------------------------------
+Evaluation after 3900000 steps - average reward: 0.073052
+---------------------------------------
+Evaluation over 10 episodes: 0.059
+---------------------------------------
+Evaluation after 3905000 steps - average reward: 0.059186
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 3910000 steps - average reward: 0.049461
+---------------------------------------
+Evaluation over 10 episodes: 0.151
+---------------------------------------
+Evaluation after 3915000 steps - average reward: 0.151134
+---------------------------------------
+Evaluation over 10 episodes: 0.042
+---------------------------------------
+Evaluation after 3920000 steps - average reward: 0.042476
+---------------------------------------
+Evaluation over 10 episodes: 0.057
+---------------------------------------
+Evaluation after 3925000 steps - average reward: 0.056928
+---------------------------------------
+Evaluation over 10 episodes: 0.044
+---------------------------------------
+Evaluation after 3930000 steps - average reward: 0.043946
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 3935000 steps - average reward: 0.059506
+---------------------------------------
+Evaluation over 10 episodes: 0.060
+---------------------------------------
+Evaluation after 3940000 steps - average reward: 0.059523
+---------------------------------------
+Evaluation over 10 episodes: 0.049
+---------------------------------------
+Evaluation after 3945000 steps - average reward: 0.049119
+---------------------------------------
+Evaluation over 10 episodes: 0.065
+---------------------------------------
+Evaluation after 3950000 steps - average reward: 0.064892
+---------------------------------------
+Evaluation over 10 episodes: 0.030
+---------------------------------------
+Evaluation after 3955000 steps - average reward: 0.029897
+---------------------------------------
+Evaluation over 10 episodes: 0.038
+---------------------------------------
+Evaluation after 3960000 steps - average reward: 0.038094
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 3965000 steps - average reward: 0.043358
+---------------------------------------
+Evaluation over 10 episodes: 0.046
+---------------------------------------
+Evaluation after 3970000 steps - average reward: 0.045782
+---------------------------------------
+Evaluation over 10 episodes: 0.048
+---------------------------------------
+Evaluation after 3975000 steps - average reward: 0.047625
+---------------------------------------
+Evaluation over 10 episodes: 0.072
+---------------------------------------
+Evaluation after 3980000 steps - average reward: 0.071781
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 3985000 steps - average reward: 0.047080
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 3990000 steps - average reward: 0.055167
+---------------------------------------
+Evaluation over 10 episodes: 0.055
+---------------------------------------
+Evaluation after 3995000 steps - average reward: 0.054638
+---------------------------------------
+Evaluation over 10 episodes: 0.086
+---------------------------------------
+Evaluation after 4000000 steps - average reward: 0.086108
+---------------------------------------
+Evaluation over 10 episodes: 0.035
+---------------------------------------
+Evaluation after 4005000 steps - average reward: 0.034616
+---------------------------------------
+Evaluation over 10 episodes: 0.050
+---------------------------------------
+Evaluation after 4010000 steps - average reward: 0.049850
+---------------------------------------
+Evaluation over 10 episodes: 0.039
+---------------------------------------
+Evaluation after 4015000 steps - average reward: 0.038880
+---------------------------------------
+Evaluation over 10 episodes: 0.047
+---------------------------------------
+Evaluation after 4020000 steps - average reward: 0.047026
+---------------------------------------
+Evaluation over 10 episodes: 0.043
+---------------------------------------
+Evaluation after 4025000 steps - average reward: 0.043012
+---------------------------------------
+Evaluation over 10 episodes: 0.080
+---------------------------------------
+Evaluation after 4030000 steps - average reward: 0.079853
+---------------------------------------
+Evaluation over 10 episodes: 0.199
+---------------------------------------
+Evaluation after 4035000 steps - average reward: 0.198783
+---------------------------------------
