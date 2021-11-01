@@ -12,6 +12,31 @@ import SCDM.TD3_plus_demos.utils as utils
 import SCDM.TD3_plus_demos.TD3 as TD3
 
 
+# return the concatenated state
+def env_statedict_to_state(state_dict, env_name):
+	# one hand
+	env_list1 = ['PenSpin-v0']
+	# two hands with one object
+	env_list2 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggHandOver-v0', 'BlockHandOver-v0']
+	# two hands with two objects
+	env_list3 = ['TwoEggCatchUnderArm-v0']
+	if isinstance(state_dict, dict):
+		if env_name in env_list1:
+			state = np.copy(state_dict["observation"])
+		elif env_name in env_list2:
+			state = np.concatenate((state_dict["observation"],
+									state_dict["desired_goal"]))
+		elif env_name in env_list3:
+			state = np.concatenate((state_dict["observation"],
+									state_dict["desired_goal"]['object_1'],
+									state_dict["desired_goal"]['object_2']))
+		else:
+			raise ValueError('wrong env')
+	elif isinstance(state_dict, np.ndarray):
+		state = np.copy(state_dict)
+
+	return state
+
 # Runs policy for X episodes and returns average reward
 # A fixed seed is used for the eval environment
 def eval_policy(policy, env_name, seed, eval_episodes=10):
@@ -24,9 +49,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=10):
 		num_steps = 0
 		prev_action = np.zeros((eval_env.action_space.shape[0],))
 		while num_steps < eval_env._max_episode_steps:
-			state = np.concatenate((state_dict["observation"],
-										  state_dict["desired_goal"]["object_1"],
-										  state_dict["desired_goal"]["object_2"]))
+			state = env_statedict_to_state(state_dict, env_name)
 			action = policy.select_action(state, prev_action)
 			state_dict, reward, done, _ = eval_env.step(action)
 			prev_action = action.copy()
@@ -73,7 +96,8 @@ if __name__ == "__main__":
 	parser.set_defaults(use_normaliser=False)
 
 	# new paramters
-	parser.add_argument("--add_symmetry", action="store_true")   # add symmetric transition to the replay buffer
+	parser.add_argument("--add_invariance", action="store_true")   # add invariant transition to the replay buffer
+	parser.add_argument("--use_her", action="store_true")  # use hindsight replay buffer
 
 	args = parser.parse_args()
 
@@ -94,10 +118,10 @@ if __name__ == "__main__":
 
 	demo_states = []
 	demo_prev_actions = []
-	files = os.listdir("demonstrations"+"_"+args.expt_tag)
+	files = os.listdir("demonstrations/demonstrations"+"_"+args.expt_tag)
 	files = [file for file in files if file.endswith(".pkl")]
 	for file in files:
-		traj = joblib.load("demonstrations" + "_" + args.expt_tag + "/" + file)
+		traj = joblib.load("demonstrations/demonstrations" + "_" + args.expt_tag + "/" + file)
 		for k, state in enumerate(traj["sim_states"]):
 			demo_states.append(state)
 			if k==0:
@@ -113,9 +137,7 @@ if __name__ == "__main__":
 	torch.manual_seed(args.seed)
 	np.random.seed(args.seed)
 	
-	state_dim = env_main.observation_space["observation"].shape[0]+\
-				env_main.observation_space["desired_goal"]["object_1"].shape[0]+\
-				env_main.observation_space["desired_goal"]["object_2"].shape[0]
+	state_dim = env_statedict_to_state(env_main.env._get_obs(), args.env).shape[0]
 	action_dim = env_main.action_space.shape[0]
 	max_action = float(env_main.action_space.high[0])
 
@@ -139,7 +161,9 @@ if __name__ == "__main__":
 		policy_file = file_name if args.load_model == "default" else args.load_model
 		policy.load(f"./models/{policy_file}")
 
-	replay_buffer = utils.ReplayBuffer(state_dim, action_dim)
+	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, env_name=args.env)
+	hindsight_replay_buffer = utils.HindsightReplayBuffer(state_dim, action_dim, env_name=args.env,
+										  segment_length=args.segment_len, compute_reward=env_main.env.compute_reward)
 	
 	# Evaluate untrained policy
 	evaluations = [eval_policy(policy, args.env, args.seed)]
@@ -171,25 +195,19 @@ if __name__ == "__main__":
 				ind = np.random.randint(0, len(demo_states))
 				env_demo.reset()
 				env_demo.env.sim.set_state(demo_states[ind])
+				pre_obs_dict = env_demo.env._get_obs()
 				env_demo.env.sim.forward()
 				observation_dict = env_demo.env._get_obs()
-				observation = np.concatenate((observation_dict["observation"],
-											  observation_dict["desired_goal"]["object_1"],
-											  observation_dict["desired_goal"]["object_2"]))
+				observation = env_statedict_to_state(observation_dict, env_name=args.env)
 				prev_action = demo_prev_actions[ind]
 			elif segment_type == "pr":
 				observation_dict = env_reset.reset()
-				observation = np.concatenate((observation_dict["observation"],
-											  observation_dict["desired_goal"]["object_1"],
-											  observation_dict["desired_goal"]["object_2"]))
+				observation = env_statedict_to_state(observation_dict, env_name=args.env)
 				prev_action = np.zeros((action_dim,))
 			else:
 				prev_action = main_episode_prev_ac
 				observation_dict = main_episode_obs
-				observation = np.concatenate((observation_dict["observation"],
-											  observation_dict["desired_goal"]["object_1"],
-											  observation_dict["desired_goal"]["object_2"]))
-
+				observation = env_statedict_to_state(observation_dict, env_name=args.env)
 		if t < args.start_timesteps:
 			action = (
 				policy.beta*env_main.action_space.sample() + (1-policy.beta)*prev_action
@@ -211,16 +229,20 @@ if __name__ == "__main__":
 			main_episode_timesteps += 1
 			next_observation_dict, reward, _, _ = env_main.step(action)
 			main_episode_prev_ac = action.copy()
-			episode_obs = np.concatenate((next_observation_dict["observation"],
-									  next_observation_dict["desired_goal"]["object_1"],
-									  next_observation_dict["desired_goal"]["object_2"]))
+			main_episode_obs = env_statedict_to_state(next_observation_dict, env_name=args.env)
 
-		next_observation = np.concatenate((next_observation_dict["observation"],
-									  next_observation_dict["desired_goal"]["object_1"],
-									  next_observation_dict["desired_goal"]["object_2"]))
-		if args.add_symmetry:
-			replay_buffer.symmetric_sample_generator(observation, action, next_observation, reward, prev_action)
-		replay_buffer.add(observation, action, next_observation, reward, prev_action)
+		next_observation = env_statedict_to_state(next_observation_dict, env_name=args.env)
+
+		# replay buffer
+		replay_buffer.add(observation, action, next_observation, reward, prev_action, args.add_invariance)
+		hindsight_replay_buffer.add(observation, action, next_observation, reward, prev_action, args.add_invariance)
+		if args.use_her:
+			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
+				hindsight_replay_buffer.choose_new_goal()
+				replay_buffer.add_from_hindsight_replay_buffer(hindsight_replay_buffer.state,
+									hindsight_replay_buffer.action, hindsight_replay_buffer.next_state,
+									hindsight_replay_buffer.reward, hindsight_replay_buffer.prev_action)
+
 		if args.use_normaliser:
 			policy.normaliser.update(observation)
 			if t % args.update_normaliser_every == 0:
@@ -231,7 +253,7 @@ if __name__ == "__main__":
 			if main_episode_timesteps == env_main._max_episode_steps:
 				main_episode_timesteps = 0
 				prev_action = main_episode_prev_ac = np.zeros((action_dim,))
-				observation = episode_obs = env_main.reset()
+				observation = main_episode_obs = env_main.reset()
 
 		if t >= args.start_timesteps:
 			policy.train(replay_buffer, args.batch_size)

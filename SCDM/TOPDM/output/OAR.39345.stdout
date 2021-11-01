@@ -1,0 +1,1204 @@
+output/traj.txt exists.
+BlockCatchOverarm-v0 - traj
+
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.482963, d_rot: 0.636882. Best future reward: 7.424456. Took 1531.569355 seconds!
+
+Step 1. Reward: 0.000002, success: 0.0, d_pos: 26.438668, d_rot: 0.732048. Best future reward: 9.657264. Took 1537.509491 seconds!
+
+Step 2. Reward: 0.000007, success: 0.0, d_pos: 23.493247, d_rot: 0.732053. Best future reward: 12.568143. Took 1586.414487 seconds!
+
+Step 3. Reward: 0.000029, success: 0.0, d_pos: 20.622855, d_rot: 0.732053. Best future reward: 12.699770. Took 1601.397716 seconds!
+
+Step 4. Reward: 0.000118, success: 0.0, d_pos: 17.800927, d_rot: 0.732053. Best future reward: 14.472871. Took 1568.905301 seconds!
+
+Step 5. Reward: 0.000478, success: 0.0, d_pos: 15.001067, d_rot: 0.732053. Best future reward: 14.306624. Took 1533.512176 seconds!
+
+Step 6. Reward: 0.001940, success: 0.0, d_pos: 12.197544, d_rot: 0.732053. Best future reward: 15.233831. Took 1533.406343 seconds!
+
+Step 7. Reward: 0.007991, success: 0.0, d_pos: 9.365939, d_rot: 0.732053. Best future reward: 16.295561. Took 1516.884207 seconds!
+
+Step 8. Reward: 0.033753, success: 0.0, d_pos: 6.484542, d_rot: 0.732053. Best future reward: 17.053558. Took 1501.136403 seconds!
+
+Step 9. Reward: 0.147036, success: 0.0, d_pos: 3.541328, d_rot: 0.732053. Best future reward: 17.882452. Took 1466.813024 seconds!
+
+Step 10. Reward: 0.596466, success: 0.0, d_pos: 0.747849, d_rot: 0.714039. Best future reward: 19.720554. Took 1403.031088 seconds!
+
+Step 11. Reward: 0.806558, success: 0.0, d_pos: 0.338101, d_rot: 0.229645. Best future reward: 21.346481. Took 1391.767636 seconds!
+
+Step 12. Reward: 0.935741, success: 1.0, d_pos: 0.110706, d_rot: 0.055316. Best future reward: 22.813234. Took 1348.957759 seconds!
+
+Step 13. Reward: 0.922857, success: 1.0, d_pos: 0.145842, d_rot: 0.036796. Best future reward: 23.496829. Took 1253.170117 seconds!
+
+Step 14. Reward: 0.940599, success: 1.0, d_pos: 0.088095, d_rot: 0.085953. Best future reward: 22.270954. Took 1211.945662 seconds!
+
+Step 15. Reward: 0.913594, success: 1.0, d_pos: 0.164102, d_rot: 0.041589. Best future reward: 22.808093. Took 1149.156245 seconds!
+
+Step 16. Reward: 0.935034, success: 1.0, d_pos: 0.120879, d_rot: 0.033663. Best future reward: 23.082307. Took 1077.842817 seconds!
+
+Step 17. Reward: 0.900577, success: 1.0, d_pos: 0.182464, d_rot: 0.067441. Best future reward: 23.329849. Took 1021.145154 seconds!
+
+Step 18. Reward: 0.955709, success: 1.0, d_pos: 0.062710, d_rot: 0.069737. Best future reward: 22.411244. Took 988.527196 seconds!
+
+Step 19. Reward: 0.972341, success: 1.0, d_pos: 0.046605, d_rot: 0.023730. Best future reward: 21.137363. Took 907.202440 seconds!
+
+Step 20. Reward: 0.908226, success: 1.0, d_pos: 0.181812, d_rot: 0.026780. Best future reward: 21.059223. Took 892.646486 seconds!
+
+Step 21. Reward: 0.920129, success: 1.0, d_pos: 0.129634, d_rot: 0.092121. Best future reward: 20.983720. Took 879.395255 seconds!
+
+Step 22. Reward: 0.938524, success: 1.0, d_pos: 0.100924, d_rot: 0.064925. Best future reward: 21.479955. Took 792.390579 seconds!
+
+Step 23. Reward: 0.946957, success: 1.0, d_pos: 0.072066, d_rot: 0.092344. Best future reward: 22.774866. Took 752.537640 seconds!
+
+Step 24. Reward: 0.949616, success: 1.0, d_pos: 0.082227, d_rot: 0.052918. Best future reward: 23.161106. Took 711.131638 seconds!
+
+Step 25. Reward: 0.946593, success: 1.0, d_pos: 0.086766, d_rot: 0.057516. Best future reward: 22.057450. Took 638.987764 seconds!
+
+Step 26. Reward: 0.925837, success: 1.0, d_pos: 0.126224, d_rot: 0.069726. Best future reward: 21.799199. Took 599.856260 seconds!
+
+Step 27. Reward: 0.906329, success: 1.0, d_pos: 0.169231, d_rot: 0.068690. Best future reward: 23.123936. Took 552.990039 seconds!
+
+Step 28. Reward: 0.910676, success: 1.0, d_pos: 0.155310, d_rot: 0.079568. Best future reward: 23.176099. Took 461.748679 seconds!
+
+Step 29. Reward: 0.920951, success: 1.0, d_pos: 0.143074, d_rot: 0.054057. Best future reward: 22.239049. Took 422.989220 seconds!
+
+Step 30. Reward: 0.949989, success: 1.0, d_pos: 0.077448, d_rot: 0.062904. Best future reward: 21.542515. Took 376.763814 seconds!
+
+Step 31. Reward: 0.900341, success: 1.0, d_pos: 0.181299, d_rot: 0.071662. Best future reward: 20.196663. Took 373.336411 seconds!
+
+Step 32. Reward: 0.907171, success: 1.0, d_pos: 0.173359, d_rot: 0.053724. Best future reward: 19.685076. Took 381.001543 seconds!
+
+Step 33. Reward: 0.955997, success: 1.0, d_pos: 0.065911, d_rot: 0.060228. Best future reward: 19.631972. Took 374.919434 seconds!
+
+Step 34. Reward: 0.890752, success: 1.0, d_pos: 0.198873, d_rot: 0.081266. Best future reward: 19.269838. Took 357.917698 seconds!
+
+Step 35. Reward: 0.962861, success: 1.0, d_pos: 0.059852, d_rot: 0.039599. Best future reward: 19.961050. Took 360.228506 seconds!
+
+Step 36. Reward: 0.935055, success: 1.0, d_pos: 0.114647, d_rot: 0.049129. Best future reward: 19.170440. Took 367.588017 seconds!
+
+Step 37. Reward: 0.894463, success: 1.0, d_pos: 0.196202, d_rot: 0.067155. Best future reward: 18.899903. Took 374.509830 seconds!
+
+Step 38. Reward: 0.958722, success: 1.0, d_pos: 0.058309, d_rot: 0.064998. Best future reward: 19.112612. Took 365.982592 seconds!
+
+Step 39. Reward: 0.906172, success: 1.0, d_pos: 0.161144, d_rot: 0.089773. Best future reward: 18.378452. Took 355.233577 seconds!
+
+Step 40. Reward: 0.950348, success: 1.0, d_pos: 0.069467, d_rot: 0.080969. Best future reward: 17.365155. Took 355.799804 seconds!
+
+Step 41. Reward: 0.931239, success: 1.0, d_pos: 0.107530, d_rot: 0.087372. Best future reward: 17.112534. Took 362.441924 seconds!
+
+Step 42. Reward: 0.860513, success: 0.0, d_pos: 0.210345, d_rot: 0.225271. Best future reward: 16.400245. Took 353.692238 seconds!
+
+Step 43. Reward: 0.818816, success: 0.0, d_pos: 0.270291, d_rot: 0.323753. Best future reward: 17.341263. Took 353.529370 seconds!
+
+Step 44. Reward: 0.759497, success: 0.0, d_pos: 0.437739, d_rot: 0.281147. Best future reward: 16.882526. Took 336.263391 seconds!
+
+Step 45. Reward: 0.732250, success: 0.0, d_pos: 0.504024, d_rot: 0.298110. Best future reward: 18.241615. Took 334.856425 seconds!
+
+Step 46. Reward: 0.760825, success: 0.0, d_pos: 0.467488, d_rot: 0.198040. Best future reward: 17.029077. Took 341.766978 seconds!
+
+Step 47. Reward: 0.951460, success: 0.0, d_pos: 0.018964, d_rot: 0.201376. Best future reward: 17.458487. Took 333.345619 seconds!
+
+Step 48. Reward: 0.928153, success: 1.0, d_pos: 0.126484, d_rot: 0.056585. Best future reward: 17.703087. Took 330.618286 seconds!
+
+Step 49. Reward: 0.915030, success: 1.0, d_pos: 0.147320, d_rot: 0.075690. Best future reward: 16.333987. Took 326.003390 seconds!
+
+Step 50. Reward: 0.937714, success: 1.0, d_pos: 0.094288, d_rot: 0.085833. Best future reward: 15.776948. Took 324.786621 seconds!
+
+Step 51. Reward: 0.919430, success: 1.0, d_pos: 0.139750, d_rot: 0.070634. Best future reward: 15.778930. Took 325.361187 seconds!
+
+Step 52. Reward: 0.914632, success: 1.0, d_pos: 0.146572, d_rot: 0.079734. Best future reward: 16.698000. Took 318.382883 seconds!
+
+Step 53. Reward: 0.925917, success: 1.0, d_pos: 0.129106, d_rot: 0.062087. Best future reward: 15.793991. Took 305.791259 seconds!
+
+Step 54. Reward: 0.825767, success: 0.0, d_pos: 0.293906, d_rot: 0.222448. Best future reward: 14.990038. Took 298.175917 seconds!
+
+Step 55. Reward: 0.682354, success: 0.0, d_pos: 0.647594, d_rot: 0.292051. Best future reward: 14.557476. Took 294.800847 seconds!
+
+Step 56. Reward: 0.704112, success: 0.0, d_pos: 0.606650, d_rot: 0.237463. Best future reward: 18.223417. Took 297.029852 seconds!
+
+Step 57. Reward: 0.643432, success: 0.0, d_pos: 0.791541, d_rot: 0.225840. Best future reward: 15.601642. Took 293.431419 seconds!
+
+Step 58. Reward: 0.614982, success: 0.0, d_pos: 0.912076, d_rot: 0.150624. Best future reward: 17.087298. Took 289.935137 seconds!
+
+Step 59. Reward: 0.632994, success: 0.0, d_pos: 0.854341, d_rot: 0.150622. Best future reward: 19.183919. Took 288.384688 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.552029, d_rot: 1.607024. Best future reward: 5.574366. Took 736.561065 seconds!
+
+Step 1. Reward: 0.000001, success: 0.0, d_pos: 26.747407, d_rot: 1.496581. Best future reward: 7.252775. Took 783.484047 seconds!
+
+Step 2. Reward: 0.000004, success: 0.0, d_pos: 24.046940, d_rot: 1.496577. Best future reward: 9.390556. Took 802.375777 seconds!
+
+Step 3. Reward: 0.000016, success: 0.0, d_pos: 21.426886, d_rot: 1.496577. Best future reward: 10.374621. Took 786.417751 seconds!
+
+Step 4. Reward: 0.000060, success: 0.0, d_pos: 18.858112, d_rot: 1.496577. Best future reward: 11.407953. Took 736.385293 seconds!
+
+Step 5. Reward: 0.000213, success: 0.0, d_pos: 16.311671, d_rot: 1.496577. Best future reward: 13.292684. Took 713.439831 seconds!
+
+Step 6. Reward: 0.000762, success: 0.0, d_pos: 13.759328, d_rot: 1.496577. Best future reward: 14.489676. Took 722.459598 seconds!
+
+Step 7. Reward: 0.002777, success: 0.0, d_pos: 11.174081, d_rot: 1.496577. Best future reward: 15.139751. Took 690.752115 seconds!
+
+Step 8. Reward: 0.010413, success: 0.0, d_pos: 8.530747, d_rot: 1.496577. Best future reward: 15.220133. Took 662.600003 seconds!
+
+Step 9. Reward: 0.040645, success: 0.0, d_pos: 5.807131, d_rot: 1.496577. Best future reward: 16.270815. Took 676.214154 seconds!
+
+Step 10. Reward: 0.166209, success: 0.0, d_pos: 2.990385, d_rot: 1.496577. Best future reward: 17.893365. Took 635.338062 seconds!
+
+Step 11. Reward: 0.584034, success: 0.0, d_pos: 0.499853, d_rot: 1.439353. Best future reward: 17.147762. Took 592.879625 seconds!
+
+Step 12. Reward: 0.651433, success: 0.0, d_pos: 0.455648, d_rot: 1.003785. Best future reward: 18.117447. Took 574.489684 seconds!
+
+Step 13. Reward: 0.746239, success: 0.0, d_pos: 0.273485, d_rot: 0.779834. Best future reward: 16.826287. Took 531.476629 seconds!
+
+Step 14. Reward: 0.778732, success: 0.0, d_pos: 0.252133, d_rot: 0.620111. Best future reward: 17.615523. Took 488.691406 seconds!
+
+Step 15. Reward: 0.897041, success: 0.0, d_pos: 0.121617, d_rot: 0.239226. Best future reward: 18.102886. Took 492.824941 seconds!
+
+Step 16. Reward: 0.927433, success: 1.0, d_pos: 0.117243, d_rot: 0.083565. Best future reward: 19.924223. Took 451.796546 seconds!
+
+Step 17. Reward: 0.950430, success: 1.0, d_pos: 0.078525, d_rot: 0.057894. Best future reward: 19.414993. Took 410.971342 seconds!
+
+Step 18. Reward: 0.898602, success: 1.0, d_pos: 0.178918, d_rot: 0.087278. Best future reward: 20.715024. Took 417.630577 seconds!
+
+Step 19. Reward: 0.940471, success: 1.0, d_pos: 0.099046, d_rot: 0.059258. Best future reward: 18.510518. Took 378.630316 seconds!
+
+Step 20. Reward: 0.922331, success: 1.0, d_pos: 0.132521, d_rot: 0.072955. Best future reward: 18.136052. Took 340.948020 seconds!
+
+Step 21. Reward: 0.936973, success: 1.0, d_pos: 0.117228, d_rot: 0.032436. Best future reward: 18.025238. Took 335.682072 seconds!
+
+Step 22. Reward: 0.937878, success: 1.0, d_pos: 0.110570, d_rot: 0.044253. Best future reward: 16.840075. Took 304.711527 seconds!
+
+Step 23. Reward: 0.969793, success: 1.0, d_pos: 0.043515, d_rot: 0.044578. Best future reward: 15.724449. Took 270.769337 seconds!
+
+Step 24. Reward: 0.911615, success: 1.0, d_pos: 0.149653, d_rot: 0.088556. Best future reward: 14.633886. Took 269.017955 seconds!
+
+Step 25. Reward: 0.752344, success: 0.0, d_pos: 0.539001, d_rot: 0.075304. Best future reward: 12.678916. Took 234.207966 seconds!
+
+Step 26. Reward: 0.678874, success: 0.0, d_pos: 0.751729, d_rot: 0.057274. Best future reward: 12.870956. Took 203.079111 seconds!
+
+Step 27. Reward: 0.645598, success: 0.0, d_pos: 0.858478, d_rot: 0.041698. Best future reward: 13.426210. Took 201.696429 seconds!
+
+Step 28. Reward: 0.635099, success: 0.0, d_pos: 0.862932, d_rot: 0.112546. Best future reward: 15.986720. Took 175.457686 seconds!
+
+Step 29. Reward: 0.710406, success: 0.0, d_pos: 0.638817, d_rot: 0.112551. Best future reward: 16.489924. Took 146.853202 seconds!
+
+Step 30. Reward: 0.838543, success: 0.0, d_pos: 0.312591, d_rot: 0.098971. Best future reward: 17.848531. Took 146.687540 seconds!
+
+Step 31. Reward: 0.902143, success: 1.0, d_pos: 0.189551, d_rot: 0.041032. Best future reward: 20.113308. Took 147.599090 seconds!
+
+Step 32. Reward: 0.970645, success: 1.0, d_pos: 0.052107, d_rot: 0.018705. Best future reward: 19.294975. Took 146.332538 seconds!
+
+Step 33. Reward: 0.907070, success: 1.0, d_pos: 0.186864, d_rot: 0.020519. Best future reward: 18.759940. Took 146.541355 seconds!
+
+Step 34. Reward: 0.951391, success: 1.0, d_pos: 0.071237, d_rot: 0.071057. Best future reward: 18.981295. Took 148.960765 seconds!
+
+Step 35. Reward: 0.903824, success: 1.0, d_pos: 0.178307, d_rot: 0.059834. Best future reward: 17.414377. Took 149.169271 seconds!
+
+Step 36. Reward: 0.939044, success: 1.0, d_pos: 0.100686, d_rot: 0.062751. Best future reward: 16.773652. Took 147.629914 seconds!
+
+Step 37. Reward: 0.902415, success: 1.0, d_pos: 0.173411, d_rot: 0.079875. Best future reward: 15.824440. Took 147.144628 seconds!
+
+Step 38. Reward: 0.900233, success: 1.0, d_pos: 0.182819, d_rot: 0.068461. Best future reward: 15.343866. Took 148.909253 seconds!
+
+Step 39. Reward: 0.910485, success: 1.0, d_pos: 0.160402, d_rot: 0.067886. Best future reward: 16.271085. Took 148.980327 seconds!
+
+Step 40. Reward: 0.875281, success: 0.0, d_pos: 0.236646, d_rot: 0.074439. Best future reward: 16.083220. Took 148.524836 seconds!
+
+Step 41. Reward: 0.892091, success: 1.0, d_pos: 0.198149, d_rot: 0.075563. Best future reward: 19.663493. Took 148.515943 seconds!
+
+Step 42. Reward: 0.911661, success: 1.0, d_pos: 0.154201, d_rot: 0.076935. Best future reward: 19.929758. Took 149.709590 seconds!
+
+Step 43. Reward: 0.923835, success: 1.0, d_pos: 0.128439, d_rot: 0.075012. Best future reward: 19.072059. Took 149.742452 seconds!
+
+Step 44. Reward: 0.937461, success: 1.0, d_pos: 0.105489, d_rot: 0.059182. Best future reward: 19.347602. Took 149.933066 seconds!
+
+Step 45. Reward: 0.912066, success: 1.0, d_pos: 0.165612, d_rot: 0.046185. Best future reward: 18.396785. Took 149.470114 seconds!
+
+Step 46. Reward: 0.963967, success: 1.0, d_pos: 0.053773, d_rot: 0.049058. Best future reward: 19.249650. Took 148.688173 seconds!
+
+Step 47. Reward: 0.920476, success: 1.0, d_pos: 0.141024, d_rot: 0.061760. Best future reward: 18.179865. Took 147.193784 seconds!
+
+Step 48. Reward: 0.948553, success: 1.0, d_pos: 0.088172, d_rot: 0.043660. Best future reward: 19.770946. Took 147.388254 seconds!
+
+Step 49. Reward: 0.916805, success: 1.0, d_pos: 0.152777, d_rot: 0.052361. Best future reward: 18.736301. Took 147.620115 seconds!
+
+Step 50. Reward: 0.934340, success: 1.0, d_pos: 0.099483, d_rot: 0.090869. Best future reward: 20.952313. Took 146.824518 seconds!
+
+Step 51. Reward: 0.957575, success: 1.0, d_pos: 0.069026, d_rot: 0.044191. Best future reward: 17.701660. Took 146.584763 seconds!
+
+Step 52. Reward: 0.945063, success: 1.0, d_pos: 0.086285, d_rot: 0.066808. Best future reward: 16.924838. Took 146.339105 seconds!
+
+Step 53. Reward: 0.939444, success: 1.0, d_pos: 0.104591, d_rot: 0.050858. Best future reward: 16.200936. Took 144.672665 seconds!
+
+Step 54. Reward: 0.926117, success: 1.0, d_pos: 0.122462, d_rot: 0.077620. Best future reward: 14.491167. Took 145.781047 seconds!
+
+Step 55. Reward: 0.928644, success: 1.0, d_pos: 0.116744, d_rot: 0.078288. Best future reward: 14.483813. Took 146.269901 seconds!
+
+Step 56. Reward: 0.947812, success: 1.0, d_pos: 0.077879, d_rot: 0.073299. Best future reward: 13.111630. Took 145.802156 seconds!
+
+Step 57. Reward: 0.823310, success: 0.0, d_pos: 0.355329, d_rot: 0.083790. Best future reward: 12.623264. Took 146.091905 seconds!
+
+Step 58. Reward: 0.711225, success: 0.0, d_pos: 0.654752, d_rot: 0.066954. Best future reward: 13.729074. Took 147.624166 seconds!
+
+Step 59. Reward: 0.711134, success: 0.0, d_pos: 0.647842, d_rot: 0.084866. Best future reward: 13.569404. Took 146.639699 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.805462, d_rot: 1.701548. Best future reward: 4.898247. Took 409.849622 seconds!
+
+Step 1. Reward: 0.000001, success: 0.0, d_pos: 27.167912, d_rot: 1.663153. Best future reward: 6.516897. Took 418.303327 seconds!
+
+Step 2. Reward: 0.000003, success: 0.0, d_pos: 24.644030, d_rot: 1.663152. Best future reward: 7.598285. Took 443.105281 seconds!
+
+Step 3. Reward: 0.000011, success: 0.0, d_pos: 22.208747, d_rot: 1.663152. Best future reward: 8.222138. Took 413.731927 seconds!
+
+Step 4. Reward: 0.000035, success: 0.0, d_pos: 19.830683, d_rot: 1.663152. Best future reward: 9.310272. Took 419.862913 seconds!
+
+Step 5. Reward: 0.000115, success: 0.0, d_pos: 17.478624, d_rot: 1.663152. Best future reward: 9.862755. Took 429.044731 seconds!
+
+Step 6. Reward: 0.000373, success: 0.0, d_pos: 15.122128, d_rot: 1.663152. Best future reward: 10.433526. Took 397.350766 seconds!
+
+Step 7. Reward: 0.001233, success: 0.0, d_pos: 12.732053, d_rot: 1.663152. Best future reward: 11.393896. Took 398.913988 seconds!
+
+Step 8. Reward: 0.004198, success: 0.0, d_pos: 10.280987, d_rot: 1.663152. Best future reward: 12.671191. Took 377.483177 seconds!
+
+Step 9. Reward: 0.014930, success: 0.0, d_pos: 7.743546, d_rot: 1.663152. Best future reward: 14.440401. Took 382.740541 seconds!
+
+Step 10. Reward: 0.056083, success: 0.0, d_pos: 5.096566, d_rot: 1.663152. Best future reward: 14.497006. Took 392.250235 seconds!
+
+Step 11. Reward: 0.224868, success: 0.0, d_pos: 2.319226, d_rot: 1.663152. Best future reward: 14.863843. Took 355.797569 seconds!
+
+Step 12. Reward: 0.619353, success: 0.0, d_pos: 0.307674, d_rot: 1.626218. Best future reward: 15.851926. Took 361.056085 seconds!
+
+Step 13. Reward: 0.610818, success: 0.0, d_pos: 0.375380, d_rot: 1.526328. Best future reward: 16.636598. Took 319.448594 seconds!
+
+Step 14. Reward: 0.693863, success: 0.0, d_pos: 0.257212, d_rot: 1.184376. Best future reward: 17.800813. Took 312.806673 seconds!
+
+Step 15. Reward: 0.776669, success: 0.0, d_pos: 0.195086, d_rot: 0.775989. Best future reward: 17.171147. Took 306.391375 seconds!
+
+Step 16. Reward: 0.876300, success: 0.0, d_pos: 0.151905, d_rot: 0.280468. Best future reward: 17.305937. Took 268.365561 seconds!
+
+Step 17. Reward: 0.794743, success: 0.0, d_pos: 0.370450, d_rot: 0.222556. Best future reward: 17.702895. Took 264.776703 seconds!
+
+Step 18. Reward: 0.809689, success: 0.0, d_pos: 0.407488, d_rot: 0.036805. Best future reward: 17.778948. Took 223.367773 seconds!
+
+Step 19. Reward: 0.926341, success: 1.0, d_pos: 0.133075, d_rot: 0.049878. Best future reward: 18.721280. Took 226.273795 seconds!
+
+Step 20. Reward: 0.903474, success: 1.0, d_pos: 0.173085, d_rot: 0.074827. Best future reward: 19.129564. Took 223.090179 seconds!
+
+Step 21. Reward: 0.897352, success: 1.0, d_pos: 0.195439, d_rot: 0.052939. Best future reward: 19.213080. Took 183.502179 seconds!
+
+Step 22. Reward: 0.918352, success: 1.0, d_pos: 0.163210, d_rot: 0.017850. Best future reward: 19.753887. Took 183.821424 seconds!
+
+Step 23. Reward: 0.909574, success: 1.0, d_pos: 0.180193, d_rot: 0.023410. Best future reward: 19.656584. Took 146.254748 seconds!
+
+Step 24. Reward: 0.933878, success: 1.0, d_pos: 0.105737, d_rot: 0.077707. Best future reward: 18.040619. Took 143.226024 seconds!
+
+Step 25. Reward: 0.940076, success: 1.0, d_pos: 0.105840, d_rot: 0.044372. Best future reward: 16.800928. Took 143.713676 seconds!
+
+Step 26. Reward: 0.958996, success: 1.0, d_pos: 0.056722, d_rot: 0.067535. Best future reward: 17.118842. Took 103.855453 seconds!
+
+Step 27. Reward: 0.907039, success: 1.0, d_pos: 0.183374, d_rot: 0.029413. Best future reward: 16.376371. Took 101.925578 seconds!
+
+Step 28. Reward: 0.946530, success: 1.0, d_pos: 0.086353, d_rot: 0.058878. Best future reward: 15.675160. Took 68.790182 seconds!
+
+Step 29. Reward: 0.787620, success: 0.0, d_pos: 0.421338, d_rot: 0.140354. Best future reward: 13.988074. Took 67.797889 seconds!
+
+Step 30. Reward: 0.872544, success: 0.0, d_pos: 0.132827, d_rot: 0.349642. Best future reward: 13.235763. Took 65.833741 seconds!
+
+Step 31. Reward: 0.850716, success: 0.0, d_pos: 0.151241, d_rot: 0.430282. Best future reward: 11.684993. Took 64.124252 seconds!
+
+Step 32. Reward: 0.596618, success: 0.0, d_pos: 0.880498, d_rot: 0.381143. Best future reward: 12.147152. Took 63.992742 seconds!
+
+Step 33. Reward: 0.746370, success: 0.0, d_pos: 0.460760, d_rot: 0.310770. Best future reward: 13.634726. Took 63.194704 seconds!
+
+Step 34. Reward: 0.631776, success: 0.0, d_pos: 0.728741, d_rot: 0.474252. Best future reward: 12.584075. Took 62.413917 seconds!
+
+Step 35. Reward: 0.827054, success: 0.0, d_pos: 0.157890, d_rot: 0.554704. Best future reward: 13.068965. Took 60.773172 seconds!
+
+Step 36. Reward: 0.773791, success: 0.0, d_pos: 0.349789, d_rot: 0.407798. Best future reward: 12.084443. Took 60.294522 seconds!
+
+Step 37. Reward: 0.845642, success: 0.0, d_pos: 0.171543, d_rot: 0.409442. Best future reward: 12.644904. Took 59.363147 seconds!
+
+Step 38. Reward: 0.748475, success: 0.0, d_pos: 0.408203, d_rot: 0.428077. Best future reward: 11.867724. Took 58.752511 seconds!
+
+Step 39. Reward: 0.650316, success: 0.0, d_pos: 0.695987, d_rot: 0.411519. Best future reward: 11.747264. Took 58.556291 seconds!
+
+Step 40. Reward: 0.838071, success: 0.0, d_pos: 0.261666, d_rot: 0.229099. Best future reward: 11.742769. Took 58.043648 seconds!
+
+Step 41. Reward: 0.759436, success: 0.0, d_pos: 0.452366, d_rot: 0.244982. Best future reward: 11.743321. Took 57.500841 seconds!
+
+Step 42. Reward: 0.801944, success: 0.0, d_pos: 0.385978, d_rot: 0.138638. Best future reward: 11.553941. Took 57.498082 seconds!
+
+Step 43. Reward: 0.755536, success: 0.0, d_pos: 0.504310, d_rot: 0.140864. Best future reward: 11.095477. Took 58.160000 seconds!
+
+Step 44. Reward: 0.806252, success: 0.0, d_pos: 0.374371, d_rot: 0.140865. Best future reward: 11.444195. Took 58.622602 seconds!
+
+Step 45. Reward: 0.789081, success: 0.0, d_pos: 0.443759, d_rot: 0.075035. Best future reward: 12.200031. Took 58.125464 seconds!
+
+Step 46. Reward: 0.792326, success: 0.0, d_pos: 0.437090, d_rot: 0.071187. Best future reward: 13.001839. Took 58.302212 seconds!
+
+Step 47. Reward: 0.770978, success: 0.0, d_pos: 0.491714, d_rot: 0.071193. Best future reward: 13.367412. Took 58.307945 seconds!
+
+Step 48. Reward: 0.822235, success: 0.0, d_pos: 0.360916, d_rot: 0.076353. Best future reward: 14.444460. Took 58.420588 seconds!
+
+Step 49. Reward: 0.823006, success: 0.0, d_pos: 0.336192, d_rot: 0.133479. Best future reward: 13.367502. Took 57.928225 seconds!
+
+Step 50. Reward: 0.949645, success: 1.0, d_pos: 0.076936, d_rot: 0.065998. Best future reward: 13.657748. Took 57.919428 seconds!
+
+Step 51. Reward: 0.643565, success: 0.0, d_pos: 0.823665, d_rot: 0.144498. Best future reward: 13.122864. Took 57.922153 seconds!
+
+Step 52. Reward: 0.512756, success: 0.0, d_pos: 1.278117, d_rot: 0.144487. Best future reward: 11.461126. Took 57.521201 seconds!
+
+Step 53. Reward: 0.477353, success: 0.0, d_pos: 1.421204, d_rot: 0.144487. Best future reward: 11.703903. Took 57.848469 seconds!
+
+Step 54. Reward: 0.517364, success: 0.0, d_pos: 1.260223, d_rot: 0.144487. Best future reward: 11.374635. Took 57.735907 seconds!
+
+Step 55. Reward: 0.643275, success: 0.0, d_pos: 0.824572, d_rot: 0.144487. Best future reward: 12.626180. Took 57.851242 seconds!
+
+Step 56. Reward: 0.798576, success: 0.0, d_pos: 0.385734, d_rot: 0.160294. Best future reward: 12.618138. Took 58.352570 seconds!
+
+Step 57. Reward: 0.760929, success: 0.0, d_pos: 0.457493, d_rot: 0.222343. Best future reward: 11.620216. Took 58.293266 seconds!
+
+Step 58. Reward: 0.665416, success: 0.0, d_pos: 0.722916, d_rot: 0.229426. Best future reward: 11.626207. Took 57.853047 seconds!
+
+Step 59. Reward: 0.637477, success: 0.0, d_pos: 0.808704, d_rot: 0.229426. Best future reward: 11.218441. Took 57.872472 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.458252, d_rot: 3.027801. Best future reward: 1.366757. Took 148.992622 seconds!
+
+Step 1. Reward: 0.000000, success: 0.0, d_pos: 29.161564, d_rot: 3.061769. Best future reward: 2.179214. Took 116.480601 seconds!
+
+Step 2. Reward: 0.000000, success: 0.0, d_pos: 28.133894, d_rot: 3.266315. Best future reward: 3.691823. Took 120.929802 seconds!
+
+Step 3. Reward: 0.000002, success: 0.0, d_pos: 25.346520, d_rot: 3.266283. Best future reward: 4.527399. Took 126.157714 seconds!
+
+Step 4. Reward: 0.000006, success: 0.0, d_pos: 22.649222, d_rot: 3.266283. Best future reward: 5.111717. Took 128.180219 seconds!
+
+Step 5. Reward: 0.000023, success: 0.0, d_pos: 20.013168, d_rot: 3.266283. Best future reward: 5.633084. Took 126.865288 seconds!
+
+Step 6. Reward: 0.000086, success: 0.0, d_pos: 17.410047, d_rot: 3.266283. Best future reward: 6.540712. Took 132.827386 seconds!
+
+Step 7. Reward: 0.000316, success: 0.0, d_pos: 14.812194, d_rot: 3.266283. Best future reward: 6.779529. Took 135.679131 seconds!
+
+Step 8. Reward: 0.001171, success: 0.0, d_pos: 12.193251, d_rot: 3.266283. Best future reward: 7.535646. Took 104.457570 seconds!
+
+Step 9. Reward: 0.004437, success: 0.0, d_pos: 9.529155, d_rot: 3.266283. Best future reward: 7.907603. Took 105.787640 seconds!
+
+Step 10. Reward: 0.017360, success: 0.0, d_pos: 6.800612, d_rot: 3.266283. Best future reward: 8.487101. Took 104.589444 seconds!
+
+Step 11. Reward: 0.070243, success: 0.0, d_pos: 4.005073, d_rot: 3.266283. Best future reward: 9.341093. Took 108.350816 seconds!
+
+Step 12. Reward: 0.266982, success: 0.0, d_pos: 1.334633, d_rot: 3.266283. Best future reward: 10.346499. Took 110.274979 seconds!
+
+Step 13. Reward: 0.346868, success: 0.0, d_pos: 0.866854, d_rot: 3.126926. Best future reward: 10.480532. Took 110.165307 seconds!
+
+Step 14. Reward: 0.421637, success: 0.0, d_pos: 0.540488, d_rot: 2.966827. Best future reward: 11.298901. Took 111.333369 seconds!
+
+Step 15. Reward: 0.473031, success: 0.0, d_pos: 0.396795, d_rot: 2.750988. Best future reward: 11.652465. Took 110.386446 seconds!
+
+Step 16. Reward: 0.496906, success: 0.0, d_pos: 0.335693, d_rot: 2.657542. Best future reward: 11.978576. Took 73.387592 seconds!
+
+Step 17. Reward: 0.536763, success: 0.0, d_pos: 0.320800, d_rot: 2.308996. Best future reward: 12.213804. Took 71.344840 seconds!
+
+Step 18. Reward: 0.484210, success: 0.0, d_pos: 0.586533, d_rot: 2.159846. Best future reward: 11.897388. Took 71.452568 seconds!
+
+Step 19. Reward: 0.579657, success: 0.0, d_pos: 0.228956, d_rot: 2.154205. Best future reward: 12.279335. Took 73.393615 seconds!
+
+Step 20. Reward: 0.547015, success: 0.0, d_pos: 0.396915, d_rot: 2.024108. Best future reward: 12.378792. Took 74.044597 seconds!
+
+Step 21. Reward: 0.607703, success: 0.0, d_pos: 0.297241, d_rot: 1.747241. Best future reward: 12.963811. Took 74.570703 seconds!
+
+Step 22. Reward: 0.635061, success: 0.0, d_pos: 0.244554, d_rot: 1.658784. Best future reward: 14.101869. Took 75.921660 seconds!
+
+Step 23. Reward: 0.620931, success: 0.0, d_pos: 0.321048, d_rot: 1.580060. Best future reward: 15.226097. Took 37.292052 seconds!
+
+Step 24. Reward: 0.647342, success: 0.0, d_pos: 0.259444, d_rot: 1.525796. Best future reward: 16.084729. Took 36.078548 seconds!
+
+Step 25. Reward: 0.495717, success: 0.0, d_pos: 0.850251, d_rot: 1.383122. Best future reward: 14.539281. Took 36.052936 seconds!
+
+Step 26. Reward: 0.673507, success: 0.0, d_pos: 0.328914, d_rot: 1.154002. Best future reward: 14.481025. Took 35.263243 seconds!
+
+Step 27. Reward: 0.580489, success: 0.0, d_pos: 0.621182, d_rot: 1.166465. Best future reward: 14.109489. Took 35.568520 seconds!
+
+Step 28. Reward: 0.642103, success: 0.0, d_pos: 0.457056, d_rot: 1.072394. Best future reward: 15.725700. Took 36.555833 seconds!
+
+Step 29. Reward: 0.745271, success: 0.0, d_pos: 0.296675, d_rot: 0.728348. Best future reward: 14.064725. Took 35.394503 seconds!
+
+Step 30. Reward: 0.820913, success: 0.0, d_pos: 0.152062, d_rot: 0.606534. Best future reward: 14.827776. Took 34.374158 seconds!
+
+Step 31. Reward: 0.741046, success: 0.0, d_pos: 0.464400, d_rot: 0.337462. Best future reward: 13.792249. Took 33.270030 seconds!
+
+Step 32. Reward: 0.658410, success: 0.0, d_pos: 0.753625, d_rot: 0.205572. Best future reward: 14.029525. Took 34.591262 seconds!
+
+Step 33. Reward: 0.910371, success: 1.0, d_pos: 0.152713, d_rot: 0.087730. Best future reward: 13.652479. Took 33.483815 seconds!
+
+Step 34. Reward: 0.912269, success: 1.0, d_pos: 0.144028, d_rot: 0.099032. Best future reward: 13.101894. Took 33.971416 seconds!
+
+Step 35. Reward: 0.949041, success: 1.0, d_pos: 0.065566, d_rot: 0.097602. Best future reward: 12.054686. Took 33.890125 seconds!
+
+Step 36. Reward: 0.868713, success: 0.0, d_pos: 0.240202, d_rot: 0.103205. Best future reward: 10.588152. Took 33.854666 seconds!
+
+Step 37. Reward: 0.587379, success: 0.0, d_pos: 0.975038, d_rot: 0.222829. Best future reward: 9.806947. Took 32.873302 seconds!
+
+Step 38. Reward: 0.559320, success: 0.0, d_pos: 1.068304, d_rot: 0.234403. Best future reward: 9.447992. Took 32.702707 seconds!
+
+Step 39. Reward: 0.772077, success: 0.0, d_pos: 0.422171, d_rot: 0.237928. Best future reward: 9.388215. Took 32.876468 seconds!
+
+Step 40. Reward: 0.732154, success: 0.0, d_pos: 0.516024, d_rot: 0.268760. Best future reward: 9.200464. Took 31.885257 seconds!
+
+Step 41. Reward: 0.798519, success: 0.0, d_pos: 0.391981, d_rot: 0.145030. Best future reward: 9.870892. Took 32.503226 seconds!
+
+Step 42. Reward: 0.859755, success: 0.0, d_pos: 0.175596, d_rot: 0.316550. Best future reward: 9.883044. Took 32.942510 seconds!
+
+Step 43. Reward: 0.765479, success: 0.0, d_pos: 0.392121, d_rot: 0.355966. Best future reward: 9.769519. Took 33.855701 seconds!
+
+Step 44. Reward: 0.607699, success: 0.0, d_pos: 0.830466, d_rot: 0.414209. Best future reward: 9.915260. Took 34.335946 seconds!
+
+Step 45. Reward: 0.474937, success: 0.0, d_pos: 1.283507, d_rot: 0.514099. Best future reward: 10.053003. Took 33.981942 seconds!
+
+Step 46. Reward: 0.555637, success: 0.0, d_pos: 0.893341, d_rot: 0.704851. Best future reward: 10.000968. Took 34.100618 seconds!
+
+Step 47. Reward: 0.516486, success: 0.0, d_pos: 1.077046, d_rot: 0.610918. Best future reward: 10.045157. Took 32.829379 seconds!
+
+Step 48. Reward: 0.702883, success: 0.0, d_pos: 0.402104, d_rot: 0.757561. Best future reward: 9.545764. Took 32.786145 seconds!
+
+Step 49. Reward: 0.657852, success: 0.0, d_pos: 0.507845, d_rot: 0.824262. Best future reward: 9.083735. Took 32.227633 seconds!
+
+Step 50. Reward: 0.671894, success: 0.0, d_pos: 0.475607, d_rot: 0.799258. Best future reward: 8.848776. Took 33.274365 seconds!
+
+Step 51. Reward: 0.651261, success: 0.0, d_pos: 0.585988, d_rot: 0.679256. Best future reward: 8.538653. Took 32.407920 seconds!
+
+Step 52. Reward: 0.621373, success: 0.0, d_pos: 0.679426, d_rot: 0.680553. Best future reward: 8.214577. Took 32.482620 seconds!
+
+Step 53. Reward: 0.460383, success: 0.0, d_pos: 1.305194, d_rot: 0.615492. Best future reward: 7.979263. Took 32.640300 seconds!
+
+Step 54. Reward: 0.519781, success: 0.0, d_pos: 1.061505, d_rot: 0.617972. Best future reward: 8.232448. Took 32.740828 seconds!
+
+Step 55. Reward: 0.676575, success: 0.0, d_pos: 0.474634, d_rot: 0.766975. Best future reward: 8.388330. Took 32.668315 seconds!
+
+Step 56. Reward: 0.493901, success: 0.0, d_pos: 1.093702, d_rot: 0.792851. Best future reward: 8.555712. Took 34.509989 seconds!
+
+Step 57. Reward: 0.357339, success: 0.0, d_pos: 1.738991, d_rot: 0.797874. Best future reward: 8.738325. Took 35.012585 seconds!
+
+Step 58. Reward: 0.351805, success: 0.0, d_pos: 1.752791, d_rot: 0.841412. Best future reward: 9.032926. Took 36.671955 seconds!
+
+Step 59. Reward: 0.479132, success: 0.0, d_pos: 1.116512, d_rot: 0.887618. Best future reward: 9.745853. Took 36.051450 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 30.428366, d_rot: 1.288782. Best future reward: 3.870295. Took 117.084055 seconds!
+
+Step 1. Reward: 0.000000, success: 0.0, d_pos: 30.136087, d_rot: 1.200885. Best future reward: 4.500161. Took 84.344012 seconds!
+
+Step 2. Reward: 0.000001, success: 0.0, d_pos: 27.488303, d_rot: 1.230114. Best future reward: 5.845893. Took 86.711629 seconds!
+
+Step 3. Reward: 0.000003, success: 0.0, d_pos: 24.958852, d_rot: 1.230116. Best future reward: 7.027155. Took 87.858114 seconds!
+
+Step 4. Reward: 0.000010, success: 0.0, d_pos: 22.510343, d_rot: 1.230116. Best future reward: 7.889675. Took 88.304147 seconds!
+
+Step 5. Reward: 0.000034, success: 0.0, d_pos: 20.111813, d_rot: 1.230116. Best future reward: 8.948317. Took 86.712095 seconds!
+
+Step 6. Reward: 0.000110, success: 0.0, d_pos: 17.732653, d_rot: 1.230116. Best future reward: 9.775356. Took 90.498537 seconds!
+
+Step 7. Reward: 0.000364, success: 0.0, d_pos: 15.343194, d_rot: 1.230116. Best future reward: 10.362744. Took 90.661535 seconds!
+
+Step 8. Reward: 0.001226, success: 0.0, d_pos: 12.915248, d_rot: 1.230116. Best future reward: 10.803842. Took 59.680437 seconds!
+
+Step 9. Reward: 0.004265, success: 0.0, d_pos: 10.422634, d_rot: 1.230116. Best future reward: 11.670504. Took 60.041281 seconds!
+
+Step 10. Reward: 0.015499, success: 0.0, d_pos: 7.841876, d_rot: 1.230116. Best future reward: 12.054476. Took 60.566070 seconds!
+
+Step 11. Reward: 0.059418, success: 0.0, d_pos: 5.154274, d_rot: 1.230116. Best future reward: 12.779365. Took 60.436882 seconds!
+
+Step 12. Reward: 0.239993, success: 0.0, d_pos: 2.362240, d_rot: 1.230116. Best future reward: 13.066704. Took 60.691755 seconds!
+
+Step 13. Reward: 0.719671, success: 0.0, d_pos: 0.288129, d_rot: 0.924484. Best future reward: 13.607869. Took 61.163754 seconds!
+
+Step 14. Reward: 0.823449, success: 0.0, d_pos: 0.124016, d_rot: 0.661229. Best future reward: 14.253813. Took 61.037749 seconds!
+
+Step 15. Reward: 0.864515, success: 0.0, d_pos: 0.067817, d_rot: 0.558393. Best future reward: 13.754494. Took 58.919890 seconds!
+
+Step 16. Reward: 0.809437, success: 0.0, d_pos: 0.201462, d_rot: 0.553426. Best future reward: 12.918897. Took 29.309399 seconds!
+
+Step 17. Reward: 0.808905, success: 0.0, d_pos: 0.205772, d_rot: 0.545939. Best future reward: 11.258838. Took 28.852268 seconds!
+
+Step 18. Reward: 0.799678, success: 0.0, d_pos: 0.224684, d_rot: 0.556021. Best future reward: 10.976638. Took 28.690227 seconds!
+
+Step 19. Reward: 0.803032, success: 0.0, d_pos: 0.215421, d_rot: 0.558251. Best future reward: 11.554404. Took 28.832227 seconds!
+
+Step 20. Reward: 0.745262, success: 0.0, d_pos: 0.360119, d_rot: 0.569799. Best future reward: 11.339146. Took 29.116843 seconds!
+
+Step 21. Reward: 0.741108, success: 0.0, d_pos: 0.371299, d_rot: 0.569799. Best future reward: 11.641865. Took 29.531591 seconds!
+
+Step 22. Reward: 0.792560, success: 0.0, d_pos: 0.264150, d_rot: 0.502059. Best future reward: 11.757452. Took 29.821750 seconds!
+
+Step 23. Reward: 0.769760, success: 0.0, d_pos: 0.331888, d_rot: 0.478663. Best future reward: 11.393425. Took 30.262439 seconds!
+
+Step 24. Reward: 0.682446, success: 0.0, d_pos: 0.572688, d_rot: 0.478638. Best future reward: 11.487001. Took 30.058466 seconds!
+
+Step 25. Reward: 0.569267, success: 0.0, d_pos: 0.933068, d_rot: 0.484357. Best future reward: 10.625554. Took 30.414714 seconds!
+
+Step 26. Reward: 0.455327, success: 0.0, d_pos: 1.379777, d_rot: 0.484254. Best future reward: 10.476543. Took 30.761779 seconds!
+
+Step 27. Reward: 0.411951, success: 0.0, d_pos: 1.603244, d_rot: 0.426146. Best future reward: 10.558445. Took 30.837477 seconds!
+
+Step 28. Reward: 0.530091, success: 0.0, d_pos: 1.188040, d_rot: 0.203436. Best future reward: 10.503423. Took 30.420000 seconds!
+
+Step 29. Reward: 0.689372, success: 0.0, d_pos: 0.692577, d_rot: 0.128429. Best future reward: 10.797121. Took 29.990922 seconds!
+
+Step 30. Reward: 0.723071, success: 0.0, d_pos: 0.556626, d_rot: 0.229677. Best future reward: 10.157047. Took 29.171582 seconds!
+
+Step 31. Reward: 0.764491, success: 0.0, d_pos: 0.475057, d_rot: 0.155085. Best future reward: 9.849584. Took 29.145876 seconds!
+
+Step 32. Reward: 0.719295, success: 0.0, d_pos: 0.581180, d_rot: 0.194467. Best future reward: 8.916216. Took 29.207236 seconds!
+
+Step 33. Reward: 0.662628, success: 0.0, d_pos: 0.693649, d_rot: 0.323583. Best future reward: 8.408506. Took 28.914007 seconds!
+
+Step 34. Reward: 0.662357, success: 0.0, d_pos: 0.688796, d_rot: 0.337759. Best future reward: 8.292451. Took 28.762838 seconds!
+
+Step 35. Reward: 0.743767, success: 0.0, d_pos: 0.499233, d_rot: 0.232050. Best future reward: 7.932397. Took 28.629589 seconds!
+
+Step 36. Reward: 0.803726, success: 0.0, d_pos: 0.317922, d_rot: 0.297679. Best future reward: 8.724734. Took 28.802650 seconds!
+
+Step 37. Reward: 0.681397, success: 0.0, d_pos: 0.602283, d_rot: 0.412344. Best future reward: 8.220357. Took 28.572675 seconds!
+
+Step 38. Reward: 0.626897, success: 0.0, d_pos: 0.710252, d_rot: 0.559231. Best future reward: 7.800774. Took 28.446046 seconds!
+
+Step 39. Reward: 0.598535, success: 0.0, d_pos: 0.791435, d_rot: 0.587762. Best future reward: 7.683617. Took 28.085275 seconds!
+
+Step 40. Reward: 0.617963, success: 0.0, d_pos: 0.727547, d_rot: 0.587768. Best future reward: 7.256922. Took 28.000185 seconds!
+
+Step 41. Reward: 0.612866, success: 0.0, d_pos: 0.744111, d_rot: 0.587768. Best future reward: 6.849655. Took 28.162224 seconds!
+
+Step 42. Reward: 0.469138, success: 0.0, d_pos: 1.278611, d_rot: 0.587768. Best future reward: 6.297911. Took 28.220146 seconds!
+
+Step 43. Reward: 0.290244, success: 0.0, d_pos: 2.236590, d_rot: 0.593694. Best future reward: 6.095383. Took 28.279361 seconds!
+
+Step 44. Reward: 0.273463, success: 0.0, d_pos: 2.308519, d_rot: 0.711641. Best future reward: 5.974840. Took 28.335313 seconds!
+
+Step 45. Reward: 0.247353, success: 0.0, d_pos: 2.509440, d_rot: 0.711084. Best future reward: 8.024605. Took 28.507433 seconds!
+
+Step 46. Reward: 0.415730, success: 0.0, d_pos: 1.471450, d_rot: 0.709975. Best future reward: 8.701318. Took 28.487270 seconds!
+
+Step 47. Reward: 0.497585, success: 0.0, d_pos: 1.111989, d_rot: 0.709975. Best future reward: 8.800154. Took 29.323875 seconds!
+
+Step 48. Reward: 0.456878, success: 0.0, d_pos: 1.282687, d_rot: 0.709975. Best future reward: 8.666538. Took 28.793548 seconds!
+
+Step 49. Reward: 0.417116, success: 0.0, d_pos: 1.464790, d_rot: 0.709975. Best future reward: 8.404609. Took 28.803216 seconds!
+
+Step 50. Reward: 0.420363, success: 0.0, d_pos: 1.449283, d_rot: 0.709975. Best future reward: 8.063139. Took 28.969039 seconds!
+
+Step 51. Reward: 0.473199, success: 0.0, d_pos: 1.212491, d_rot: 0.709975. Best future reward: 8.302592. Took 29.013221 seconds!
+
+Step 52. Reward: 0.554531, success: 0.0, d_pos: 0.895276, d_rot: 0.709975. Best future reward: 7.975920. Took 29.012798 seconds!
+
+Step 53. Reward: 0.499812, success: 0.0, d_pos: 1.103057, d_rot: 0.709975. Best future reward: 8.342762. Took 29.179949 seconds!
+
+Step 54. Reward: 0.303886, success: 0.0, d_pos: 2.098214, d_rot: 0.709975. Best future reward: 8.172725. Took 29.135527 seconds!
+
+Step 55. Reward: 0.247892, success: 0.0, d_pos: 2.447670, d_rot: 0.854628. Best future reward: 7.856601. Took 29.137194 seconds!
+
+Step 56. Reward: 0.274532, success: 0.0, d_pos: 2.248744, d_rot: 0.841577. Best future reward: 7.883277. Took 29.186498 seconds!
+
+Step 57. Reward: 0.517429, success: 0.0, d_pos: 0.994587, d_rot: 0.807948. Best future reward: 8.480978. Took 28.803934 seconds!
+
+Step 58. Reward: 0.710548, success: 0.0, d_pos: 0.360259, d_rot: 0.807947. Best future reward: 8.209765. Took 28.571640 seconds!
+
+Step 59. Reward: 0.572394, success: 0.0, d_pos: 0.792676, d_rot: 0.807947. Best future reward: 7.324156. Took 28.817827 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.999194, d_rot: 0.564535. Best future reward: 4.465742. Took 118.791604 seconds!
+
+Step 1. Reward: 0.000001, success: 0.0, d_pos: 27.168192, d_rot: 0.655097. Best future reward: 5.850369. Took 86.669025 seconds!
+
+Step 2. Reward: 0.000004, success: 0.0, d_pos: 24.434290, d_rot: 0.655100. Best future reward: 6.661088. Took 86.630185 seconds!
+
+Step 3. Reward: 0.000016, success: 0.0, d_pos: 21.769713, d_rot: 0.655100. Best future reward: 7.485772. Took 87.822565 seconds!
+
+Step 4. Reward: 0.000061, success: 0.0, d_pos: 19.146086, d_rot: 0.655100. Best future reward: 8.326224. Took 88.478626 seconds!
+
+Step 5. Reward: 0.000225, success: 0.0, d_pos: 16.535431, d_rot: 0.655100. Best future reward: 8.687199. Took 88.897628 seconds!
+
+Step 6. Reward: 0.000836, success: 0.0, d_pos: 13.910672, d_rot: 0.655100. Best future reward: 9.428798. Took 88.635264 seconds!
+
+Step 7. Reward: 0.003170, success: 0.0, d_pos: 11.246176, d_rot: 0.655100. Best future reward: 9.675779. Took 88.362265 seconds!
+
+Step 8. Reward: 0.012397, success: 0.0, d_pos: 8.518532, d_rot: 0.655100. Best future reward: 10.037747. Took 59.149475 seconds!
+
+Step 9. Reward: 0.050521, success: 0.0, d_pos: 5.708704, d_rot: 0.655100. Best future reward: 10.001511. Took 59.667543 seconds!
+
+Step 10. Reward: 0.214532, success: 0.0, d_pos: 2.816553, d_rot: 0.655100. Best future reward: 10.900448. Took 59.945079 seconds!
+
+Step 11. Reward: 0.546473, success: 0.0, d_pos: 0.904711, d_rot: 0.759577. Best future reward: 11.722019. Took 60.619627 seconds!
+
+Step 12. Reward: 0.662566, success: 0.0, d_pos: 0.500152, d_rot: 0.807794. Best future reward: 12.453528. Took 59.118064 seconds!
+
+Step 13. Reward: 0.615686, success: 0.0, d_pos: 0.642827, d_rot: 0.818022. Best future reward: 12.855291. Took 57.549209 seconds!
+
+Step 14. Reward: 0.633516, success: 0.0, d_pos: 0.585732, d_rot: 0.818022. Best future reward: 12.994789. Took 57.150579 seconds!
+
+Step 15. Reward: 0.689905, success: 0.0, d_pos: 0.442604, d_rot: 0.749499. Best future reward: 13.289867. Took 57.090585 seconds!
+
+Step 16. Reward: 0.741131, success: 0.0, d_pos: 0.293154, d_rot: 0.765006. Best future reward: 13.098469. Took 28.556551 seconds!
+
+Step 17. Reward: 0.841271, success: 0.0, d_pos: 0.113654, d_rot: 0.580072. Best future reward: 13.139080. Took 28.365719 seconds!
+
+Step 18. Reward: 0.748492, success: 0.0, d_pos: 0.352694, d_rot: 0.566741. Best future reward: 14.032125. Took 28.642375 seconds!
+
+Step 19. Reward: 0.697009, success: 0.0, d_pos: 0.495217, d_rot: 0.566741. Best future reward: 13.212966. Took 28.912344 seconds!
+
+Step 20. Reward: 0.634496, success: 0.0, d_pos: 0.682006, d_rot: 0.569607. Best future reward: 12.570818. Took 28.901047 seconds!
+
+Step 21. Reward: 0.616284, success: 0.0, d_pos: 0.732464, d_rot: 0.589075. Best future reward: 12.124768. Took 28.832439 seconds!
+
+Step 22. Reward: 0.597511, success: 0.0, d_pos: 0.794334, d_rot: 0.589075. Best future reward: 11.977787. Took 28.829937 seconds!
+
+Step 23. Reward: 0.643800, success: 0.0, d_pos: 0.645625, d_rot: 0.587773. Best future reward: 12.591984. Took 28.897668 seconds!
+
+Step 24. Reward: 0.695422, success: 0.0, d_pos: 0.510412, d_rot: 0.540149. Best future reward: 12.407681. Took 29.110601 seconds!
+
+Step 25. Reward: 0.703786, success: 0.0, d_pos: 0.516553, d_rot: 0.465023. Best future reward: 12.106242. Took 28.935882 seconds!
+
+Step 26. Reward: 0.717507, success: 0.0, d_pos: 0.485106, d_rot: 0.447100. Best future reward: 12.308077. Took 29.679062 seconds!
+
+Step 27. Reward: 0.700742, success: 0.0, d_pos: 0.523218, d_rot: 0.470035. Best future reward: 11.650240. Took 29.891039 seconds!
+
+Step 28. Reward: 0.751514, success: 0.0, d_pos: 0.383316, d_rot: 0.470035. Best future reward: 10.810621. Took 29.228977 seconds!
+
+Step 29. Reward: 0.779252, success: 0.0, d_pos: 0.310826, d_rot: 0.470035. Best future reward: 10.836417. Took 31.463465 seconds!
+
+Step 30. Reward: 0.692942, success: 0.0, d_pos: 0.527928, d_rot: 0.514227. Best future reward: 10.906550. Took 32.063238 seconds!
+
+Step 31. Reward: 0.655239, success: 0.0, d_pos: 0.637677, d_rot: 0.519587. Best future reward: 11.349942. Took 32.289037 seconds!
+
+Step 32. Reward: 0.689288, success: 0.0, d_pos: 0.540522, d_rot: 0.509176. Best future reward: 12.500080. Took 32.276535 seconds!
+
+Step 33. Reward: 0.586610, success: 0.0, d_pos: 0.854704, d_rot: 0.530216. Best future reward: 12.891095. Took 32.960329 seconds!
+
+Step 34. Reward: 0.691678, success: 0.0, d_pos: 0.555943, d_rot: 0.453318. Best future reward: 13.420226. Took 32.959255 seconds!
+
+Step 35. Reward: 0.708996, success: 0.0, d_pos: 0.510434, d_rot: 0.443445. Best future reward: 13.775797. Took 32.432660 seconds!
+
+Step 36. Reward: 0.650973, success: 0.0, d_pos: 0.693968, d_rot: 0.411516. Best future reward: 13.886502. Took 32.556541 seconds!
+
+Step 37. Reward: 0.705849, success: 0.0, d_pos: 0.513311, d_rot: 0.458491. Best future reward: 14.305581. Took 33.181673 seconds!
+
+Step 38. Reward: 0.756023, success: 0.0, d_pos: 0.348272, d_rot: 0.527736. Best future reward: 14.629242. Took 32.621305 seconds!
+
+Step 39. Reward: 0.754979, success: 0.0, d_pos: 0.305802, d_rot: 0.640824. Best future reward: 15.162094. Took 32.757833 seconds!
+
+Step 40. Reward: 0.787892, success: 0.0, d_pos: 0.207779, d_rot: 0.672523. Best future reward: 15.184554. Took 32.384298 seconds!
+
+Step 41. Reward: 0.855560, success: 0.0, d_pos: 0.098083, d_rot: 0.534789. Best future reward: 14.980345. Took 32.834220 seconds!
+
+Step 42. Reward: 0.770730, success: 0.0, d_pos: 0.310383, d_rot: 0.526130. Best future reward: 15.067065. Took 32.580070 seconds!
+
+Step 43. Reward: 0.791005, success: 0.0, d_pos: 0.256805, d_rot: 0.530245. Best future reward: 14.938958. Took 32.777368 seconds!
+
+Step 44. Reward: 0.731759, success: 0.0, d_pos: 0.411533, d_rot: 0.532689. Best future reward: 14.997904. Took 33.234452 seconds!
+
+Step 45. Reward: 0.766551, success: 0.0, d_pos: 0.296609, d_rot: 0.587750. Best future reward: 14.974526. Took 32.703549 seconds!
+
+Step 46. Reward: 0.729746, success: 0.0, d_pos: 0.384608, d_rot: 0.613773. Best future reward: 14.764001. Took 32.341477 seconds!
+
+Step 47. Reward: 0.753927, success: 0.0, d_pos: 0.296260, d_rot: 0.671650. Best future reward: 14.940817. Took 33.311825 seconds!
+
+Step 48. Reward: 0.719686, success: 0.0, d_pos: 0.355824, d_rot: 0.755139. Best future reward: 14.593765. Took 32.112077 seconds!
+
+Step 49. Reward: 0.703942, success: 0.0, d_pos: 0.464206, d_rot: 0.594783. Best future reward: 14.418711. Took 32.118364 seconds!
+
+Step 50. Reward: 0.765869, success: 0.0, d_pos: 0.386213, d_rot: 0.368190. Best future reward: 13.648445. Took 31.174309 seconds!
+
+Step 51. Reward: 0.817818, success: 0.0, d_pos: 0.247266, d_rot: 0.387410. Best future reward: 13.613892. Took 32.397065 seconds!
+
+Step 52. Reward: 0.842583, success: 0.0, d_pos: 0.162163, d_rot: 0.451008. Best future reward: 12.894517. Took 31.236669 seconds!
+
+Step 53. Reward: 0.735887, success: 0.0, d_pos: 0.441631, d_rot: 0.429314. Best future reward: 13.342033. Took 31.771592 seconds!
+
+Step 54. Reward: 0.877316, success: 0.0, d_pos: 0.091872, d_rot: 0.424761. Best future reward: 12.762490. Took 31.650136 seconds!
+
+Step 55. Reward: 0.804695, success: 0.0, d_pos: 0.262838, d_rot: 0.429366. Best future reward: 12.731803. Took 31.609010 seconds!
+
+Step 56. Reward: 0.858922, success: 0.0, d_pos: 0.107006, d_rot: 0.492868. Best future reward: 12.067292. Took 30.966452 seconds!
+
+Step 57. Reward: 0.865242, success: 0.0, d_pos: 0.106490, d_rot: 0.457507. Best future reward: 11.729645. Took 30.794039 seconds!
+
+Step 58. Reward: 0.715203, success: 0.0, d_pos: 0.435308, d_rot: 0.587677. Best future reward: 12.357836. Took 30.989425 seconds!
+
+Step 59. Reward: 0.657177, success: 0.0, d_pos: 0.592843, d_rot: 0.616904. Best future reward: 11.536369. Took 30.539229 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.539175, d_rot: 0.876739. Best future reward: 3.418534. Took 117.957901 seconds!
+
+Step 1. Reward: 0.000001, success: 0.0, d_pos: 27.000385, d_rot: 0.771118. Best future reward: 4.668307. Took 85.938575 seconds!
+
+Step 2. Reward: 0.000004, success: 0.0, d_pos: 24.611239, d_rot: 0.771089. Best future reward: 5.513754. Took 87.288885 seconds!
+
+Step 3. Reward: 0.000012, success: 0.0, d_pos: 22.326562, d_rot: 0.771089. Best future reward: 5.942340. Took 87.618704 seconds!
+
+Step 4. Reward: 0.000037, success: 0.0, d_pos: 20.113025, d_rot: 0.771089. Best future reward: 6.774291. Took 87.043518 seconds!
+
+Step 5. Reward: 0.000109, success: 0.0, d_pos: 17.937402, d_rot: 0.771089. Best future reward: 7.580219. Took 87.723150 seconds!
+
+Step 6. Reward: 0.000323, success: 0.0, d_pos: 15.767423, d_rot: 0.771089. Best future reward: 8.241057. Took 88.006825 seconds!
+
+Step 7. Reward: 0.000968, success: 0.0, d_pos: 13.572645, d_rot: 0.771089. Best future reward: 8.673984. Took 87.882914 seconds!
+
+Step 8. Reward: 0.002977, success: 0.0, d_pos: 11.325472, d_rot: 0.771089. Best future reward: 9.055073. Took 59.387504 seconds!
+
+Step 9. Reward: 0.009508, success: 0.0, d_pos: 9.002857, d_rot: 0.771089. Best future reward: 9.512369. Took 60.254387 seconds!
+
+Step 10. Reward: 0.031753, success: 0.0, d_pos: 6.591076, d_rot: 0.771089. Best future reward: 9.528030. Took 59.965030 seconds!
+
+Step 11. Reward: 0.109884, success: 0.0, d_pos: 4.108223, d_rot: 0.771089. Best future reward: 9.654086. Took 59.999511 seconds!
+
+Step 12. Reward: 0.343067, success: 0.0, d_pos: 1.831222, d_rot: 0.771089. Best future reward: 9.594905. Took 60.485694 seconds!
+
+Step 13. Reward: 0.381863, success: 0.0, d_pos: 1.694802, d_rot: 0.576462. Best future reward: 9.911687. Took 61.051901 seconds!
+
+Step 14. Reward: 0.434970, success: 0.0, d_pos: 1.467252, d_rot: 0.494262. Best future reward: 9.762076. Took 60.365305 seconds!
+
+Step 15. Reward: 0.446507, success: 0.0, d_pos: 1.414263, d_rot: 0.495845. Best future reward: 10.054509. Took 59.514074 seconds!
+
+Step 16. Reward: 0.482957, success: 0.0, d_pos: 1.257317, d_rot: 0.495845. Best future reward: 9.955730. Took 29.744073 seconds!
+
+Step 17. Reward: 0.562035, success: 0.0, d_pos: 0.954046, d_rot: 0.495845. Best future reward: 9.816958. Took 29.881310 seconds!
+
+Step 18. Reward: 0.585089, success: 0.0, d_pos: 0.866168, d_rot: 0.514535. Best future reward: 9.099274. Took 29.706181 seconds!
+
+Step 19. Reward: 0.563112, success: 0.0, d_pos: 0.934108, d_rot: 0.536117. Best future reward: 8.626795. Took 29.022091 seconds!
+
+Step 20. Reward: 0.557094, success: 0.0, d_pos: 0.940148, d_rot: 0.574736. Best future reward: 8.259783. Took 29.102528 seconds!
+
+Step 21. Reward: 0.552484, success: 0.0, d_pos: 0.951827, d_rot: 0.587085. Best future reward: 8.238286. Took 29.093942 seconds!
+
+Step 22. Reward: 0.555028, success: 0.0, d_pos: 0.920214, d_rot: 0.643148. Best future reward: 9.272806. Took 29.279473 seconds!
+
+Step 23. Reward: 0.581252, success: 0.0, d_pos: 0.826958, d_rot: 0.645456. Best future reward: 9.881582. Took 29.323871 seconds!
+
+Step 24. Reward: 0.670312, success: 0.0, d_pos: 0.538363, d_rot: 0.654156. Best future reward: 9.788607. Took 29.221272 seconds!
+
+Step 25. Reward: 0.670656, success: 0.0, d_pos: 0.496312, d_rot: 0.756718. Best future reward: 9.779716. Took 29.423409 seconds!
+
+Step 26. Reward: 0.672940, success: 0.0, d_pos: 0.488465, d_rot: 0.759334. Best future reward: 8.794736. Took 29.292433 seconds!
+
+Step 27. Reward: 0.629210, success: 0.0, d_pos: 0.583021, d_rot: 0.858902. Best future reward: 8.679248. Took 29.544725 seconds!
+
+Step 28. Reward: 0.490202, success: 0.0, d_pos: 1.064125, d_rot: 0.904376. Best future reward: 8.559268. Took 29.453694 seconds!
+
+Step 29. Reward: 0.439437, success: 0.0, d_pos: 1.282771, d_rot: 0.904378. Best future reward: 8.454415. Took 29.140368 seconds!
+
+Step 30. Reward: 0.457798, success: 0.0, d_pos: 1.200904, d_rot: 0.904378. Best future reward: 8.424479. Took 28.723225 seconds!
+
+Step 31. Reward: 0.520777, success: 0.0, d_pos: 0.983644, d_rot: 0.803052. Best future reward: 8.029572. Took 29.129587 seconds!
+
+Step 32. Reward: 0.558029, success: 0.0, d_pos: 0.840523, d_rot: 0.815410. Best future reward: 7.896435. Took 29.363525 seconds!
+
+Step 33. Reward: 0.562914, success: 0.0, d_pos: 0.770297, d_rot: 0.947397. Best future reward: 8.242273. Took 29.557990 seconds!
+
+Step 34. Reward: 0.455989, success: 0.0, d_pos: 1.161937, d_rot: 1.021592. Best future reward: 7.937233. Took 29.012959 seconds!
+
+Step 35. Reward: 0.393426, success: 0.0, d_pos: 1.457085, d_rot: 1.021594. Best future reward: 7.559484. Took 28.973979 seconds!
+
+Step 36. Reward: 0.356951, success: 0.0, d_pos: 1.651677, d_rot: 1.021594. Best future reward: 7.269534. Took 29.342472 seconds!
+
+Step 37. Reward: 0.317906, success: 0.0, d_pos: 1.888962, d_rot: 1.007598. Best future reward: 7.369888. Took 29.824135 seconds!
+
+Step 38. Reward: 0.344458, success: 0.0, d_pos: 1.756176, d_rot: 0.938468. Best future reward: 8.210128. Took 30.068916 seconds!
+
+Step 39. Reward: 0.410351, success: 0.0, d_pos: 1.452096, d_rot: 0.823473. Best future reward: 8.249177. Took 29.696300 seconds!
+
+Step 40. Reward: 0.478144, success: 0.0, d_pos: 1.148417, d_rot: 0.818172. Best future reward: 8.577261. Took 29.661684 seconds!
+
+Step 41. Reward: 0.493567, success: 0.0, d_pos: 1.079514, d_rot: 0.831694. Best future reward: 8.278045. Took 29.999475 seconds!
+
+Step 42. Reward: 0.421410, success: 0.0, d_pos: 1.424627, d_rot: 0.759178. Best future reward: 8.624375. Took 29.524160 seconds!
+
+Step 43. Reward: 0.458059, success: 0.0, d_pos: 1.309058, d_rot: 0.631144. Best future reward: 8.004789. Took 29.321102 seconds!
+
+Step 44. Reward: 0.585984, success: 0.0, d_pos: 0.834802, d_rot: 0.585308. Best future reward: 9.475016. Took 29.369581 seconds!
+
+Step 45. Reward: 0.681160, success: 0.0, d_pos: 0.532090, d_rot: 0.589565. Best future reward: 9.644327. Took 29.363147 seconds!
+
+Step 46. Reward: 0.731902, success: 0.0, d_pos: 0.401382, d_rot: 0.557086. Best future reward: 10.530162. Took 29.325733 seconds!
+
+Step 47. Reward: 0.710729, success: 0.0, d_pos: 0.442156, d_rot: 0.601928. Best future reward: 10.715676. Took 29.706339 seconds!
+
+Step 48. Reward: 0.714204, success: 0.0, d_pos: 0.453979, d_rot: 0.547987. Best future reward: 10.924630. Took 30.158704 seconds!
+
+Step 49. Reward: 0.702663, success: 0.0, d_pos: 0.482721, d_rot: 0.557590. Best future reward: 11.580666. Took 31.546656 seconds!
+
+Step 50. Reward: 0.705149, success: 0.0, d_pos: 0.475104, d_rot: 0.558966. Best future reward: 11.580676. Took 31.035841 seconds!
+
+Step 51. Reward: 0.790899, success: 0.0, d_pos: 0.245583, d_rot: 0.558966. Best future reward: 11.836270. Took 31.951705 seconds!
+
+Step 52. Reward: 0.723940, success: 0.0, d_pos: 0.422526, d_rot: 0.558921. Best future reward: 12.279973. Took 32.077914 seconds!
+
+Step 53. Reward: 0.651114, success: 0.0, d_pos: 0.639001, d_rot: 0.547849. Best future reward: 12.317800. Took 33.164713 seconds!
+
+Step 54. Reward: 0.579048, success: 0.0, d_pos: 0.886930, d_rot: 0.514521. Best future reward: 12.780815. Took 34.173760 seconds!
+
+Step 55. Reward: 0.648328, success: 0.0, d_pos: 0.650944, d_rot: 0.539430. Best future reward: 12.740579. Took 33.508046 seconds!
+
+Step 56. Reward: 0.642188, success: 0.0, d_pos: 0.638407, d_rot: 0.618357. Best future reward: 13.593405. Took 33.886772 seconds!
+
+Step 57. Reward: 0.645576, success: 0.0, d_pos: 0.624449, d_rot: 0.626937. Best future reward: 13.948817. Took 34.433835 seconds!
+
+Step 58. Reward: 0.767539, success: 0.0, d_pos: 0.335977, d_rot: 0.482887. Best future reward: 14.858824. Took 34.068861 seconds!
+
+Step 59. Reward: 0.637071, success: 0.0, d_pos: 0.790694, d_rot: 0.277636. Best future reward: 15.276427. Took 34.876106 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 28.983467, d_rot: 1.256464. Best future reward: 2.761110. Took 117.847443 seconds!
+
+Step 1. Reward: 0.000002, success: 0.0, d_pos: 26.226242, d_rot: 1.427880. Best future reward: 4.793673. Took 86.143447 seconds!
+
+Step 2. Reward: 0.000006, success: 0.0, d_pos: 23.556398, d_rot: 1.427887. Best future reward: 6.170807. Took 94.271422 seconds!
+
+Step 3. Reward: 0.000021, success: 0.0, d_pos: 20.951179, d_rot: 1.427887. Best future reward: 7.134282. Took 99.810098 seconds!
+
+Step 4. Reward: 0.000077, success: 0.0, d_pos: 18.381678, d_rot: 1.427887. Best future reward: 8.243036. Took 102.069418 seconds!
+
+Step 5. Reward: 0.000276, success: 0.0, d_pos: 15.819465, d_rot: 1.427887. Best future reward: 9.156316. Took 104.760586 seconds!
+
+Step 6. Reward: 0.001004, success: 0.0, d_pos: 13.237086, d_rot: 1.427887. Best future reward: 10.026329. Took 107.380517 seconds!
+
+Step 7. Reward: 0.003736, success: 0.0, d_pos: 10.608551, d_rot: 1.427887. Best future reward: 10.693451. Took 105.838238 seconds!
+
+Step 8. Reward: 0.014400, success: 0.0, d_pos: 7.909955, d_rot: 1.427887. Best future reward: 11.643162. Took 73.620408 seconds!
+
+Step 9. Reward: 0.058069, success: 0.0, d_pos: 5.121089, d_rot: 1.427887. Best future reward: 12.322671. Took 73.142972 seconds!
+
+Step 10. Reward: 0.245437, success: 0.0, d_pos: 2.238274, d_rot: 1.427887. Best future reward: 13.091402. Took 76.470859 seconds!
+
+Step 11. Reward: 0.530698, success: 0.0, d_pos: 0.713072, d_rot: 1.385131. Best future reward: 13.776413. Took 80.040264 seconds!
+
+Step 12. Reward: 0.443073, success: 0.0, d_pos: 1.144572, d_rot: 1.208678. Best future reward: 13.727619. Took 80.817821 seconds!
+
+Step 13. Reward: 0.731068, success: 0.0, d_pos: 0.136635, d_rot: 1.224655. Best future reward: 13.559921. Took 76.865571 seconds!
+
+Step 14. Reward: 0.652008, success: 0.0, d_pos: 0.344365, d_rot: 1.277577. Best future reward: 13.353432. Took 73.992966 seconds!
+
+Step 15. Reward: 0.672961, success: 0.0, d_pos: 0.295920, d_rot: 1.240537. Best future reward: 12.961727. Took 75.903300 seconds!
+
+Step 16. Reward: 0.691491, success: 0.0, d_pos: 0.339768, d_rot: 0.995110. Best future reward: 13.023293. Took 37.521693 seconds!
+
+Step 17. Reward: 0.743699, success: 0.0, d_pos: 0.183649, d_rot: 1.021475. Best future reward: 12.461100. Took 37.139432 seconds!
+
+Step 18. Reward: 0.654496, success: 0.0, d_pos: 0.434906, d_rot: 1.032186. Best future reward: 12.233013. Took 37.074797 seconds!
+
+Step 19. Reward: 0.547956, success: 0.0, d_pos: 0.810206, d_rot: 0.982290. Best future reward: 11.691535. Took 36.446658 seconds!
+
+Step 20. Reward: 0.614712, success: 0.0, d_pos: 0.579724, d_rot: 0.983699. Best future reward: 11.496111. Took 36.355329 seconds!
+
+Step 21. Reward: 0.667510, success: 0.0, d_pos: 0.356197, d_rot: 1.130511. Best future reward: 11.444029. Took 35.636127 seconds!
+
+Step 22. Reward: 0.569602, success: 0.0, d_pos: 0.701575, d_rot: 1.060152. Best future reward: 11.625303. Took 36.245341 seconds!
+
+Step 23. Reward: 0.674351, success: 0.0, d_pos: 0.340357, d_rot: 1.119131. Best future reward: 11.730945. Took 35.284729 seconds!
+
+Step 24. Reward: 0.696730, success: 0.0, d_pos: 0.296053, d_rot: 1.066652. Best future reward: 12.509480. Took 35.203381 seconds!
+
+Step 25. Reward: 0.716012, success: 0.0, d_pos: 0.239095, d_rot: 1.072550. Best future reward: 11.667011. Took 34.886124 seconds!
+
+Step 26. Reward: 0.720381, success: 0.0, d_pos: 0.244370, d_rot: 1.028948. Best future reward: 10.986195. Took 33.897916 seconds!
+
+Step 27. Reward: 0.745928, success: 0.0, d_pos: 0.167088, d_rot: 1.047913. Best future reward: 10.764430. Took 32.616963 seconds!
+
+Step 28. Reward: 0.735504, success: 0.0, d_pos: 0.165403, d_rot: 1.122488. Best future reward: 10.101604. Took 32.892244 seconds!
+
+Step 29. Reward: 0.693433, success: 0.0, d_pos: 0.268463, d_rot: 1.159346. Best future reward: 10.735811. Took 32.459614 seconds!
+
+Step 30. Reward: 0.654728, success: 0.0, d_pos: 0.361443, d_rot: 1.214069. Best future reward: 9.346838. Took 33.338300 seconds!
+
+Step 31. Reward: 0.626125, success: 0.0, d_pos: 0.474784, d_rot: 1.154064. Best future reward: 9.989247. Took 33.202853 seconds!
+
+Step 32. Reward: 0.522380, success: 0.0, d_pos: 0.887919, d_rot: 1.027002. Best future reward: 8.778121. Took 32.436284 seconds!
+
+Step 33. Reward: 0.636111, success: 0.0, d_pos: 0.455697, d_rot: 1.122666. Best future reward: 8.723740. Took 32.370606 seconds!
+
+Step 34. Reward: 0.742044, success: 0.0, d_pos: 0.178948, d_rot: 1.044362. Best future reward: 8.084060. Took 31.853763 seconds!
+
+Step 35. Reward: 0.705059, success: 0.0, d_pos: 0.276262, d_rot: 1.056717. Best future reward: 8.036986. Took 32.622459 seconds!
+
+Step 36. Reward: 0.560161, success: 0.0, d_pos: 0.792807, d_rot: 0.915638. Best future reward: 7.685544. Took 32.213721 seconds!
+
+Step 37. Reward: 0.634143, success: 0.0, d_pos: 0.583745, d_rot: 0.818040. Best future reward: 7.716781. Took 32.632539 seconds!
+
+Step 38. Reward: 0.413971, success: 0.0, d_pos: 1.460801, d_rot: 0.757791. Best future reward: 8.057106. Took 32.494067 seconds!
+
+Step 39. Reward: 0.255459, success: 0.0, d_pos: 2.363817, d_rot: 0.913918. Best future reward: 8.004452. Took 32.326004 seconds!
+
+Step 40. Reward: 0.225121, success: 0.0, d_pos: 2.544371, d_rot: 1.094657. Best future reward: 8.028701. Took 31.860282 seconds!
+
+Step 41. Reward: 0.297012, success: 0.0, d_pos: 1.993358, d_rot: 1.086512. Best future reward: 7.644983. Took 31.508425 seconds!
+
+Step 42. Reward: 0.489023, success: 0.0, d_pos: 1.003672, d_rot: 1.067545. Best future reward: 8.096210. Took 31.483704 seconds!
+
+Step 43. Reward: 0.470232, success: 0.0, d_pos: 1.027509, d_rot: 1.203871. Best future reward: 8.638608. Took 31.729201 seconds!
+
+Step 44. Reward: 0.425987, success: 0.0, d_pos: 1.216284, d_rot: 1.226025. Best future reward: 8.935131. Took 32.250793 seconds!
+
+Step 45. Reward: 0.583736, success: 0.0, d_pos: 0.662088, d_rot: 1.036308. Best future reward: 9.577221. Took 32.781510 seconds!
+
+Step 46. Reward: 0.665860, success: 0.0, d_pos: 0.436397, d_rot: 0.942390. Best future reward: 10.092518. Took 32.152656 seconds!
+
+Step 47. Reward: 0.605477, success: 0.0, d_pos: 0.654675, d_rot: 0.872007. Best future reward: 9.722977. Took 32.660617 seconds!
+
+Step 48. Reward: 0.696865, success: 0.0, d_pos: 0.372193, d_rot: 0.875337. Best future reward: 9.448120. Took 33.761990 seconds!
+
+Step 49. Reward: 0.544924, success: 0.0, d_pos: 0.879416, d_rot: 0.837009. Best future reward: 10.240132. Took 35.442037 seconds!
+
+Step 50. Reward: 0.650714, success: 0.0, d_pos: 0.564815, d_rot: 0.736389. Best future reward: 10.853648. Took 35.729352 seconds!
+
+Step 51. Reward: 0.533218, success: 0.0, d_pos: 0.995850, d_rot: 0.654498. Best future reward: 11.437950. Took 35.591356 seconds!
+
+Step 52. Reward: 0.373775, success: 0.0, d_pos: 1.673539, d_rot: 0.736661. Best future reward: 12.018934. Took 35.062029 seconds!
+
+Step 53. Reward: 0.238359, success: 0.0, d_pos: 2.632704, d_rot: 0.588120. Best future reward: 12.313946. Took 34.847576 seconds!
+
+Step 54. Reward: 0.244119, success: 0.0, d_pos: 2.632716, d_rot: 0.468718. Best future reward: 12.747889. Took 35.050364 seconds!
+
+Step 55. Reward: 0.270642, success: 0.0, d_pos: 2.457932, d_rot: 0.389955. Best future reward: 13.617258. Took 34.993849 seconds!
+
+Step 56. Reward: 0.326527, success: 0.0, d_pos: 2.088048, d_rot: 0.376099. Best future reward: 14.060133. Took 34.974791 seconds!
+
+Step 57. Reward: 0.473197, success: 0.0, d_pos: 1.333818, d_rot: 0.406671. Best future reward: 14.265745. Took 35.064466 seconds!
+
+Step 58. Reward: 0.545350, success: 0.0, d_pos: 1.063192, d_rot: 0.373657. Best future reward: 14.840942. Took 34.667059 seconds!
+
+Step 59. Reward: 0.619855, success: 0.0, d_pos: 0.801731, d_rot: 0.387020. Best future reward: 14.673597. Took 34.667629 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 28.489125, d_rot: 1.423684. Best future reward: 0.214953. Took 118.571454 seconds!
+
+Step 1. Reward: 0.000002, success: 0.0, d_pos: 26.200879, d_rot: 1.488650. Best future reward: 1.552923. Took 82.826794 seconds!
+
+Step 2. Reward: 0.000006, success: 0.0, d_pos: 23.329313, d_rot: 1.524972. Best future reward: 2.692399. Took 82.535654 seconds!
+
+Step 3. Reward: 0.000026, success: 0.0, d_pos: 20.509761, d_rot: 1.524973. Best future reward: 3.112332. Took 82.013364 seconds!
+
+Step 4. Reward: 0.000105, success: 0.0, d_pos: 17.717261, d_rot: 1.524973. Best future reward: 3.649220. Took 82.606417 seconds!
+
+Step 5. Reward: 0.000423, success: 0.0, d_pos: 14.928548, d_rot: 1.524973. Best future reward: 3.718911. Took 83.155778 seconds!
+
+Step 6. Reward: 0.001717, success: 0.0, d_pos: 12.123866, d_rot: 1.524973. Best future reward: 3.811900. Took 82.400994 seconds!
+
+Step 7. Reward: 0.007078, success: 0.0, d_pos: 9.291527, d_rot: 1.524973. Best future reward: 3.819544. Took 83.022118 seconds!
+
+Step 8. Reward: 0.029389, success: 0.0, d_pos: 6.444312, d_rot: 1.524973. Best future reward: 3.989086. Took 55.727700 seconds!
+
+Step 9. Reward: 0.115164, success: 0.0, d_pos: 3.712813, d_rot: 1.524973. Best future reward: 4.156775. Took 55.668112 seconds!
+
+Step 10. Reward: 0.244584, success: 0.0, d_pos: 2.206400, d_rot: 1.524973. Best future reward: 4.142594. Took 56.092373 seconds!
+
+Step 11. Reward: 0.094339, success: 0.0, d_pos: 4.109364, d_rot: 1.530871. Best future reward: 4.074964. Took 56.132054 seconds!
+
+Step 12. Reward: 0.076929, success: 0.0, d_pos: 4.392984, d_rot: 1.841877. Best future reward: 4.139367. Took 56.435681 seconds!
+
+Step 13. Reward: 0.080129, success: 0.0, d_pos: 4.269905, d_rot: 1.945803. Best future reward: 4.336251. Took 56.316066 seconds!
+
+Step 14. Reward: 0.148855, success: 0.0, d_pos: 3.027535, d_rot: 1.955068. Best future reward: 4.412571. Took 55.950974 seconds!
+
+Step 15. Reward: 0.229588, success: 0.0, d_pos: 2.160908, d_rot: 1.955068. Best future reward: 4.505817. Took 55.230863 seconds!
+
+Step 16. Reward: 0.298449, success: 0.0, d_pos: 1.636286, d_rot: 1.955068. Best future reward: 6.188310. Took 27.455988 seconds!
+
+Step 17. Reward: 0.349201, success: 0.0, d_pos: 1.322191, d_rot: 1.955068. Best future reward: 7.659105. Took 28.054809 seconds!
+
+Step 18. Reward: 0.404945, success: 0.0, d_pos: 1.025982, d_rot: 1.955068. Best future reward: 7.505799. Took 28.268529 seconds!
+
+Step 19. Reward: 0.500520, success: 0.0, d_pos: 0.602188, d_rot: 1.955068. Best future reward: 7.260048. Took 28.915579 seconds!
+
+Step 20. Reward: 0.585543, success: 0.0, d_pos: 0.297771, d_rot: 1.931654. Best future reward: 7.110242. Took 29.335132 seconds!
+
+Step 21. Reward: 0.479357, success: 0.0, d_pos: 0.805330, d_rot: 1.663225. Best future reward: 6.506156. Took 29.715734 seconds!
+
+Step 22. Reward: 0.481502, success: 0.0, d_pos: 0.872141, d_rot: 1.473870. Best future reward: 6.168387. Took 29.718423 seconds!
+
+Step 23. Reward: 0.474572, success: 0.0, d_pos: 0.929901, d_rot: 1.401962. Best future reward: 6.087805. Took 29.234991 seconds!
+
+Step 24. Reward: 0.603770, success: 0.0, d_pos: 0.520723, d_rot: 1.221001. Best future reward: 5.840910. Took 28.936666 seconds!
+
+Step 25. Reward: 0.667962, success: 0.0, d_pos: 0.349035, d_rot: 1.145032. Best future reward: 5.347195. Took 28.373307 seconds!
+
+Step 26. Reward: 0.593713, success: 0.0, d_pos: 0.603210, d_rot: 1.098774. Best future reward: 4.715884. Took 28.066612 seconds!
+
+Step 27. Reward: 0.564316, success: 0.0, d_pos: 0.741151, d_rot: 1.007825. Best future reward: 4.128298. Took 27.729258 seconds!
+
+Step 28. Reward: 0.460356, success: 0.0, d_pos: 1.148383, d_rot: 1.007822. Best future reward: 3.563983. Took 27.783427 seconds!
+
+Step 29. Reward: 0.425003, success: 0.0, d_pos: 1.308191, d_rot: 1.007822. Best future reward: 3.103627. Took 27.942609 seconds!
+
+Step 30. Reward: 0.455299, success: 0.0, d_pos: 1.170475, d_rot: 1.007822. Best future reward: 2.678625. Took 27.962241 seconds!
+
+Step 31. Reward: 0.568039, success: 0.0, d_pos: 0.728002, d_rot: 1.007822. Best future reward: 2.223327. Took 28.055288 seconds!
+
+Step 32. Reward: 0.782213, success: 0.0, d_pos: 0.088127, d_rot: 1.007822. Best future reward: 1.655288. Took 28.286613 seconds!
+
+Step 33. Reward: 0.473768, success: 0.0, d_pos: 1.090944, d_rot: 1.007822. Best future reward: 0.873076. Took 28.368333 seconds!
+
+Step 34. Reward: 0.239618, success: 0.0, d_pos: 2.454292, d_rot: 1.007822. Best future reward: 0.399307. Took 28.336174 seconds!
+
+Step 35. Reward: 0.104005, success: 0.0, d_pos: 4.123505, d_rot: 1.007822. Best future reward: 0.159690. Took 28.195435 seconds!
+
+Step 36. Reward: 0.038788, success: 0.0, d_pos: 6.096170, d_rot: 1.007822. Best future reward: 0.055686. Took 28.436664 seconds!
+
+Step 37. Reward: 0.012440, success: 0.0, d_pos: 8.370523, d_rot: 1.007822. Best future reward: 0.016898. Took 28.407171 seconds!
+
+Step 38. Reward: 0.003434, success: 0.0, d_pos: 10.944889, d_rot: 1.007822. Best future reward: 0.004458. Took 28.392536 seconds!
+
+Step 39. Reward: 0.000817, success: 0.0, d_pos: 13.817610, d_rot: 1.007822. Best future reward: 0.001025. Took 28.456963 seconds!
+
+Step 40. Reward: 0.000167, success: 0.0, d_pos: 16.987036, d_rot: 1.007822. Best future reward: 0.000209. Took 28.296023 seconds!
+
+Step 41. Reward: 0.000030, success: 0.0, d_pos: 20.451518, d_rot: 1.007822. Best future reward: 0.000042. Took 28.336310 seconds!
+
+Step 42. Reward: 0.000005, success: 0.0, d_pos: 24.209415, d_rot: 1.007822. Best future reward: 0.000012. Took 28.452265 seconds!
+
+Step 43. Reward: 0.000001, success: 0.0, d_pos: 28.259089, d_rot: 1.007822. Best future reward: 0.000008. Took 28.439615 seconds!
+
+Step 44. Reward: 0.000000, success: 0.0, d_pos: 29.438558, d_rot: 0.939633. Best future reward: 0.000008. Took 28.640940 seconds!
+
+Step 45. Reward: 0.000000, success: 0.0, d_pos: 29.071988, d_rot: 0.940779. Best future reward: 0.000008. Took 28.642640 seconds!
+
+Step 46. Reward: 0.000000, success: 0.0, d_pos: 28.982304, d_rot: 0.941594. Best future reward: 0.000008. Took 28.508797 seconds!
+
+Step 47. Reward: 0.000000, success: 0.0, d_pos: 28.992946, d_rot: 0.944078. Best future reward: 0.000008. Took 28.296437 seconds!
+
+Step 48. Reward: 0.000000, success: 0.0, d_pos: 29.019282, d_rot: 0.949003. Best future reward: 0.000008. Took 28.006036 seconds!
+
+Step 49. Reward: 0.000000, success: 0.0, d_pos: 29.049149, d_rot: 0.957344. Best future reward: 0.000008. Took 28.139124 seconds!
+
+Step 50. Reward: 0.000000, success: 0.0, d_pos: 29.048537, d_rot: 0.957622. Best future reward: 0.000008. Took 28.369286 seconds!
+
+Step 51. Reward: 0.000000, success: 0.0, d_pos: 29.045794, d_rot: 0.956527. Best future reward: 0.000008. Took 28.341969 seconds!
+
+Step 52. Reward: 0.000000, success: 0.0, d_pos: 29.045071, d_rot: 0.956205. Best future reward: 0.000008. Took 29.208701 seconds!
+
+Step 53. Reward: 0.000000, success: 0.0, d_pos: 29.044898, d_rot: 0.956164. Best future reward: 0.000008. Took 28.960772 seconds!
+
+Step 54. Reward: 0.000000, success: 0.0, d_pos: 29.044856, d_rot: 0.956171. Best future reward: 0.000008. Took 29.121548 seconds!
+
+Step 55. Reward: 0.000000, success: 0.0, d_pos: 29.044845, d_rot: 0.956176. Best future reward: 0.000008. Took 29.029597 seconds!
+
+Step 56. Reward: 0.000000, success: 0.0, d_pos: 29.044843, d_rot: 0.956177. Best future reward: 0.000008. Took 29.155505 seconds!
+
+Step 57. Reward: 0.000000, success: 0.0, d_pos: 29.044842, d_rot: 0.956177. Best future reward: 0.000008. Took 31.172532 seconds!
+
+Step 58. Reward: 0.000000, success: 0.0, d_pos: 29.044842, d_rot: 0.956177. Best future reward: 0.000008. Took 30.586974 seconds!
+
+Step 59. Reward: 0.000000, success: 0.0, d_pos: 29.044842, d_rot: 0.956177. Best future reward: 0.000008. Took 30.156314 seconds!
+
+Step 0. Reward: 0.000000, success: 0.0, d_pos: 29.244015, d_rot: 2.693380. Best future reward: 0.189574. Took 118.813964 seconds!
+
+Step 1. Reward: 0.000001, success: 0.0, d_pos: 26.762956, d_rot: 2.590646. Best future reward: 0.266313. Took 81.813870 seconds!
+
+Step 2. Reward: 0.000003, success: 0.0, d_pos: 24.354902, d_rot: 2.590643. Best future reward: 0.318686. Took 82.330284 seconds!
+
+Step 3. Reward: 0.000010, success: 0.0, d_pos: 21.990926, d_rot: 2.590643. Best future reward: 0.346283. Took 81.962255 seconds!
+
+Step 4. Reward: 0.000032, success: 0.0, d_pos: 19.644150, d_rot: 2.590643. Best future reward: 0.390074. Took 83.729312 seconds!
+
+Step 5. Reward: 0.000105, success: 0.0, d_pos: 17.290760, d_rot: 2.590643. Best future reward: 0.420949. Took 82.234063 seconds!
+
+Step 6. Reward: 0.000344, success: 0.0, d_pos: 14.912154, d_rot: 2.590643. Best future reward: 0.434301. Took 83.049273 seconds!
+
+Step 7. Reward: 0.001150, success: 0.0, d_pos: 12.499193, d_rot: 2.590643. Best future reward: 0.441914. Took 83.587199 seconds!
+
+Step 8. Reward: 0.003890, success: 0.0, d_pos: 10.062621, d_rot: 2.590643. Best future reward: 0.447214. Took 55.790453 seconds!
+
+Step 9. Reward: 0.012905, success: 0.0, d_pos: 7.663982, d_rot: 2.590643. Best future reward: 0.444640. Took 55.867361 seconds!
+
+Step 10. Reward: 0.037621, success: 0.0, d_pos: 5.524109, d_rot: 2.590643. Best future reward: 0.433005. Took 55.981869 seconds!
+
+Step 11. Reward: 0.067412, success: 0.0, d_pos: 4.357620, d_rot: 2.590643. Best future reward: 0.396368. Took 56.476802 seconds!
+
+Step 12. Reward: 0.044133, success: 0.0, d_pos: 5.204826, d_rot: 2.590643. Best future reward: 0.330563. Took 56.328707 seconds!
+
+Step 13. Reward: 0.024195, success: 0.0, d_pos: 6.413899, d_rot: 2.573282. Best future reward: 0.287057. Took 56.332038 seconds!
+
+Step 14. Reward: 0.045801, success: 0.0, d_pos: 5.144002, d_rot: 2.557296. Best future reward: 0.263072. Took 55.964511 seconds!
+
+Step 15. Reward: 0.062440, success: 0.0, d_pos: 4.524168, d_rot: 2.557295. Best future reward: 0.217272. Took 55.949050 seconds!
+
+Step 16. Reward: 0.059486, success: 0.0, d_pos: 4.621126, d_rot: 2.557295. Best future reward: 0.154831. Took 27.897424 seconds!
+
+Step 17. Reward: 0.042710, success: 0.0, d_pos: 5.283717, d_rot: 2.557295. Best future reward: 0.095346. Took 27.826891 seconds!
+
+Step 18. Reward: 0.025827, success: 0.0, d_pos: 6.289751, d_rot: 2.557295. Best future reward: 0.052636. Took 27.953506 seconds!
+
+Step 19. Reward: 0.014085, success: 0.0, d_pos: 7.502348, d_rot: 2.557295. Best future reward: 0.026809. Took 28.014225 seconds!
+
+Step 20. Reward: 0.007109, success: 0.0, d_pos: 8.869956, d_rot: 2.557295. Best future reward: 0.012724. Took 28.149314 seconds!
+
+Step 21. Reward: 0.003329, success: 0.0, d_pos: 10.387178, d_rot: 2.557295. Best future reward: 0.005615. Took 28.217732 seconds!
+
+Step 22. Reward: 0.001436, success: 0.0, d_pos: 12.068989, d_rot: 2.557295. Best future reward: 0.002286. Took 28.327704 seconds!
+
+Step 23. Reward: 0.000564, success: 0.0, d_pos: 13.937473, d_rot: 2.557295. Best future reward: 0.000850. Took 28.574201 seconds!
+
+Step 24. Reward: 0.000200, success: 0.0, d_pos: 16.015292, d_rot: 2.557295. Best future reward: 0.000286. Took 28.601536 seconds!
+
+Step 25. Reward: 0.000063, success: 0.0, d_pos: 18.322659, d_rot: 2.557295. Best future reward: 0.000086. Took 28.903363 seconds!
+
+Step 26. Reward: 0.000018, success: 0.0, d_pos: 20.876197, d_rot: 2.557295. Best future reward: 0.000023. Took 28.989081 seconds!
+
+Step 27. Reward: 0.000004, success: 0.0, d_pos: 23.688821, d_rot: 2.557295. Best future reward: 0.000006. Took 29.112271 seconds!
+
+Step 28. Reward: 0.000001, success: 0.0, d_pos: 26.770109, d_rot: 2.557295. Best future reward: 0.000001. Took 29.225635 seconds!
+
+Step 29. Reward: 0.000000, success: 0.0, d_pos: 30.126866, d_rot: 2.557295. Best future reward: 0.000000. Took 29.385034 seconds!
+
+Step 30. Reward: 0.000000, success: 0.0, d_pos: 33.763699, d_rot: 2.557295. Best future reward: 0.000000. Took 29.517112 seconds!
+
+Step 31. Reward: 0.000000, success: 0.0, d_pos: 35.832848, d_rot: 2.566376. Best future reward: 0.000000. Took 29.368385 seconds!
+
+Step 32. Reward: 0.000000, success: 0.0, d_pos: 35.499448, d_rot: 2.577670. Best future reward: 0.000000. Took 29.479571 seconds!
+
+Step 33. Reward: 0.000000, success: 0.0, d_pos: 35.373096, d_rot: 2.579161. Best future reward: 0.000000. Took 29.587698 seconds!
+
+Step 34. Reward: 0.000000, success: 0.0, d_pos: 35.361456, d_rot: 2.582709. Best future reward: 0.000000. Took 28.833674 seconds!
+
+Step 35. Reward: 0.000000, success: 0.0, d_pos: 35.360016, d_rot: 2.583845. Best future reward: 0.000000. Took 29.067081 seconds!
+
+Step 36. Reward: 0.000000, success: 0.0, d_pos: 35.359407, d_rot: 2.583849. Best future reward: 0.000000. Took 28.941063 seconds!
+
+Step 37. Reward: 0.000000, success: 0.0, d_pos: 35.359198, d_rot: 2.583776. Best future reward: 0.000000. Took 28.866965 seconds!
+
+Step 38. Reward: 0.000000, success: 0.0, d_pos: 35.359141, d_rot: 2.583751. Best future reward: 0.000000. Took 28.712053 seconds!
+
+Step 39. Reward: 0.000000, success: 0.0, d_pos: 35.359128, d_rot: 2.583747. Best future reward: 0.000000. Took 28.636968 seconds!
+
+Step 40. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.617377 seconds!
+
+Step 41. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.743641 seconds!
+
+Step 42. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.812366 seconds!
+
+Step 43. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.828528 seconds!
+
+Step 44. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.801856 seconds!
+
+Step 45. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.914359 seconds!
+
+Step 46. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.856468 seconds!
+
+Step 47. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.878368 seconds!
+
+Step 48. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.996983 seconds!
+
+Step 49. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.053371 seconds!
+
+Step 50. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.038122 seconds!
+
+Step 51. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.922572 seconds!
+
+Step 52. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 28.841610 seconds!
+
+Step 53. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.008709 seconds!
+
+Step 54. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.072204 seconds!
+
+Step 55. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.132709 seconds!
+
+Step 56. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.217563 seconds!
+
+Step 57. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.010804 seconds!
+
+Step 58. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.103763 seconds!
+
+Step 59. Reward: 0.000000, success: 0.0, d_pos: 35.359126, d_rot: 2.583747. Best future reward: 0.000000. Took 29.168520 seconds!
+

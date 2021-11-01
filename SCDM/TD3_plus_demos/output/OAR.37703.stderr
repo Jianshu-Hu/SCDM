@@ -1,0 +1,2 @@
+/bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/run_cluster.sh: line 29: syntax error near unexpected token `|'
+/bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/run_cluster.sh: line 29: ` | tee $FILE'

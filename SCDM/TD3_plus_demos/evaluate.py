@@ -3,13 +3,37 @@ import dexterous_gym
 import gym
 import numpy as np
 import time
+from main import env_statedict_to_state
 
-filename = "models/TD3_TwoEggCatchUnderArm-v0_0_with_symmetry_traj_one_thread"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_normalizer"
+# env_name = "EggCatchOverarm-v0"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_translation_traj"
+# env_name = "EggCatchOverarm-v0"
+
+filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her"
+env_name = "EggCatchUnderarm-v0"
+# filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj"
+# env_name = "EggCatchUnderarm-v0"
+
+# filename = "models/TD3_TwoEggCatchUnderArm-v0_0_without_symmetry_traj_without_normalizer"
+# env_name = "TwoEggCatchUnderArm-v0"
+# filename = "models/TD3_TwoEggCatchUnderArm-v0_0_add_symmetry_to_replay_buffer"
+# env_name = "TwoEggCatchUnderArm-v0"
+
+# filename = "models/TD3_EggHandOver-v0_0_EggHandOver-v0_with_normalizer"
+# env_name = "EggHandOver-v0"
+
+# filename = "models/TD3_BlockHandOver-v0_0_BlockHandOver-v0_with_normalizer"
+# env_name = "BlockHandOver-v0"
+
+# filename = "models/TD3_PenSpin-v0_0_PenSpin"
+# env_name = "PenSpin-v0"
+
 beta = 0.7
-env_name = "TwoEggCatchUnderArm-v0"
 
 env = gym.make(env_name)
-steps = 1000 #long run, "standard" episode is 250
+steps = 75
+# steps = 1000 #long run, "standard" episode is 250
 
 def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0):
     eval_env = gym.make(env_name)
@@ -24,9 +48,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
         num_steps = 0
         prev_action = np.zeros((eval_env.action_space.shape[0],))
         while num_steps < steps:
-            state = np.concatenate((state_dict["observation"],
-                                          state_dict["desired_goal"]["object_1"],
-                                          state_dict["desired_goal"]["object_2"]))
+            state = env_statedict_to_state(state_dict, env_name)
             action = policy.select_action(np.array(state), prev_action)
             state_dict, reward, done, _ = eval_env.step(action)
             if render:
@@ -45,9 +67,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
     return avg_reward
 
 kwargs = {
-    "state_dim": env.observation_space["observation"].shape[0]+\
-				env.observation_space["desired_goal"]["object_1"].shape[0]+\
-				env.observation_space["desired_goal"]["object_2"].shape[0],
+    "state_dim": env_statedict_to_state(env.env._get_obs(), env_name).shape[0],
     "action_dim": env.action_space.shape[0],
     "beta": beta,
     "max_action": 1.0

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "main.py", line 140, in <module>
+    state_dim = env_statedict_to_state(env_main.env._get_obs(), args.env).shape[0]
+  File "main.py", line 34, in env_statedict_to_state
+    raise ValueError('wrong env')
+ValueError: wrong env

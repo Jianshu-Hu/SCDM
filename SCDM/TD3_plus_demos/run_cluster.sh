@@ -1,11 +1,21 @@
 #!/bin/bash
 
-cd /bigdata/users/jhu/workspace/SCDM/SCDM/TD3_plus_demos/
+cd /bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/
 source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
-tag="with_symmetry_traj_one_thread"
-FILE=output/with_symmetry_traj_one_thread_output.txt
+#env_name="TwoEggCatchUnderArm-v0"
+#env_name="EggCatchUnderarm-v0"
+#env_name="EggCatchOverarm-v0"
+#env_name="EggHandOver-v0"
+#env_name="BlockCatchUnderarm-v0"
+env_name="BlockCatchOverarm-v0"
+#env_name="BlockHandOver-v0"
+#env_name="PenHandOver-v0"
+
+tag=BlockCatchOverarm-v0
+
+FILE=output/$tag.txt
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else
@@ -16,5 +26,7 @@ fi
 
 
 #CUDA_VISIBLE_DEVICES=0
-#--add_symmetry
-python main.py --env="TwoEggCatchUnderArm-v0" --expt_tag=$tag --use_normaliser --save_model | tee $FILE
+#--add_invariance
+#--use_normaliser
+#--use_her
+python main.py --env=$env_name --beta=0.7 --use_normaliser --expt_tag="$tag" --save_model | tee $FILE

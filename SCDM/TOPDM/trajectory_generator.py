@@ -1,3 +1,5 @@
+import os.path
+
 import numpy as np
 import copy
 import time
@@ -140,6 +142,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_envs', type=int, default=1)
     parser.add_argument('--traj_len', type=int, default=50)
     parser.add_argument('--tau_scaler', type=float, default=1.0)
+    parser.add_argument('--num_traj_generate', type=int, default=1)
     parser.set_defaults(sum_rewards=True)
     args = parser.parse_args()
 
@@ -165,5 +168,7 @@ if __name__ == "__main__":
                       initialise_frac_with_prev_best=args.initialise_frac_with_prev_best, name=args.env,
                       tau_scaler=args.tau_scaler)
     generator = TrajectoryGenerator(planner, traj_len=args.traj_len, expt_tag=args.expt_tag)
-    traj = generator.generate_trajectory()
-    joblib.dump((traj, args), "experiments/"+args.env+"_"+args.expt_tag+".pkl")
+    for i in range(args.num_traj_generate):
+        traj = generator.generate_trajectory()
+        joblib.dump((traj, args), "experiments/" + args.env + "_" + args.expt_tag + "_" + str(i) + ".pkl")
+

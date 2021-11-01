@@ -1,0 +1,5 @@
+output/BlockCatchUnderarm-v0.txt does not exist.
+output/BlockCatchUnderarm-v0.txt was created.
+---------------------------------------
+Policy: TD3, Env: BlockCatchUnderarm-v0, Seed: 0
+---------------------------------------
