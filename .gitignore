@@ -1,11 +1,14 @@
 *__pycache__*
 *.egg-info
+
+#results from TD3_plus_demos
 SCDM/TD3_plus_demos/demonstrations/
 SCDM/TD3_plus_demos/models/
 SCDM/TD3_plus_demos/output/
 SCDM/TD3_plus_demos/results/
 SCDM/TD3_plus_demos/video/
 
+#results from TOPDM
 SCDM/TOPDM/experiments/
 SCDM/TOPDM/invariant_trajectories/
 SCDM/TOPDM/output/

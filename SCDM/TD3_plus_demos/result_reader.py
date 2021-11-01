@@ -21,6 +21,11 @@ average_reward_8 = np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v
 
 
 average_reward_pen = np.load("results/TD3_PenSpin-v0_0_PenSpin.npy")
+average_reward_pen = np.load("results/TD3_PenSpin-v0_0_PenSpin.npy")
+average_reward_pen = np.load("results/TD3_PenSpin-v0_0_PenSpin.npy")
+
+average_reward_pen = np.load("results/TD3_PenSpin-v0_0_PenSpin.npy")
+
 
 fig, axs = plt.subplots(3, 1)
 # axs[0].plot(range(len(average_reward_1)), average_reward_1, label='TwoEggCatchUnderArm_with_normalizer_beta_08')
