@@ -8,12 +8,12 @@ conda activate SCDM
 #env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
-#env_name="BlockCatchUnderarm-v0"
+env_name="BlockCatchUnderarm-v0"
 #env_name="BlockCatchOverarm-v0"
 #env_name="BlockHandOver-v0"
-env_name="PenHandOver-v0"
+#env_name="PenHandOver-v0"
 
-tag=PenHandOver-v0
+tag=BlockCatchUnderarm-v0
 
 FILE=output/$tag.txt
 if [ -f "$FILE" ]; then

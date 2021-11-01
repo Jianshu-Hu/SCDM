@@ -24,7 +24,7 @@ class ReplayBuffer(object):
 		elif env_name == 'EggCatchUnderarm-v0':
 			self.invariance_definition = invariance.EggCatchUnderarmInvariance()
 		else:
-			raise ValueError('Wrong Env')
+			print('Invariance is not implemented for these envs')
 
 	def add(self, state, action, next_state, reward, prev_action, add_invariance=False):
 		self.add_transition(state, action, next_state, reward, prev_action)
