@@ -6,7 +6,7 @@ import time
 import dexterous_gym
 
 delay = 0.03
-env_name = "BlockCatchUnderarm-v0"
+env_name = "PenCatchUnderarm-v0"
 env = gym.make(env_name)
 tag = "traj"
 

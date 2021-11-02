@@ -6,7 +6,7 @@ import joblib
 import dexterous_gym
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--env', type=str, default="BlockCatchOverarm-v0")
+parser.add_argument('--env', type=str, default="PenCatchUnderarm-v0")
 parser.add_argument('--delay', type=float, default=0.03, help="time between frames")
 args = parser.parse_args()
 
@@ -15,7 +15,7 @@ experiments = [args.env+"/"+file for file in files]
 
 # experiments = ["../../TD3_plus_demos/demonstrations/demonstrations_EggCatchUnderarm-v0_with_translation_traj/success_2.pkl"]
 # experiments = ["../experiments/PenCatchUnderarm-v0_success_0.pkl"]
-# experiments = ["../prerun_trajectories/"+args.env+"/BlockCatchOverarm-v0_failure_13.pkl"]
+# experiments = ["../prerun_trajectories/"+args.env+"/PenCatchUnderarm-v0_failure_19.pkl"]
 env = gym.make(args.env)
 
 for experiment in experiments:

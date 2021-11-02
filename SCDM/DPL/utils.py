@@ -1,10 +1,10 @@
 import numpy as np
 import torch
-import SCDM.TD3_plus_demos.invariance as invariance
+import SCDM.DPL.invariance as invariance
 
 
 class ReplayBuffer(object):
-	def __init__(self, state_dim, action_dim, env_name, max_size=int(1e6)):
+	def __init__(self, state_dim, action_dim, env_name, hand_idx, max_size=int(1e6)):
 		self.max_size = max_size
 		self.ptr = 0
 		self.size = 0
@@ -17,12 +17,12 @@ class ReplayBuffer(object):
 
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-		if env_name == 'TwoEggCatchUnderArm-v0':
-			self.invariance_definition = invariance.TwoEggCatchUnderArmInvariance()
-		elif env_name == 'EggCatchOverarm-v0':
-			self.invariance_definition = invariance.EggCatchOverarmInvariance()
+		# if env_name == 'TwoEggCatchUnderArm-v0':
+		# 	self.invariance_definition = invariance.TwoEggCatchUnderArmInvarianceTwoPolicy(hand_idx)
+		if env_name == 'EggCatchOverarm-v0':
+			self.invariance_definition = invariance.EggCatchOverarmInvarianceTwoPolicy(hand_idx)
 		elif env_name == 'EggCatchUnderarm-v0':
-			self.invariance_definition = invariance.EggCatchUnderarmInvariance()
+			self.invariance_definition = invariance.EggCatchUnderarmInvarianceTwoPolicy(hand_idx)
 		else:
 			print('Invariance is not implemented for these envs')
 

@@ -1,6 +1,6 @@
 # Solving Complex Dexterous Manipulation Tasks with Trajectory Optimisation and Reinforcement Learning
 
-This repository contains code for our ICML 2021 paper: <a href="https://arxiv.org/abs/2009.05104">Solving Complex Dexterous Manipulation Tasks with Trajectory Optimisation and Reinforcement Learning</a> (link to arXiv version). Videos showcasing the obtained results can be found on the <a href="https://dexterous-manipulation.github.io">main project page</a>.
+This repository is based on the code for ICML 2021 paper: <a href="https://arxiv.org/abs/2009.05104">Solving Complex Dexterous Manipulation Tasks with Trajectory Optimisation and Reinforcement Learning</a> (link to arXiv version). Videos showcasing the obtained results can be found on the <a href="https://dexterous-manipulation.github.io">main project page</a>.
 Requirements:
 * Mujoco-py
 * Pytorch

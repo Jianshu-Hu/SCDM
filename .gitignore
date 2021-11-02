@@ -1,5 +1,12 @@
 *__pycache__*
 *.egg-info
+.idea
+
+#results from DPL
+SCDM/DPL/demonstrations/
+SCDM/DPL/models/
+SCDM/DPL/output/
+SCDM/DPL/results/
 
 #results from TD3_plus_demos
 SCDM/TD3_plus_demos/demonstrations/

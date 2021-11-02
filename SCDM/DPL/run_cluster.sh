@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd /bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/
+cd /bigdata/users/jhu/SCDM/SCDM/DPL/
 source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-#env_name="EggCatchUnderarm-v0"
+env_name="EggCatchOverarm-v0"
 #env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
@@ -15,10 +15,10 @@ conda activate SCDM
 #env_name="BlockHandOver-v0"
 
 #env_name="PenHandOver-v0"
-env_name="PenCatchUnderarm-v0"
+#env_name="PenCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"
 
-tag=PenCatchUnderarm-v0
+tag=EggCatchOverarm-v0_two_policy
 
 FILE=output/$tag.txt
 if [ -f "$FILE" ]; then
