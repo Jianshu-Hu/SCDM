@@ -21,36 +21,37 @@ average_reward_pen = np.load("results/TD3_PenSpin-v0_0_PenSpin.npy")
 
 # with her
 average_reward_EggCatchOverarm_her = np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her.npy")
+average_reward_EggCatchOverarm_her_exclude_demo = np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her_exclude_demo.npy")
 average_reward_EggCatchUnderarm_her = np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her.npy")
+average_reward_EggCatchUnderarm_her_exclude_demo = np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her_exclude_demo.npy")
 
 # with translation
 average_reward_EggCatchOverarm_translation = \
     np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_translation_traj.npy")
 average_reward_EggCatchUnderarm_translation = \
     np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj.npy")
-average_reward_EggCatchUnderarm_smaller_translation = \
-    np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_smaller_translation_traj.npy")
 # with rotation
 average_reward_EggCatchOverarm_rotation = np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_rotation_traj.npy")
 
 
 
 fig, axs = plt.subplots(3, 1)
-# with and without her
-axs[0].plot(range(len(average_reward_EggCatchOverarm_her)), average_reward_EggCatchOverarm_her, label='EggCatchOverArm_with_her')
-axs[0].plot(range(len(average_reward_EggCatchUnderarm_her)), average_reward_EggCatchUnderarm_her, label='EggCatchUnderArm_with_her')
-axs[0].plot(range(len(average_reward_EggCatchUnderarm)), average_reward_EggCatchUnderarm, label='EggCatchUnderArm')
+# EggCatchoverarm
 axs[0].plot(range(len(average_reward_EggCatchOverarm)), average_reward_EggCatchOverarm, label='EggCatchOverArm')
+axs[0].plot(range(len(average_reward_EggCatchOverarm_her)), average_reward_EggCatchOverarm_her, label='EggCatchOverArm_with_her')
+axs[0].plot(range(len(average_reward_EggCatchOverarm_her_exclude_demo)), average_reward_EggCatchOverarm_her_exclude_demo, label='EggCatchOverArm_with_her_exclude_demo')
+axs[0].plot(range(len(average_reward_EggCatchOverarm_rotation)), average_reward_EggCatchOverarm_rotation, label='EggCatchOverArm_with_rotation')
+axs[0].plot(range(len(average_reward_EggCatchOverarm_translation)), average_reward_EggCatchOverarm_translation, label='EggCatchOverArm_with_translation')
 
 axs[0].set_xlabel('timesteps/5000')
 axs[0].set_ylabel('average rewards')
 axs[0].legend()
 
-# transformation
-axs[1].plot(range(len(average_reward_EggCatchOverarm)), average_reward_EggCatchOverarm, label='EggCatchOverArm')
-axs[1].plot(range(len(average_reward_EggCatchOverarm_rotation)), average_reward_EggCatchOverarm_rotation, label='EggCatchOverArm_with_rotation')
-axs[1].plot(range(len(average_reward_EggCatchOverarm_translation)), average_reward_EggCatchOverarm_translation, label='EggCatchOverArm_with_translation')
-axs[1].plot(range(len(average_reward_EggCatchUnderarm_smaller_translation)), average_reward_EggCatchUnderarm_smaller_translation, label='EggCatchUnderArm_with_translation')
+# EggCatchUnderarm
+axs[1].plot(range(len(average_reward_EggCatchUnderarm)), average_reward_EggCatchUnderarm, label='EggCatchUnderArm')
+axs[1].plot(range(len(average_reward_EggCatchUnderarm_her)), average_reward_EggCatchUnderarm_her, label='EggCatchUnderArm_with_her')
+axs[1].plot(range(len(average_reward_EggCatchUnderarm_her_exclude_demo)), average_reward_EggCatchUnderarm_her_exclude_demo, label='EggCatchUnderArm_with_her_exclude_demo')
+axs[1].plot(range(len(average_reward_EggCatchUnderarm_translation)), average_reward_EggCatchUnderarm_translation, label='EggCatchUnderArm_with_translation')
 
 axs[1].set_xlabel('timesteps/5000')
 axs[1].set_ylabel('average rewards')

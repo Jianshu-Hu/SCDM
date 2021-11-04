@@ -21,9 +21,9 @@ class EggCatchUnderArmInvTrajGenerator(InvariantTrajGenerator):
             # reflect rewards (rewards are the same)
 
             # apply translation on the sim_states within a small range
-            x_max_bias = 0
-            y_max_bias = 0.4
-            z_max_bias = 0
+            x_max_bias = 0.02
+            y_max_bias = 0.02
+            z_max_bias = 0.01
             # hand_xyz_bias = (np.random.rand(3)-0.5) * np.array([x_max_bias, y_max_bias, z_max_bias])
             hand_xyz_bias = np.array([x_max_bias, y_max_bias, z_max_bias])
             obj_xyz_bias = np.array([hand_xyz_bias[0], hand_xyz_bias[2], hand_xyz_bias[1]])
@@ -52,11 +52,6 @@ class EggCatchUnderArmInvTrajGenerator(InvariantTrajGenerator):
                 traj_invariant["sim_states"][t].qpos[67:70] = traj["sim_states"][t].qpos[67:70] + \
                                                               np.array([-1, -1, -1]) * obj_xyz_bias
 
-                traj["sim_states"][t].qpos[62] = -0.2
-                traj_invariant["sim_states"][t].qpos[62] = -0.2
-                traj["sim_states"][t].qpos[69] = -0.2
-                traj_invariant["sim_states"][t].qpos[69] = -0.2
-
             # reflect best rewards_it
             # reflect actions
             for t in range(len(traj["actions"])):
@@ -84,11 +79,11 @@ if __name__ == "__main__":
     traj_list, invariant_traj_list = invtrajgen.generate_sym_traj()
     # invtrajgen.inv_traj_render(traj_list[1], invariant_traj_list[1], False)
 
-    # invtrajgen.inv_traj_render(traj_list[1], invariant_traj_list[1], True)
+    invtrajgen.inv_traj_render(traj_list[0], invariant_traj_list[0], True)
 
-    # invtrajgen.compare_real_state_with_artificial_state(invariant_traj_list[1], True)
+    invtrajgen.compare_real_state_with_artificial_state(invariant_traj_list[1], True)
     # for i in range(0, 10):
     #     invtrajgen.compare_real_state_with_artificial_state(invariant_traj_list[i], True)
-    for i in range(0, 10):
-        invtrajgen.compare_real_state_with_artificial_state(invariant_traj_list[i], False)
+    # for i in range(0, 10):
+    #     invtrajgen.compare_real_state_with_artificial_state(invariant_traj_list[i], False)
     # symtrajgen.recording(args, traj_list[0])

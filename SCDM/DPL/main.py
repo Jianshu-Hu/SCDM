@@ -10,7 +10,7 @@ import joblib
 
 import SCDM.DPL.utils as utils
 import SCDM.DPL.TD3 as TD3
-from SCDM.DPL.divider import OneObjDivider, TwoObjDivider
+from SCDM.DPL.divider import OneObjCatchDivider, OneObjHandOverDivider, TwoObjDivider
 
 
 # number of objects in the env
@@ -181,7 +181,11 @@ if __name__ == "__main__":
 
 	# create divider for process state and action
 	if obj_num(args.env) == 1:
-		divider = OneObjDivider(half_state_dim, half_action_dim)
+		# the state and action spaces for HandOver and Catch are different
+		if args.env == "EggHandOver-v0" or args.env == "BlockHandOver-v0" or args.env== "PenHandOver-v0":
+			divider = OneObjHandOverDivider(half_state_dim, half_action_dim)
+		else:
+			divider = OneObjCatchDivider(half_state_dim, half_action_dim)
 	elif obj_num(args.env) == 2:
 		divider = TwoObjDivider(half_state_dim, half_action_dim)
 	else:

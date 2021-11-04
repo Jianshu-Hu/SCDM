@@ -98,3 +98,42 @@ hand_2_finger_joint #18
 hand_2_mount_joint #6
 hand_1_mount_joint #6
 '''
+
+
+'''OneObjectHandOver-v0
+# State(qpos) Space #62
+hand_1_wrist_joint #2
+hand_1_finger_joint #22
+
+hand_2_wrist_joint #2
+hand_2_finger_joint #22
+
+# obj in hand1
+obj_joint #7
+obj_target_joint #7
+
+# Observation Space #109+#7
+hand_1_wrist_joint #2
+hand_1_finger_joint #22
+
+hand_1_wrist_joint_vel #2
+hand_1_finger_joint_vel #22
+
+hand_2_wrist_joint #2
+hand_2_finger_joint #22
+
+hand_2_wrist_joint_vel #2
+hand_2_finger_joint_vel #22
+
+obj_joint #7
+obj_joint_vel #6
+
+desired_obj_joint #7
+
+# Action Space #40
+hand_1_wrist_joint #2
+hand_1_finger_joint #18
+
+hand_2_wrist_joint #2
+hand_2_finger_joint #18
+'''

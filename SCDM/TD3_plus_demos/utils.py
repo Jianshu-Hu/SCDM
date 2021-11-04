@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import random
 import SCDM.TD3_plus_demos.invariance as invariance
 
 
@@ -74,10 +75,11 @@ class HindsightReplayBuffer(ReplayBuffer):
 		self.compute_reward = compute_reward
 
 	def choose_new_goal(self):
-		# new goal is the achieved goal at the end of this segment
-		new_goal = self.state[-1, self.goal_index:self.goal_index+7]
 		# update new reward
-		for i in range(self.max_size):
-			self.reward[i] = self.compute_reward(self.state[i, self.goal_index:self.goal_index+7], new_goal, info=None)
+		for i in range(self.max_size-1):
+			# new goal is the achieved goal of one following sample in this segment
+			goal_sample_index = random.randint(i+1, self.max_size-1)
+			new_goal = self.state[goal_sample_index, self.goal_index:]
+			self.reward[i] = self.compute_reward(self.state[i, self.goal_index:], new_goal, info=None)
 
 

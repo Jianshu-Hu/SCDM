@@ -22,9 +22,9 @@ class EggCatchOverArmInvTrajGenerator(InvariantTrajGenerator):
             # reflect rewards (rewards are the same)
 
             # apply translation on the sim_states within a small range
-            x_max_bias = 0.1
-            y_max_bias = 0.1
-            z_max_bias = 0.1
+            x_max_bias = 0.02
+            y_max_bias = 0.02
+            z_max_bias = 0.01
             # xyz_bias = (np.random.rand(3)-0.5) * np.array([x_max_bias, y_max_bias, z_max_bias])
             xyz_bias = np.array([x_max_bias, y_max_bias, z_max_bias])
             for t in range(len(traj["sim_states"])):
@@ -83,12 +83,13 @@ class EggCatchOverArmInvTrajGenerator(InvariantTrajGenerator):
             # reflect rewards (rewards are the same)
 
             # apply rotation on the sim_states within a small range
-            zrot_max_bias = 0.1
-            # xyz_rot_bias = (np.random.rand(3)-0.5) * np.array([0, 0, zrot_max_bias])
-            xyz_rot_bias = np.array([0, 0, zrot_max_bias])
+            zrot_max_bias = 0.05
+            zrot_bias = (random.random()-0.5)*zrot_max_bias
+
+            xyz_rot_bias = np.array([0, 0, zrot_bias])
             bias_r = R.from_rotvec(xyz_rot_bias)
-            bias_r_obj = R.from_rotvec(np.array([-zrot_max_bias, 0, 0]))
-            bias_r_target = R.from_rotvec(np.array([0, -zrot_max_bias, 0]))
+            bias_r_obj = R.from_rotvec(np.array([-zrot_bias, 0, 0]))
+            bias_r_target = R.from_rotvec(np.array([0, -zrot_bias, 0]))
 
             central_point_in_global = np.array([1, 0.675, 0.15])
             mount_point_1_in_global = np.array([1, 1.35, 0.15])

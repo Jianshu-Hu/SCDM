@@ -6,7 +6,7 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-#env_name="EggCatchUnderarm-v0"
+env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
@@ -15,10 +15,10 @@ conda activate SCDM
 #env_name="BlockHandOver-v0"
 
 #env_name="PenHandOver-v0"
-env_name="PenCatchUnderarm-v0"
+#env_name="PenCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"
 
-tag=PenCatchUnderarm-v0
+tag=EggCatchUnderarm-v0_with_her_exclude_demo
 
 FILE=output/$tag.txt
 if [ -f "$FILE" ]; then
@@ -34,4 +34,4 @@ fi
 #--add_invariance
 #--use_normaliser
 #--use_her
-python main.py --env=$env_name --beta=0.7 --use_normaliser --expt_tag="$tag" --save_model | tee $FILE
+python main.py --env=$env_name --beta=0.7 --use_normaliser --expt_tag="$tag" --use_her --save_model | tee $FILE

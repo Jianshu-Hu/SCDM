@@ -5,13 +5,13 @@ import numpy as np
 import time
 from main import env_statedict_to_state
 
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_normalizer"
-# env_name = "EggCatchOverarm-v0"
+filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her"
+env_name = "EggCatchOverarm-v0"
 # filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_translation_traj"
 # env_name = "EggCatchOverarm-v0"
 
-filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her"
-env_name = "EggCatchUnderarm-v0"
+# filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her"
+# env_name = "EggCatchUnderarm-v0"
 # filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj"
 # env_name = "EggCatchUnderarm-v0"
 

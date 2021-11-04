@@ -238,7 +238,7 @@ if __name__ == "__main__":
 		# replay buffer
 		replay_buffer.add(observation, action, next_observation, reward, prev_action, args.add_invariance)
 		hindsight_replay_buffer.add(observation, action, next_observation, reward, prev_action, add_invariance=False)
-		if args.use_her:
+		if args.use_her and (segment_type!="pd"):
 			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
 				hindsight_replay_buffer.choose_new_goal()
 				replay_buffer.add_from_hindsight_replay_buffer(hindsight_replay_buffer.state,
