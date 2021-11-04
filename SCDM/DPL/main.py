@@ -214,9 +214,6 @@ if __name__ == "__main__":
 		policy_hand1.load(f"./models/{policy_file}" + "_hand1")
 		policy_hand2.load(f"./models/{policy_file}" + "_hand2")
 
-	# TODO:Instead of adding all the samples to the replay buffer, we might only add the samples which are related
-	#  to one hand. For example, when the ball is in hand 1, the position of the obj has nothing to do with hand2 and
-	#  this sample might not be added to the replay buffer of hand2.
 	replay_buffer_1 = utils.ReplayBuffer(half_state_dim, half_action_dim, env_name=args.env, hand_idx=1)
 	replay_buffer_2 = utils.ReplayBuffer(half_state_dim, half_action_dim, env_name=args.env, hand_idx=1)
 	hindsight_replay_buffer_1 = utils.HindsightReplayBuffer(half_state_dim, half_action_dim, env_name=args.env,

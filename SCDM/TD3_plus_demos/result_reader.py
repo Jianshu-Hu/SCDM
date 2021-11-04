@@ -30,6 +30,10 @@ average_reward_EggCatchOverarm_translation = \
     np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_translation_traj.npy")
 average_reward_EggCatchUnderarm_translation = \
     np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj.npy")
+average_reward_EggCatchOverarm_restricted_translation = \
+    np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_restricted_translation_traj.npy")
+average_reward_EggCatchUnderarm_restricted_translation = \
+    np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_restricted_translation_traj.npy")
 # with rotation
 average_reward_EggCatchOverarm_rotation = np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_rotation_traj.npy")
 
@@ -42,6 +46,7 @@ axs[0].plot(range(len(average_reward_EggCatchOverarm_her)), average_reward_EggCa
 axs[0].plot(range(len(average_reward_EggCatchOverarm_her_exclude_demo)), average_reward_EggCatchOverarm_her_exclude_demo, label='EggCatchOverArm_with_her_exclude_demo')
 axs[0].plot(range(len(average_reward_EggCatchOverarm_rotation)), average_reward_EggCatchOverarm_rotation, label='EggCatchOverArm_with_rotation')
 axs[0].plot(range(len(average_reward_EggCatchOverarm_translation)), average_reward_EggCatchOverarm_translation, label='EggCatchOverArm_with_translation')
+axs[0].plot(range(len(average_reward_EggCatchOverarm_restricted_translation)), average_reward_EggCatchOverarm_restricted_translation, label='EggCatchOverArm_with_restricted_translation')
 
 axs[0].set_xlabel('timesteps/5000')
 axs[0].set_ylabel('average rewards')
@@ -52,6 +57,7 @@ axs[1].plot(range(len(average_reward_EggCatchUnderarm)), average_reward_EggCatch
 axs[1].plot(range(len(average_reward_EggCatchUnderarm_her)), average_reward_EggCatchUnderarm_her, label='EggCatchUnderArm_with_her')
 axs[1].plot(range(len(average_reward_EggCatchUnderarm_her_exclude_demo)), average_reward_EggCatchUnderarm_her_exclude_demo, label='EggCatchUnderArm_with_her_exclude_demo')
 axs[1].plot(range(len(average_reward_EggCatchUnderarm_translation)), average_reward_EggCatchUnderarm_translation, label='EggCatchUnderArm_with_translation')
+axs[1].plot(range(len(average_reward_EggCatchUnderarm_restricted_translation)), average_reward_EggCatchUnderarm_restricted_translation, label='EggCatchUnderArm_with_restricted_translation')
 
 axs[1].set_xlabel('timesteps/5000')
 axs[1].set_ylabel('average rewards')

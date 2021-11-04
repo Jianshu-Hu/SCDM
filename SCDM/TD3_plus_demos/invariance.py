@@ -6,13 +6,38 @@ from scipy.spatial.transform import Rotation as R
 
 class Invariance():
     def __init__(self):
-        pass
+        # translation
+        self.x_max_bias = 0.4
+        self.y_max_bias = 0.4
+        self.z_max_bias = 0.16
+        self.action_upper_bound = 1
+        self.action_lower_bound = -1
 
     def invariant_state(self, state):
         raise NotImplementedError()
 
     def invariant_action(self, action):
         raise NotImplementedError()
+
+    def invariant_action_translation(self, state):
+        raise NotImplementedError()
+
+    def set_translation_bias(self, action, prev_action):
+        out_of_boundary = True
+        self.x_max_bias = 0.4
+        self.y_max_bias = 0.4
+        self.z_max_bias = 0.16
+        while out_of_boundary:
+            self.xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
+            inv_action = self.invariant_action_translation(action)
+            inv_prev_action = self.invariant_action_translation(prev_action)
+            # check if action is within the limit
+            if np.all(inv_prev_action-self.action_lower_bound>=0) and np.all(inv_prev_action-self.action_upper_bound<=0):
+                if np.all(inv_action-self.action_lower_bound>=0) and np.all(inv_action-self.action_upper_bound<=0):
+                    # print(self.xyz_bias)
+                    break
+            # decrease the translation bias
+            self.x_max_bias, self.y_max_bias, self.z_max_bias = self.xyz_bias[0], self.xyz_bias[1], self.xyz_bias[2]
 
     def invariant_sample_generator(self, state, action, next_state, reward, prev_action):
         inv_state = self.invariant_state(state)
@@ -97,10 +122,6 @@ class EggCatchOverarmInvariance(Invariance):
     def __init__(self):
         super().__init__()
         # translation
-        self.x_max_bias = 0.02
-        self.y_max_bias = 0.02
-        self.z_max_bias = 0.01
-
         self.xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
 
         # rotation
@@ -225,33 +246,34 @@ class EggCatchOverarmInvariance(Invariance):
 
         return inv_action
 
+
     def invariant_sample_generator(self, state, action, next_state, reward, prev_action):
         # randomize the translation
-        # self.xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
-        # inv_state = self.invariant_state_translation(state)
-        # inv_action = self.invariant_action_translation(action)
-        # inv_next_state = self.invariant_state_translation(next_state)
-        # inv_reward = reward.copy()
-        # inv_prev_action = self.invariant_action_translation(prev_action)
+        self.set_translation_bias(action, prev_action)
+        inv_state = self.invariant_state_translation(state)
+        inv_action = self.invariant_action_translation(action)
+        inv_next_state = self.invariant_state_translation(next_state)
+        inv_reward = reward.copy()
+        inv_prev_action = self.invariant_action_translation(prev_action)
 
         # randomize the rotation
-        self.zrot_bias = (random.random()-0.5)*self.zrot_max_bias
-        self.xyz_rot_bias = np.array([0, 0, self.zrot_bias])
-        self.bias_r = R.from_rotvec(self.xyz_rot_bias)
-        self.bias_r_obj = R.from_rotvec(np.array([-self.zrot_bias, 0, 0]))
-        self.bias_r_target = R.from_rotvec(np.array([0, -self.zrot_bias, 0]))
-
-        self.central_point_in_global = np.array([1, 0.675, 0.15])
-        self.mount_point_1_in_global = np.array([1, 1.35, 0.15])
-        self.mount_point_2_in_global = np.array([1, 0, 0.15])
-
-        self.bias_in_state_1 = np.zeros(6)
-        self.bias_in_state_2 = np.zeros(6)
-        inv_state = self.invariant_state_rotation(state)
-        inv_action = self.invariant_action_rotation(action)
-        inv_next_state = self.invariant_state_rotation(next_state)
-        inv_reward = reward.copy()
-        inv_prev_action = self.invariant_action_rotation(prev_action)
+        # self.zrot_bias = (random.random()-0.5)*self.zrot_max_bias
+        # self.xyz_rot_bias = np.array([0, 0, self.zrot_bias])
+        # self.bias_r = R.from_rotvec(self.xyz_rot_bias)
+        # self.bias_r_obj = R.from_rotvec(np.array([-self.zrot_bias, 0, 0]))
+        # self.bias_r_target = R.from_rotvec(np.array([0, -self.zrot_bias, 0]))
+        #
+        # self.central_point_in_global = np.array([1, 0.675, 0.15])
+        # self.mount_point_1_in_global = np.array([1, 1.35, 0.15])
+        # self.mount_point_2_in_global = np.array([1, 0, 0.15])
+        #
+        # self.bias_in_state_1 = np.zeros(6)
+        # self.bias_in_state_2 = np.zeros(6)
+        # inv_state = self.invariant_state_rotation(state)
+        # inv_action = self.invariant_action_rotation(action)
+        # inv_next_state = self.invariant_state_rotation(next_state)
+        # inv_reward = reward.copy()
+        # inv_prev_action = self.invariant_action_rotation(prev_action)
 
         return inv_state, inv_action, inv_next_state, inv_reward, inv_prev_action
     # TODO:implement the informative samples generator
@@ -274,11 +296,8 @@ class EggCatchOverarmInvariance(Invariance):
 class EggCatchUnderarmInvariance(Invariance):
     def __init__(self):
         super().__init__()
-        self.x_max_bias = 0.02
-        self.y_max_bias = 0.02
-        self.z_max_bias = 0.01
-        self.hand_xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
-        self.obj_xyz_bias = np.array([self.hand_xyz_bias[0], self.hand_xyz_bias[2], self.hand_xyz_bias[1]])
+        self.xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
+        self.obj_xyz_bias = np.array([self.xyz_bias[0], self.xyz_bias[2], self.xyz_bias[1]])
 
     def invariant_state_translation(self, state):
         inv_state = np.copy(state)
@@ -286,13 +305,13 @@ class EggCatchUnderarmInvariance(Invariance):
         hand_1 (target in hand1)
         '''
         # hand_1_mount (pos)
-        inv_state[0:3] = state[:3] + self.hand_xyz_bias
+        inv_state[0:3] = state[:3] + self.xyz_bias
 
         '''
         hand_2 (throwing from hand2)
         '''
         # hand_2_mount (pos)
-        inv_state[60:63] = state[60:63] + np.array([-1, 1, -1]) * self.hand_xyz_bias
+        inv_state[60:63] = state[60:63] + np.array([-1, 1, -1]) * self.xyz_bias
 
         '''
         obj_1
@@ -307,9 +326,9 @@ class EggCatchUnderarmInvariance(Invariance):
     def invariant_action_translation(self, action):
         inv_action = np.copy(action)
         # hand_1_mount
-        inv_action[46:49] = action[46:49] + self.hand_xyz_bias * np.array([5, 5, 12.5])
+        inv_action[46:49] = action[46:49] + self.xyz_bias * np.array([5, 5, 12.5])
         # hand_2_mount
-        inv_action[40:43] = action[40:43] + self.hand_xyz_bias * np.array([-5, 5, -12.5])
+        inv_action[40:43] = action[40:43] + self.xyz_bias * np.array([-5, 5, -12.5])
 
         return inv_action
 
@@ -321,8 +340,8 @@ class EggCatchUnderarmInvariance(Invariance):
 
     def invariant_sample_generator(self, state, action, next_state, reward, prev_action):
         # randomize the translation
-        self.hand_xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
-        self.obj_xyz_bias = np.array([self.hand_xyz_bias[0], self.hand_xyz_bias[2], self.hand_xyz_bias[1]])
+        self.set_translation_bias(action, prev_action)
+        self.obj_xyz_bias = np.array([self.xyz_bias[0], self.xyz_bias[2], self.xyz_bias[1]])
         inv_state = self.invariant_state_translation(state)
         inv_action = self.invariant_action_translation(action)
         inv_next_state = self.invariant_state_translation(next_state)
