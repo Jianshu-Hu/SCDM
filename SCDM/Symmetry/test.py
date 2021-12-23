@@ -8,7 +8,42 @@ from scipy.spatial.transform import Rotation as R
 
 
 # test applying transformation on the state and action
-class TransformationTest(InvariantTrajGenerator):
+class CatchUnderarmTransformationTest(InvariantTrajGenerator):
+    def __init__(self, args):
+        super().__init__(args)
+        # state
+        self.hand1_mount_index = 0
+        self.hand2_mount_index = 30
+        self.obj_index = 60
+        self.tar_index = 67
+        # action
+        self.hand1_mount_action_index = 46
+        self.hand2_mount_action_index = 40
+
+        # transformation
+        self.tf_hand1_to_global = np.array([[-1, 0, 0],
+                                      [0, 0, -1],
+                                      [0, -1, 0]])
+        self.tf_hand2_to_global = np.array([[1, 0, 0],
+                                      [0, 0, 1],
+                                      [0, -1, 0]])
+
+        self.tf_global_to_hand1 = np.linalg.inv(self.tf_hand1_to_global)
+        self.tf_global_to_hand2 = np.linalg.inv(self.tf_hand2_to_global)
+
+        # translation max bias
+        self.x_max_bias = 0.01
+        self.y_max_bias = 0.01
+        self.z_max_bias = 0.01
+
+        # rotation max bias
+        self.zrot_max_bias = 0.01
+
+        # rotation info
+        self.central_point_in_global = np.array([1, 0.675, 0.35])
+        self.hand1_mount_point_in_global = np.array([1, 1.35, 0.35])
+        self.hand2_mount_point_in_global = np.array([1, 0, 0.35])
+
     def test_translation(self):
         print('---start testing---')
         traj_name = self.traj_prefix + self.files[0]
@@ -121,7 +156,7 @@ class TransformationTest(InvariantTrajGenerator):
 
     def test_rotation(self):
         print('---start testing---')
-        traj_name = self.traj_prefix + self.files[2]
+        traj_name = self.traj_prefix + self.files[3]
         traj = joblib.load(traj_name)
         traj_invariant = deepcopy(traj)
 
@@ -129,137 +164,68 @@ class TransformationTest(InvariantTrajGenerator):
         # reflect rewards (rewards are the same)
 
         # apply rotation on the sim_states within a small range
-        zrot_max_bias = 0.1
-        # xyz_rot_bias = (np.random.rand(3)-0.5) * np.array([xrot_max_bias, yrot_max_bias, zrot_max_bias])
-        xyz_rot_bias = np.array([0, 0, zrot_max_bias])
-        bias_r = R.from_rotvec(xyz_rot_bias)
-        bias_r_obj = R.from_rotvec(np.array([-zrot_max_bias, 0, 0]))
-        bias_r_target = R.from_rotvec(np.array([0, -zrot_max_bias, 0]))
+        # self.zrot_bias = (random.random() - 0.5) * self.zrot_max_bias
+        # self.xyz_rot_bias = np.array([0, 0, self.zrot_bias])
+        # self.bias_r = R.from_rotvec(self.xyz_rot_bias)
+        self.set_rotation_bias(traj["actions"])
 
-        central_point_in_global = np.array([1, 0.675, 0.15])
-        mount_point_1_in_global = np.array([1, 1.35, 0.15])
-        mount_point_2_in_global = np.array([1, 0, 0.15])
-        bias_in_state_1 = np.zeros([len(traj["actions"]), 6])
-        bias_in_state_2 = np.zeros([len(traj["actions"]), 6])
         for t in range(len(traj["sim_states"])):
-            '''
-            hand_1
-            '''
-            # hand_1_mount (position and rotation)
-            # mount point position with respect to the central point
-            mount_point_in_central = traj["sim_states"][t].qpos[0:3]+mount_point_1_in_global-central_point_in_global
-            traj_invariant["sim_states"][t].qpos[0:3] = (bias_r.as_matrix()@mount_point_in_central.reshape([3, 1]))\
-                                                    .reshape(-1)+central_point_in_global-mount_point_1_in_global
+            traj_invariant["sim_states"][t].qpos[:] = self.rotation_inv_state(traj["sim_states"][t].qpos[:])
 
-            traj_invariant["sim_states"][t].qpos[3:6] = bias_r.as_matrix()@\
-                                        (traj["sim_states"][t].qpos[3:6]+xyz_rot_bias).reshape([3, 1]).reshape(-1)
-
-
-            # save the bias for calculating the bias in action
-            if t < len(traj["sim_states"])-1:
-                bias_in_state_1[t, :3] = traj_invariant["sim_states"][t].qpos[0:3] - \
-                                    bias_r.as_matrix()@(traj["sim_states"][t].qpos[0:3]).reshape([3, 1]).reshape(-1)
-                bias_in_state_1[t, 3:6] = traj_invariant["sim_states"][t].qpos[3:6] - \
-                                    bias_r.as_matrix()@(traj["sim_states"][t].qpos[3:6]).reshape([3, 1]).reshape(-1)
-            '''
-            hand_2
-            '''
-            # hand_2_mount (position and rotation)
-            # mount point position with respect to the central point
-            mount_point_in_central = np.array([-1, -1, 1])*traj["sim_states"][t].qpos[30:33]\
-                                     +mount_point_2_in_global-central_point_in_global
-            traj_invariant["sim_states"][t].qpos[30:33] = np.array([-1, -1, 1])*\
-                ((bias_r.as_matrix()@mount_point_in_central.reshape([3, 1])).reshape(-1)
-                 +central_point_in_global-mount_point_2_in_global)
-
-            traj_invariant["sim_states"][t].qpos[33:36] = bias_r.as_matrix() @ \
-                (traj["sim_states"][t].qpos[33:36] + xyz_rot_bias).reshape([3, 1]).reshape(-1)
-
-
-            # save the bias for calculating the bias in action
-            if t < len(traj["sim_states"])-1:
-                bias_in_state_2[t, :3] = traj_invariant["sim_states"][t].qpos[30:33] - \
-                                    bias_r.as_matrix()@(traj["sim_states"][t].qpos[30:33]).reshape([3, 1]).reshape(-1)
-                bias_in_state_2[t, 3:6] = traj_invariant["sim_states"][t].qpos[33:36] - \
-                                    bias_r.as_matrix()@(traj["sim_states"][t].qpos[33:36]).reshape([3, 1]).reshape(-1)
-            '''
-            obj
-            '''
-            # obj (position and quaternion)
-            obj_pos_in_central = traj["sim_states"][t].qpos[60:63]-central_point_in_global
-            traj_invariant["sim_states"][t].qpos[60:63] = (bias_r.as_matrix()@(obj_pos_in_central.reshape([3, 1])))\
-                            .reshape(-1)+central_point_in_global
-
-            original_r = R.from_quat(traj["sim_states"][t].qpos[63:67])
-            traj_invariant["sim_states"][t].qpos[63:67] = (bias_r_obj*original_r).as_quat()
-
-            # obj_target (position and quaternion)
-            obj_pos_in_central = traj["sim_states"][t].qpos[67:70] - central_point_in_global
-            traj_invariant["sim_states"][t].qpos[67:70] = (bias_r.as_matrix()@(obj_pos_in_central.reshape([3, 1])))\
-                            .reshape(-1)+central_point_in_global
-
-            original_r = R.from_quat(traj["sim_states"][t].qpos[70:74])
-            traj_invariant["sim_states"][t].qpos[70:74] = (bias_r_target*original_r).as_quat()
-
-        # reflect best rewards_it
         # reflect goal
-        obj_pos_in_central = traj["goal"][0:3] - central_point_in_global
-        traj_invariant["goal"][0:3] = (bias_r.as_matrix() @ (obj_pos_in_central.reshape([3, 1]))) \
-                                          .reshape(-1) + central_point_in_global
+        obj_pos_in_central = traj["goal"][0:3] - self.central_point_in_global
+        traj_invariant["goal"][0:3] = (self.bias_r.as_matrix() @ (obj_pos_in_central.reshape([3, 1]))) \
+                                          .reshape(-1) + self.central_point_in_global
+
         original_r = R.from_quat(traj["goal"][3:7])
-        traj_invariant["goal"][3:7] = (bias_r_target * original_r).as_quat()
-        # reflect achieved goal
-        for t in range(len(traj["ag"])):
-            obj_pos_in_central = traj["ag"][t][0:3] - central_point_in_global
-            traj_invariant["ag"][t][0:3] = (bias_r.as_matrix() @ (obj_pos_in_central.reshape([3, 1]))) \
-                                               .reshape(-1) + central_point_in_global
-            original_r = R.from_quat(traj["ag"][t][3:7])
-            traj_invariant["ag"][t][3:7] = (bias_r_obj * original_r).as_quat()
+        traj_invariant["goal"][3:7] = (self.bias_r * original_r).as_quat()
+        if self.env_name == "EggCatchOverarm":
+            # reflect achieved goal
+            for t in range(len(traj["ag"])):
+                obj_pos_in_central = traj["ag"][t][0:3] - self.central_point_in_global
+                traj_invariant["ag"][t][0:3] = (self.bias_r.as_matrix() @ (obj_pos_in_central.reshape([3, 1]))) \
+                                                   .reshape(-1) + self.central_point_in_global
+                original_r = R.from_quat(traj["ag"][t][3:7])
+                traj_invariant["ag"][t][3:7] = (self.bias_r * original_r).as_quat()
 
         print('------start to check the difference------')
         min_error = 1000
-        best_x = 0
-        best_y = 0
         best_z = 0
-        for i in range(0, 1):
-            for j in range(0, 1):
-                for k in range(-60, 70):
-                    self.env.reset()
-                    self.env.env.sim.set_state(traj_invariant["sim_states"][0])
-                    timestep = 0
-                    total_error = 0
-                    for t in range(len(traj["actions"])):
-                        # hand_1_mount
-                        traj_invariant["actions"][t][46:49] = bias_r.as_matrix() @ (traj["actions"][t][46:49]).reshape(
-                            [3, 1]). \
-                            reshape(-1) + bias_in_state_1[t, :3] * np.array([5, k/10, 12.5])
-                        traj_invariant["actions"][t][49:52] = bias_r.as_matrix() @ (traj["actions"][t][49:52]).reshape(
-                            [3, 1]). \
-                            reshape(-1) + bias_in_state_1[t, 3:6] * np.array([1, 5, 5])
-                        # hand_2_mount
-                        traj_invariant["actions"][t][40:43] = bias_r.as_matrix() @ (traj["actions"][t][40:43]).reshape(
-                            [3, 1]). \
-                            reshape(-1) + bias_in_state_2[t, :3] * np.array([5, k/10, 12.5])
-                        traj_invariant["actions"][t][43:46] = bias_r.as_matrix() @ (traj["actions"][t][43:46]).reshape(
-                            [3, 1]). \
-                            reshape(-1) + bias_in_state_2[t, 3:6] * np.array([1, 5, 5])
-                    for action in traj_invariant["actions"]:
-                        self.env.env.sim.set_state(traj_invariant["sim_states"][timestep])
-                        self.env.step(action)
-                        timestep = timestep + 1
-                        real_state = self.env.env.sim.data.qpos
-                        total_error += np.linalg.norm(real_state[0:6] - traj_invariant["sim_states"][timestep].qpos[0:6])
-                        # print(np.linalg.norm(real_state[30:33] - traj_invariant["sim_states"][timestep].qpos[30:33]))
-                    if total_error < min_error:
-                        min_error = total_error
-                        best_x = i / 1
-                        best_y = j / 1
-                        best_z = k / 10
-                    print('total_errors:', total_error, 'current_min_error: ', min_error,
-                          'current_best_x: ', best_x,
-                          'current_best_y: ', best_y,
-                          'current_best_z: ', best_z)
+        for k in range(1, 70):
+            self.state_action_ratio_rotation = np.array([1, 5, k/10])
+            self.action_state_ratio_rotation = np.array([1, 0.2, 10 / k])
+            self.env.reset()
+            self.env.env.sim.set_state(traj_invariant["sim_states"][0])
+            self.env.goal = traj_invariant["goal"]
+            self.env.env.goal = traj_invariant["goal"]
+            timestep = 0
+            total_error = 0
+            for t in range(len(traj["actions"])):
+                traj_invariant["actions"][t] = self.rotation_inv_action(traj["actions"][t])
+            for action in traj_invariant["actions"]:
+                self.env.env.sim.set_state(traj_invariant["sim_states"][timestep])
+                obs = self.env.env._get_obs()
+                self.env.step(action)
+                timestep = timestep + 1
+                real_state = self.env.env.sim.data.qpos
+                total_error += np.linalg.norm(real_state - traj_invariant["sim_states"][timestep].qpos)
+                # print(np.linalg.norm(real_state[30:33] - traj_invariant["sim_states"][timestep].qpos[30:33]))
+            if total_error < min_error:
+                min_error = total_error
+                best_z = k / 10
+            print('total_errors:', total_error, 'current_min_error: ', min_error,
+                  'current_best_z: ', best_z)
 
+    def test_action(self):
+        print('---start testing---')
+        test_len = 100
+        state_dict = self.env.reset()
+        for _ in range(test_len):
+            action = np.zeros(self.env.action_space.shape[0])
+            action[41] = -1
+            state_dict, reward, done, _ = self.env.step(action)
+            print(state_dict["observation"][60:63])
+            # print(state_dict["observation"][0:3])
 
 
 if __name__ == "__main__":
@@ -268,6 +234,7 @@ if __name__ == "__main__":
     parser.add_argument('--delay', type=float, default=0.03, help="time between frames")
     args = parser.parse_args()
 
-    transtest = TransformationTest(args)
-    transtest.test_translation()
+    transtest = CatchUnderarmTransformationTest(args)
+    # transtest.test_translation()
     # transtest.test_rotation()
+    transtest.test_action()

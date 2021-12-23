@@ -13,6 +13,7 @@ SCDM/TD3_plus_demos/demonstrations/
 SCDM/TD3_plus_demos/models/
 SCDM/TD3_plus_demos/output/
 SCDM/TD3_plus_demos/results/
+SCDM/TD3_plus_demos/results_critic/
 SCDM/TD3_plus_demos/video/
 
 #results from TOPDM

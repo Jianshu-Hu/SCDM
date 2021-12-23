@@ -6,7 +6,7 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-#env_name="EggCatchOverarm-v0"
+#env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchOverarm-v0"
 env_name="EggHandOver-v0"
 
@@ -18,7 +18,7 @@ env_name="EggHandOver-v0"
 #env_name="PenCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"
 
-tag=EggHandOver-v0_two_policy
+#tag=EggHandOver-v0_two_policy
 
 FILE=output/$tag.txt
 if [ -f "$FILE" ]; then

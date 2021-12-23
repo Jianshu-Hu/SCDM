@@ -19,10 +19,6 @@ average_reward_EggHandOver = np.load("results/TD3_EggHandOver-v0_0_EggHandOver-v
 # average_reward_EggCatchUnderarm_her = np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her.npy")
 
 # with translation
-# average_reward_EggCatchOverarm_translation = \
-#     np.load("results/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_translation_traj.npy")
-# average_reward_EggCatchUnderarm_translation = \
-#     np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj.npy")
 # average_reward_EggCatchUnderarm_smaller_translation = \
 #     np.load("results/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_smaller_translation_traj.npy")
 # with rotation

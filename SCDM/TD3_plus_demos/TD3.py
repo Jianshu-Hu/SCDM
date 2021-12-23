@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from SCDM.TD3_plus_demos.normaliser import Normaliser
+import SCDM.TD3_plus_demos.invariance as invariance
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -74,6 +75,7 @@ class TD3(object):
 		state_dim,
 		action_dim,
 		max_action,
+		env_name,
 		discount=0.99,
 		tau=0.005,
 		policy_noise=0.2,
@@ -103,9 +105,75 @@ class TD3(object):
 
 		self.total_it = 0
 
+		# invariant sample generator
+		if env_name == 'TwoEggCatchUnderArm-v0':
+			self.invariance_definition = invariance.TwoEggCatchUnderArmInvariance()
+		elif env_name == 'EggCatchOverarm-v0':
+			self.invariance_definition = invariance.CatchOverarmInvariance()
+		elif env_name == 'EggCatchUnderarm-v0' or env_name == "EggCatchUnderarm-v1":
+			self.invariance_definition = invariance.CatchUnderarmInvariance()
+		else:
+			print('Invariance is not implemented for these envs')
+
+	def initialize_with_demo(self, demo_replay_buffer, batch_size=256, max_iteration=50000):
+		# train policy
+		for iter in range(max_iteration):
+			# sample from demonstrations
+			demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, demo_ind = \
+				demo_replay_buffer.sample(batch_size)
+			demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
+			demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(
+				device)
+			policy_action = self.beta * self.actor(demo_state, demo_prev_action) + (
+						1 - self.beta) * demo_prev_action
+			# behavior cloing loss
+			actor_loss = F.mse_loss(policy_action, demo_action)
+
+			# Optimize the actor
+			self.actor_optimizer.zero_grad()
+			actor_loss.backward()
+			self.actor_optimizer.step()
+			print("iter: ", iter, " loss: ", actor_loss.cpu().data.numpy())
+
+		# train critic
+		for iter in range(int(max_iteration/5)):
+			# Sample from demonstrations
+			demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, demo_ind = \
+				demo_replay_buffer.sample(batch_size)
+			demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
+			demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
+
+			with torch.no_grad():
+				# Select action according to policy and add clipped noise
+				noise = (
+						torch.randn_like(demo_action) * self.policy_noise
+				).clamp(-self.noise_clip, self.noise_clip)
+
+				demo_next_action = self.actor_target(demo_next_state, demo_action) + noise
+				demo_next_action = self.beta * demo_next_action + (1 - self.beta) * demo_action
+				demo_next_action = (
+					demo_next_action
+				).clamp(-self.max_action, self.max_action)
+
+				# Compute the target Q value
+				target_Q1, target_Q2 = self.critic_target(demo_next_state, demo_next_action, demo_action)
+				target_Q = torch.min(target_Q1, target_Q2)
+				target_Q = demo_reward + self.discount * target_Q
+
+			# Get current Q estimates
+			current_Q1, current_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
+
+			# Compute critic loss
+			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
+
+			# Optimize the critic
+			self.critic_optimizer.zero_grad()
+			critic_loss.backward()
+			self.critic_optimizer.step()
+			print("iter: ", iter, " loss: ", critic_loss.cpu().data.numpy())
 
 	def select_action(self, state, prev_action, noise=None):
-		state = torch.FloatTensor(self.normaliser.normalize(state.reshape(1,-1))).to(device)
+		state = torch.FloatTensor(self.normaliser.normalize(state.reshape(1, -1))).to(device)
 		prev_action = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
 		mean_ac = self.actor(state, prev_action).cpu().data.numpy().flatten()
 		if noise is not None:
@@ -113,11 +181,12 @@ class TD3(object):
 		return self.beta*mean_ac + (1-self.beta)*prev_action.cpu().data.numpy().flatten()
 
 
-	def train(self, replay_buffer, batch_size=100):
+	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, batch_size=100,
+			  add_invariance=False, add_bc_loss=False):
 		self.total_it += 1
 
 		# Sample replay buffer 
-		state, action, next_state, reward, prev_action = replay_buffer.sample(batch_size)
+		state, action, next_state, reward, prev_action, ind = replay_buffer.sample(batch_size)
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
@@ -141,8 +210,29 @@ class TD3(object):
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
 
-		# Compute critic loss
-		critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
+		if add_invariance:
+			sum_artificial_Q1 = torch.zeros(current_Q1.size()).to(device)
+			sum_artificial_Q2 = torch.zeros(current_Q2.size()).to(device)
+			for i in range(len(invariance_replay_buffer_list)):
+				# invariant samples
+				inv_state, inv_action, inv_next_state, inv_reward, inv_prev_action = invariance_replay_buffer_list[i]. \
+					sample_with_ind(ind)
+				inv_state = torch.FloatTensor(self.normaliser.normalize(inv_state.cpu().data.numpy())).to(device)
+				inv_next_state = torch.FloatTensor(self.normaliser.normalize(inv_next_state.cpu().data.numpy())).to(
+					device)
+				# Get Q for artificial samples
+				artificial_Q1, artificial_Q2 = self.critic(inv_state, inv_action, inv_prev_action)
+				sum_artificial_Q1 = sum_artificial_Q1+artificial_Q1
+				sum_artificial_Q2 = sum_artificial_Q2+artificial_Q2
+
+
+			# Compute critic loss
+			critic_loss =  F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)\
+						   + F.mse_loss(current_Q1, sum_artificial_Q1/len(invariance_replay_buffer_list)) \
+						   + F.mse_loss(current_Q2, sum_artificial_Q2/len(invariance_replay_buffer_list))
+		else:
+			# Compute critic loss
+			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
 
 		# Optimize the critic
 		self.critic_optimizer.zero_grad()
@@ -151,9 +241,26 @@ class TD3(object):
 
 		# Delayed policy updates
 		if self.total_it % self.policy_freq == 0:
-
-			# Compute actor losse
-			actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
+			if add_bc_loss:
+				# sample from demonstrations
+				demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, demo_ind = \
+					demo_replay_buffer.sample(int(batch_size/10))
+				demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
+				demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
+				policy_action = self.beta*self.actor(demo_state, demo_prev_action) + (1-self.beta)*demo_prev_action
+				# behavior cloing loss
+				behavior_cloning_loss = torch.mean(F.mse_loss(policy_action, demo_action, reduction='none'), dim=1)
+				# Q-filter
+				policy_Q1, policy_Q2 = self.critic(demo_state, policy_action, demo_prev_action)
+				demo_Q1, demo_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
+				filter = torch.where(demo_Q1+demo_Q2 > policy_Q1+policy_Q2, 1, 0)
+				filtered_bc_loss = torch.mean(behavior_cloning_loss*filter)
+				# Compute actor losse
+				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
+					+ filtered_bc_loss
+			else:
+				# Compute actor losse
+				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
 			
 			# Optimize the actor 
 			self.actor_optimizer.zero_grad()

@@ -7,8 +7,11 @@ conda activate SCDM
 #env_name="TwoEggCatchUnderArm-v0"
 
 #env_name="EggCatchUnderarm-v0"
-env_name="EggCatchOverarm-v0"
+#env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
+
+#env_name="EggCatchUnderarm-v1"
+env_name="EggCatchOverarm-v1"
 
 #env_name="BlockCatchUnderarm-v0"
 #env_name="BlockCatchOverarm-v0"
@@ -18,20 +21,43 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"
 
-tag=EggCatchOverarm-v0_with_restricted_translation_traj
+#tag=random_goal_demo_5
+tag=random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state
+seed=1
 
-FILE=output/$tag.txt
-if [ -f "$FILE" ]; then
-    echo "$FILE exists."
-else
-    echo "$FILE does not exist."
-    touch $FILE
-    echo "$FILE was created."
-fi
+#demo_tag=
+
+#FILE=output/$tag.txt
+#if [ -f "$FILE" ]; then
+#    echo "$FILE exists."
+#else
+#
+#    echo "$FILE does not exist."
+#    touch $FIL3
+#    echo "$FILE was created."
+#fi
 
 
 #CUDA_VISIBLE_DEVICES=0
-#--add_invariance
 #--use_normaliser
+#--demo_goal_type="True
+#--sparse_reward
+#--initialize_with_demo
+#--add_bc_loss
+
+#--add_invariance_traj
+#--add_invariance_regularization
+#--N_artificial_sample
+#--inv_type="translation"
+#--use_informative_segment
+#--add_invariance --inv_type="translation" --use_informative_segment
+
 #--use_her
-python main.py --env=$env_name --beta=0.7 --use_normaliser --expt_tag="$tag" --add_invariance --save_model | tee $FILE
+#--her_timesteps=1000000
+#--N_her=1
+#--her_type=1
+#--use_her --her_timesteps=0 --her_type=2 --N_her=4
+echo "start running $env_name $tag with seed $seed"
+python main.py --seed=$seed --env=$env_name --expt_tag="$tag" --demo_goal_type="Random" --save_model
+
+#| tee $FILE

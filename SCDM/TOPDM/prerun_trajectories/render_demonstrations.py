@@ -6,16 +6,18 @@ import joblib
 import dexterous_gym
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--env', type=str, default="PenCatchUnderarm-v0")
+parser.add_argument('--env', type=str, default="EggCatchUnderarm-v0")
 parser.add_argument('--delay', type=float, default=0.03, help="time between frames")
 args = parser.parse_args()
 
-files = os.listdir(args.env)
-experiments = [args.env+"/"+file for file in files]
+# files = os.listdir("../prerun_trajectories/"+args.env)
+# experiments = ["../prerun_trajectories/"+args.env+"/"+file for file in files]
 
-# experiments = ["../../TD3_plus_demos/demonstrations/demonstrations_EggCatchUnderarm-v0_with_translation_traj/success_2.pkl"]
+# files = os.listdir("../../TD3_plus_demos/demonstrations/demonstrations_EggCatchUnderarm-v0")
+# experiments = ["../../TD3_plus_demos/demonstrations/demonstrations_EggCatchUnderarm-v0"+"/"+file for file in files]
+experiments = ["../../TD3_plus_demos/demonstrations/demonstrations_EggCatchUnderarm-v0/success_17.pkl"]
 # experiments = ["../experiments/PenCatchUnderarm-v0_success_0.pkl"]
-# experiments = ["../prerun_trajectories/"+args.env+"/PenCatchUnderarm-v0_failure_19.pkl"]
+# experiments = ["../prerun_trajectories/"+args.env+"/EggCatchOverarm-v0_success_1.pkl"]
 env = gym.make(args.env)
 
 for experiment in experiments:

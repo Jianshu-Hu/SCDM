@@ -5,12 +5,22 @@ import numpy as np
 import time
 from main import env_statedict_to_state
 
-filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her"
-env_name = "EggCatchOverarm-v0"
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_translation_traj"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her"
+# env_name = "EggCatchOverarm-v0"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her_exclude_demo"
+# env_name = "EggCatchOverarm-v0"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_normalizer"
+# env_name = "EggCatchOverarm-v0"
+filename = "models/TD3_EggCatchOverarm-v0_0_1_random_goal_demo_with_01_translation"
+env_name = "EggCatchOverarm-v1"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_restricted_translation_traj"
+# env_name = "EggCatchOverarm-v0"
+# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_rotation_traj"
 # env_name = "EggCatchOverarm-v0"
 
 # filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her"
+# env_name = "EggCatchUnderarm-v0"
+# filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her_exclude_demo"
 # env_name = "EggCatchUnderarm-v0"
 # filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj"
 # env_name = "EggCatchUnderarm-v0"
@@ -34,6 +44,7 @@ beta = 0.7
 env = gym.make(env_name)
 steps = 75
 # steps = 1000 #long run, "standard" episode is 250
+
 
 def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0):
     eval_env = gym.make(env_name)
@@ -67,6 +78,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
     return avg_reward
 
 kwargs = {
+    "env_name": env_name,
     "state_dim": env_statedict_to_state(env.env._get_obs(), env_name).shape[0],
     "action_dim": env.action_space.shape[0],
     "beta": beta,
@@ -76,4 +88,4 @@ kwargs = {
 policy = TD3.TD3(**kwargs)
 policy.load(filename)
 
-eval_policy(policy, env_name, seed=0, eval_episodes=1, render=True, delay=0.03)
+eval_policy(policy, env_name, seed=1, eval_episodes=5, render=True, delay=0.03)

@@ -12,6 +12,7 @@ class Invariance():
         self.x_max_bias = 0.4
         self.y_max_bias = 0.4
         self.z_max_bias = 0.16
+        self.xyz_bias = np.zeros(3)
         self.action_upper_bound = 1
         self.action_lower_bound = -1
 
@@ -25,20 +26,20 @@ class Invariance():
         raise NotImplementedError()
 
     def set_translation_bias(self, action, prev_action):
-        out_of_boundary = True
         self.x_max_bias = 0.4
         self.y_max_bias = 0.4
         self.z_max_bias = 0.16
-        while out_of_boundary:
+        for i in range(10):
             self.xyz_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
             inv_action = self.invariant_action_translation(action)
             inv_prev_action = self.invariant_action_translation(prev_action)
             # check if action is within the limit
-            if np.all(inv_prev_action-self.action_lower_bound>=0) and np.all(inv_prev_action-self.action_upper_bound<=0):
-                if np.all(inv_action-self.action_lower_bound>=0) and np.all(inv_action-self.action_upper_bound<=0):
+            if np.all(inv_prev_action>=self.action_lower_bound) and np.all(inv_prev_action<=self.action_upper_bound):
+                if np.all(inv_action>=self.action_lower_bound) and np.all(inv_action<=self.action_upper_bound):
                     break
             # decrease the translation bias
             self.x_max_bias, self.y_max_bias, self.z_max_bias = self.xyz_bias[0], self.xyz_bias[1], self.xyz_bias[2]
+        self.xyz_bias = np.zeros(3)
 
     def invariant_sample_generator(self, state, action, next_state, reward, prev_action):
         inv_state = self.invariant_state(state)
@@ -68,7 +69,7 @@ class EggCatchOverarmInvarianceTwoPolicy(Invariance):
         # rotation
         self.zrot_max_bias = 0.05
 
-        self.zrot_bias = (random.random()-0.5)*self.zrot_bias
+        self.zrot_bias = (random.random()-0.5)*self.zrot_max_bias
         self.xyz_rot_bias = np.array([0, 0, self.zrot_bias])
         self.bias_r = R.from_rotvec(self.xyz_rot_bias)
         self.bias_r_obj = R.from_rotvec(np.array([-self.zrot_bias, 0, 0]))

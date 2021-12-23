@@ -133,6 +133,8 @@ if __name__ == "__main__":
 	# new paramters
 	parser.add_argument("--add_invariance", action="store_true")   # add invariant transition to the replay buffer
 	parser.add_argument("--use_her", action="store_true")  # use hindsight replay buffer
+	parser.add_argument("--her_type", type=int, default=1) # type1: the last achieved goal of the segment is set as the new goal
+	# type2: randomly choose one of the following achieved goal in the segment as the new goal
 
 	args = parser.parse_args()
 
@@ -214,12 +216,16 @@ if __name__ == "__main__":
 		policy_hand1.load(f"./models/{policy_file}" + "_hand1")
 		policy_hand2.load(f"./models/{policy_file}" + "_hand2")
 
-	replay_buffer_1 = utils.ReplayBuffer(half_state_dim, half_action_dim, env_name=args.env, hand_idx=1)
-	replay_buffer_2 = utils.ReplayBuffer(half_state_dim, half_action_dim, env_name=args.env, hand_idx=1)
+	replay_buffer_1 = utils.ReplayBuffer(half_state_dim, half_action_dim)
+	replay_buffer_2 = utils.ReplayBuffer(half_state_dim, half_action_dim)
 	hindsight_replay_buffer_1 = utils.HindsightReplayBuffer(half_state_dim, half_action_dim, env_name=args.env,
-										  segment_length=args.segment_len, compute_reward=env_main.env.compute_reward)
+				segment_length=args.segment_len, her_type=args.her_type, compute_reward=env_main.env.compute_reward)
 	hindsight_replay_buffer_2 = utils.HindsightReplayBuffer(half_state_dim, half_action_dim, env_name=args.env,
-										  segment_length=args.segment_len, compute_reward=env_main.env.compute_reward)
+			    segment_length=args.segment_len, her_type=args.her_type, compute_reward=env_main.env.compute_reward)
+	invariant_replay_buffer_1 = utils.InvariantReplayBuffer(half_state_dim, half_action_dim, env_name=args.env,
+										  max_size=args.segment_len, hand_idx=1)
+	invariant_replay_buffer_2 = utils.InvariantReplayBuffer(half_state_dim, half_action_dim, env_name=args.env,
+										  max_size=args.segment_len, hand_idx=2)
 	
 	# Evaluate untrained policy
 	evaluations = [eval_policy(policy_hand1, policy_hand2, divider, args.env, args.seed)]
@@ -318,29 +324,44 @@ if __name__ == "__main__":
 		action_hand1, action_hand2 = divider.one_hand_action(action)
 		prev_action_hand1, prev_action_hand2 = divider.one_hand_action(prev_action)
 
-		replay_buffer_1.add(observation_hand1, action_hand1, next_observation_hand1, reward, prev_action_hand1,
-							args.add_invariance)
-		replay_buffer_2.add(observation_hand2, action_hand2, next_observation_hand2, reward, prev_action_hand2,
-							args.add_invariance)
-		hindsight_replay_buffer_1.add(observation_hand1, action_hand1, next_observation_hand1, reward,
-									  prev_action_hand1, add_invariance=False)
-		hindsight_replay_buffer_2.add(observation_hand2, action_hand2, next_observation_hand2, reward,
-									  prev_action_hand2, add_invariance=False)
+		replay_buffer_1.add(observation_hand1, action_hand1, next_observation_hand1, reward, prev_action_hand1)
+		replay_buffer_2.add(observation_hand2, action_hand2, next_observation_hand2, reward, prev_action_hand2)
 		if args.use_her:
+			hindsight_replay_buffer_1.add(observation_hand1, action_hand1, next_observation_hand1, reward,
+										  prev_action_hand1)
+			hindsight_replay_buffer_2.add(observation_hand2, action_hand2, next_observation_hand2, reward,
+										  prev_action_hand2)
 			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
 				hindsight_replay_buffer_1.choose_new_goal()
-				replay_buffer_1.add_from_hindsight_replay_buffer(hindsight_replay_buffer_1.state,
+				replay_buffer_1.add_from_other_replay_buffer(hindsight_replay_buffer_1.state,
 																 hindsight_replay_buffer_1.action,
 																 hindsight_replay_buffer_1.next_state,
 																 hindsight_replay_buffer_1.reward,
 																 hindsight_replay_buffer_1.prev_action)
 
 				hindsight_replay_buffer_2.choose_new_goal()
-				replay_buffer_2.add_from_hindsight_replay_buffer(hindsight_replay_buffer_2.state,
+				replay_buffer_2.add_from_other_replay_buffer(hindsight_replay_buffer_2.state,
 																 hindsight_replay_buffer_2.action,
 																 hindsight_replay_buffer_2.next_state,
 																 hindsight_replay_buffer_2.reward,
 																 hindsight_replay_buffer_2.prev_action)
+		if args.add_invariance:
+			invariant_replay_buffer_1.add_invariant_transition(observation_hand1, action_hand1, next_observation_hand1,
+															   reward, prev_action_hand1)
+			invariant_replay_buffer_2.add_invariant_transition(observation_hand2, action_hand2, next_observation_hand2,
+															   reward, prev_action_hand2)
+			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
+				replay_buffer_1.add_from_other_replay_buffer(invariant_replay_buffer_1.state,
+																 invariant_replay_buffer_1.action,
+																 invariant_replay_buffer_1.next_state,
+																 invariant_replay_buffer_1.reward,
+																 invariant_replay_buffer_1.prev_action)
+
+				replay_buffer_2.add_from_other_replay_buffer(invariant_replay_buffer_2.state,
+																 invariant_replay_buffer_2.action,
+																 invariant_replay_buffer_2.next_state,
+																 invariant_replay_buffer_2.reward,
+																 invariant_replay_buffer_2.prev_action)
 
 		if args.use_normaliser:
 			policy_hand1.normaliser.update(observation_hand1)
