@@ -13,57 +13,52 @@ import SCDM.TD3_plus_demos.TD3 as TD3
 from SCDM.TD3_plus_demos.utils import env_statedict_to_state
 
 # Runs policy for X episodes and returns average reward
+# Runs critic for X episodes and returns average Q value for some states
 # A fixed seed is used for the eval environment
-def eval_policy(policy, env_name, seed, eval_episodes=10):
+def eval_policy(policy, env_name, seed, use_invariance_in_policy=False, eval_episodes=10, evaluate_critic_t=50):
 	eval_env = gym.make(env_name)
 	eval_env.seed(seed + 100)
 
 	avg_reward = 0.
+	avg_Q = 0.
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 	for _ in range(eval_episodes):
 		state_dict = eval_env.reset()
 		num_steps = 0
 		prev_action = np.zeros((eval_env.action_space.shape[0],))
 		while num_steps < eval_env._max_episode_steps:
 			state = env_statedict_to_state(state_dict, env_name)
-			action = policy.select_action(state, prev_action)
+			action = policy.select_action(state, prev_action, use_invariance_in_policy=use_invariance_in_policy)
 			state_dict, reward, done, _ = eval_env.step(action)
 			prev_action = action.copy()
 			avg_reward += reward
 			num_steps += 1
+
+			if num_steps==evaluate_critic_t:
+				state_critic = env_statedict_to_state(state_dict, env_name)
+				action_critic = policy.select_action(state_critic, prev_action, use_invariance_in_policy=use_invariance_in_policy)
+
+				state_critic = torch.FloatTensor(policy.normaliser.normalize(state_critic)).to(device)
+				state_critic = torch.reshape(state_critic, (1, -1))
+				prev_action_critic = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
+				action_critic = torch.FloatTensor(action_critic.reshape(1, -1)).to(device)
+
+				Q1, Q2 = policy.critic(state_critic, action_critic, prev_action_critic)
+				avg_Q += (Q1.item() + Q2.item()) / 2
 
 	avg_reward /= eval_episodes
 
 	print("---------------------------------------")
 	print(f"Evaluation over {eval_episodes} episodes: {avg_reward:.3f}")
 	print("---------------------------------------")
-	return avg_reward
-
-# Runs critic for X episodes and returns average Q value for initial state
-# A fixed seed is used for the eval environment
-def eval_critic(policy, env_name, seed, eval_episodes=10):
-	eval_env = gym.make(env_name)
-	eval_env.seed(seed + 200)
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-	avg_Q = 0.
-	for _ in range(eval_episodes):
-		state_dict = eval_env.reset()
-		state = env_statedict_to_state(state_dict, env_name)
-		prev_action = np.zeros((eval_env.action_space.shape[0],))
-		action = policy.select_action(state, prev_action)
-
-		state = torch.FloatTensor(state.reshape(1, -1)).to(device)
-		prev_action = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
-		action = torch.FloatTensor(action.reshape(1, -1)).to(device)
-		Q1, Q2 = policy.critic(state, action, prev_action)
-		avg_Q += (Q1.cpu().data.numpy()[0, 0]+Q2.cpu().data.numpy()[0, 0])/2
 
 	avg_Q /= eval_episodes
 
 	print("---------------------------------------")
 	print(f"Evaluation of Q over {eval_episodes} episodes: {avg_Q:.3f}")
 	print("---------------------------------------")
-	return avg_Q
+	return avg_reward, avg_Q
 
 
 if __name__ == "__main__":
@@ -102,8 +97,11 @@ if __name__ == "__main__":
 	parser.add_argument("--initialize_with_demo", action="store_true")  # initialize actor and critic with demonstrations
 	parser.add_argument("--add_bc_loss", action="store_true")  # add behavior cloning loss to actor training
 
-	parser.add_argument("--add_invariance_traj", action="store_true")   # add invariant transition to the replay buffer
+	parser.add_argument("--add_invariance_traj", action="store_true")   # add invariant segment to the replay buffer
 	parser.add_argument("--add_invariance_regularization", action="store_true")  # add regularization term to the loss of critic
+	parser.add_argument("--add_hand_invariance_regularization",
+						action="store_true")  # add regularization term to the loss of critic
+	parser.add_argument("--use_invariance_in_policy", action="store_true")  # use invariance in selecting actions
 	parser.add_argument("--N_artificial_sample", type=int, default=1) #number of artificial samples generated
 	parser.add_argument("--inv_type", type=str, default='translation')  # use translation or rotation
 	parser.add_argument("--use_informative_segment", action="store_true") # use informative segment instead of restricted segment
@@ -186,6 +184,7 @@ if __name__ == "__main__":
 		"action_dim": action_dim,
 		"max_action": max_action,
 		"env_name": args.env,
+		"file_name": file_name,
 		"discount": args.discount,
 		"tau": args.tau,
 		"policy_noise": args.policy_noise * max_action,
@@ -202,13 +201,12 @@ if __name__ == "__main__":
 		policy_file = file_name if args.load_model == "default" else args.load_model
 		policy.load(f"./models/{policy_file}")
 
-	replay_buffer = utils.ReplayBuffer(state_dim, action_dim)
+	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, args.env)
 	demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
 	if args.initialize_with_demo:
 		policy.initialize_with_demo(demo_replay_buffer)
 		# debug
-		evaluate_initial_policy = eval_policy(policy, args.env, args.seed)
-		evaluate_initial_critic = eval_critic(policy, args.env, args.seed)
+		evaluate_initial_policy, evaluate_initial_critic = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)
 
 	if args.use_her:
 		hindsight_replay_buffer = utils.HindsightReplayBuffer(state_dim, action_dim, env_name=args.env,
@@ -222,11 +220,11 @@ if __name__ == "__main__":
 			invariant_replay_buffer = utils.InvariantReplayBuffer(state_dim, action_dim, env_name=args.env,
 																  max_size=replay_buffer.max_size)
 			invariant_replay_buffer_list.append(invariant_replay_buffer)
-
 	
 	# Evaluate untrained policy
-	evaluations_policy = [eval_policy(policy, args.env, args.seed)]
-	evaluations_critic = [eval_critic(policy, args.env, args.seed)]
+	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)
+	evaluations_policy = [avg_reward]
+	evaluations_critic = [avg_Q]
 
 	total_timesteps = 0
 	segment_timestep = 0
@@ -247,7 +245,10 @@ if __name__ == "__main__":
 	print("add_behavior_cloning_loss: ", args.add_bc_loss)
 	print("add_invariance_traj: ", args.add_invariance_traj)
 	print("add_invariance_regularization: ", args.add_invariance_regularization)
-	if args.add_invariance_traj or args.add_invariance_regularization:
+	print("add_hand_invariance_regularization: ", args.add_hand_invariance_regularization)
+	print("use_invariance_in_policy: ", args.use_invariance_in_policy)
+	if args.add_invariance_traj or args.add_invariance_regularization or \
+			args.add_hand_invariance_regularization:
 		print("inv_type: ", args.inv_type)
 		print("use_informative_segment: ", args.use_informative_segment)
 	print("use_her: ", args.use_her)
@@ -274,7 +275,7 @@ if __name__ == "__main__":
 		if segment_timestep % args.segment_len == 0:
 			segment_timestep = 0
 			if t > 0:
-				if args.pd_throw_decay >= args.pd_decay:
+				if args.pd_throw_decay > args.pd_decay:
 					raise ValueError("The pd_throw should decay faster than pd")
 				pd_prob *= args.pd_decay
 				pd_throw_prob *= args.pd_throw_decay
@@ -341,8 +342,8 @@ if __name__ == "__main__":
 		else:
 			noise = np.random.normal(0, max_action * args.expl_noise, size=action_dim)
 			action = (
-				policy.select_action(observation, prev_action, noise=noise)
-			).clip(-max_action, max_action)
+				policy.select_action(observation, prev_action, noise=noise,
+								 use_invariance_in_policy=args.use_invariance_in_policy)).clip(-max_action, max_action)
 
 		segment_timestep += 1
 		total_timesteps += 1
@@ -403,11 +404,12 @@ if __name__ == "__main__":
 
 		if t >= args.start_timesteps:
 			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, args.batch_size,
-						 args.add_invariance_regularization, args.add_bc_loss)
+						 args.add_invariance_regularization, args.add_hand_invariance_regularization, args.add_bc_loss)
 
 		if (t+1) % args.eval_freq == 0:
-			evaluations_policy.append(eval_policy(policy, args.env, args.seed))
-			evaluations_critic.append(eval_critic(policy, args.env, args.seed))
+			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)
+			evaluations_policy.append(avg_reward)
+			evaluations_critic.append(avg_Q)
 			np.save(f"./results/{file_name}", evaluations_policy)
 			np.save(f"./results_critic/{file_name}", evaluations_critic)
 			if args.save_model: policy.save(f"./models/{file_name}")

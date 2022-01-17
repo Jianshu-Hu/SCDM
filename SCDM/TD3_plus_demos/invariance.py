@@ -18,6 +18,8 @@ class Invariance():
         # action index
         self.hand1_mount_action_index = 0
         self.hand2_mount_action_index = 0
+        self.hand1_action_index = 0
+        self.hand2_action_index = 0
 
         # translation initialization
         self.x_max_bias = 0
@@ -38,8 +40,8 @@ class Invariance():
         self.hand1_mount_point_in_global = np.zeros(3)
         self.hand2_mount_point_in_global = np.zeros(3)
 
-        self.state_action_ratio_translation = np.array([2.5, 2.5, 6.25])
-        self.action_state_ratio_translation = np.array([0.4, 0.4, 0.16])
+        self.state_action_ratio_translation = np.array([5, 5, 12.5])
+        self.action_state_ratio_translation = np.array([0.2, 0.2, 0.08])
         self.state_action_ratio_rotation = np.array([1.4, 5, 5])
         self.action_state_ratio_rotation = np.array([5/7, 0.2, 0.2])
 
@@ -286,6 +288,7 @@ class Invariance():
             # restrict rotation
             self.set_rotation_bias(action_array)
 
+
         for i in range(state_array.shape[0]):
             if inv_type == 'translation':
                 inv_state_array[i, :] = self.translation_inv_state(state_array[i, :])
@@ -338,6 +341,58 @@ class Invariance():
         return best_inv_state_array, best_inv_action_array, best_inv_next_state_array, best_inv_reward_array, \
                best_inv_prev_action_array
 
+    def hand_invariance_samples_generator(self, actions, all_invariance):
+        invariance = all_invariance[all_invariance!=0]
+        inv_actions = np.copy(actions)
+
+        # throwing hand2 invariance
+        num_invariance_2 = np.sum(invariance==2)
+        mount_action_bias_2 = (np.random.rand(num_invariance_2, 6)-0.5)*2
+        hand_action_bias_2 = (np.random.rand(num_invariance_2, 20)-0.5)*2
+        inv_actions[invariance==2, self.hand2_mount_action_index:self.hand2_mount_action_index + 6] += mount_action_bias_2
+        inv_actions[invariance==2, self.hand2_action_index:self.hand2_action_index + 20] += hand_action_bias_2
+
+        # catching hand1 invariance
+        num_invariance_1 = np.sum(invariance == 1)
+        # mount_action_bias_1 = (np.random.rand(num_invariance_1, 6)-0.5)/5
+        hand_action_bias_1 = (np.random.rand(num_invariance_1, 20)-0.5)/5
+        # inv_actions[invariance==1, self.hand1_mount_action_index:self.hand2_mount_action_index + 6] += mount_action_bias_1
+        inv_actions[invariance==1, self.hand1_action_index:self.hand1_action_index + 20] += hand_action_bias_1
+
+        inv_actions = np.clip(inv_actions, self.action_lower_bound, self.action_upper_bound)
+        return inv_actions
+
+    def throwing_hand_invariance_samples_generator(self, actions):
+        inv_actions = np.copy(actions)
+
+        inv_actions[:, self.hand2_mount_action_index:self.hand2_mount_action_index + 6] = np.zeros((actions.shape[0], 6))
+        inv_actions[:, self.hand2_action_index:self.hand2_action_index + 20] = np.zeros((actions.shape[0], 20))
+
+        return inv_actions
+
+
+    def hand_fixed_samples_generator(self, actions, all_invariance):
+        invariance = all_invariance[all_invariance!=0]
+        inv_actions = np.copy(actions)
+
+        # throwing hand2 invariance
+        num_invariance_2 = np.sum(invariance == 2)
+        mount_action_2 = np.zeros((num_invariance_2, 6))
+        hand_action_2 = np.zeros((num_invariance_2, 20))
+        inv_actions[invariance == 2, self.hand2_mount_action_index:self.hand2_mount_action_index + 6] = mount_action_2
+        inv_actions[invariance == 2, self.hand2_action_index:self.hand2_action_index + 20] = hand_action_2
+
+        # catching hand1 invariance
+        num_invariance_1 = np.sum(invariance == 1)
+        # mount_action_1 = np.zeros((num_invariance_1, 6))
+        hand_action_1 = np.zeros((num_invariance_1, 20))
+        # inv_actions[invariance==1, self.hand1_mount_action_index:self.hand2_mount_action_index + 6] += mount_action_1
+        inv_actions[invariance == 1, self.hand1_action_index:self.hand1_action_index + 20] += hand_action_1
+
+        inv_actions = np.zeros(actions.shape)
+
+        return inv_actions
+
 
 class CatchOverarmInvariance(Invariance):
     def __init__(self):
@@ -350,6 +405,8 @@ class CatchOverarmInvariance(Invariance):
         # action
         self.hand1_mount_action_index = 46
         self.hand2_mount_action_index = 40
+        self.hand1_action_index = 0
+        self.hand2_action_index = 20
 
         # transformation
         self.tf_hand1_to_global = np.array([[1, 0, 0],
@@ -387,6 +444,8 @@ class CatchUnderarmInvariance(Invariance):
         # action
         self.hand1_mount_action_index = 46
         self.hand2_mount_action_index = 40
+        self.hand1_action_index = 0
+        self.hand2_action_index = 20
 
         # transformation
         self.tf_hand1_to_global = np.array([[-1, 0, 0],

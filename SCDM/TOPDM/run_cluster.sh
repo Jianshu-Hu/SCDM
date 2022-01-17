@@ -4,7 +4,7 @@ cd /bigdata/users/jhu/SCDM/SCDM/TOPDM/
 source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
-env_name="EggCatchUnderarm-v1"
+env_name="EggCatchOverarm-v0"
 #env_name="BlockCatchOverarm-v0"
 #env_name="BlockCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"

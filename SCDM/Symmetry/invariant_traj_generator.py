@@ -49,10 +49,13 @@ class InvariantTrajGenerator():
         self.hand1_mount_point_in_global = np.zeros(3)
         self.hand2_mount_point_in_global = np.zeros(3)
 
-        self.state_action_ratio_translation = np.array([2.5, 2.5, 6.25])
-        self.action_state_ratio_translation = np.array([0.4, 0.4, 0.16])
+        self.state_action_ratio_translation = np.array([5, 5, 12.5])
+        self.action_state_ratio_translation = np.array([0.2, 0.2, 0.08])
         self.state_action_ratio_rotation = np.array([1.4, 5, 5])
         self.action_state_ratio_rotation = np.array([5/7, 0.2, 0.2])
+
+        self.action_upper_bound = 1
+        self.action_lower_bound = -1
 
     def hand_to_global(self, coordinate_in_hand, hand_index):
         global_coordinate = np.copy(coordinate_in_hand)
@@ -111,22 +114,19 @@ class InvariantTrajGenerator():
         return inv_action
 
     def set_translation_bias(self, actions):
-        action_lower_bound = -1
-        action_upper_bound = 1
-        self.x_max_bias = 0.1
-        self.y_max_bias = 0.1
-        self.z_max_bias = 0.1
-        self.global_bias = (np.random.rand(3) - 0.5) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
+        x_max_bias = self.x_max_bias
+        y_max_bias = self.y_max_bias
+        z_max_bias = self.z_max_bias
+        self.global_bias = (np.random.rand(3) - 0.5) * np.array([x_max_bias, y_max_bias, z_max_bias])
         for t in range(len(actions)):
             for i in range(10):
                 inv_action = self.translation_inv_action(actions[t])
                 # check if action is within the limit
-                if np.all(inv_action - action_lower_bound >= 0) and np.all(inv_action - action_upper_bound <= 0):
-                    # print(i)
+                if np.all(inv_action - self.action_lower_bound >= 0) and np.all(inv_action - self.action_upper_bound <= 0):
                     break
                 # decrease the translation bias
-                self.x_max_bias, self.y_max_bias, self.z_max_bias = self.global_bias[0], self.global_bias[1], self.global_bias[2]
-                self.global_bias = (np.random.rand(3) - 0.5)*np.array([1.8, 1.8, 1.6]) * np.array([self.x_max_bias, self.y_max_bias, self.z_max_bias])
+                x_max_bias, y_max_bias, z_max_bias = self.global_bias[0], self.global_bias[1], self.global_bias[2]
+                self.global_bias = (np.random.rand(3) - 0.5) * np.array([1.8, 1.8, 1.6]) * np.array([x_max_bias, y_max_bias, z_max_bias])
 
     # apply translation on the trajectory
     def generate_translation_inv_traj(self):
@@ -257,21 +257,19 @@ class InvariantTrajGenerator():
         return inv_action
 
     def set_rotation_bias(self, actions):
-        action_lower_bound = -1
-        action_upper_bound = 1
-        self.zrot_max_bias = 0.01
-        self.zrot_bias = (random.random() - 0.5) * self.zrot_max_bias
+        zrot_max_bias = self.zrot_max_bias
+        self.zrot_bias = (random.random() - 0.5) * zrot_max_bias
         self.xyz_rot_bias = np.array([0, 0, self.zrot_bias])
         self.bias_r = R.from_rotvec(self.xyz_rot_bias)
         for t in range(len(actions)):
             for i in range(10):
-                inv_action = self.translation_inv_action(actions[t])
+                inv_action = self.rotation_inv_action(actions[t])
                 # check if action is within the limit
-                if np.all(inv_action - action_lower_bound >= 0) and np.all(inv_action - action_upper_bound <= 0):
+                if np.all(inv_action - self.action_lower_bound >= 0) and np.all(inv_action - self.action_upper_bound <= 0):
                     break
-                # decrease the translation bias
-                self.zrot_max_bias = self.zrot_bias
-                self.zrot_bias = (random.random() - 0.5) * self.zrot_max_bias
+                # decrease the rotation bias
+                zrot_max_bias = self.zrot_bias
+                self.zrot_bias = (random.random() - 0.5) * zrot_max_bias
                 self.xyz_rot_bias = np.array([0, 0, self.zrot_bias])
                 self.bias_r = R.from_rotvec(self.xyz_rot_bias)
 
@@ -411,8 +409,87 @@ class InvariantTrajGenerator():
             time.sleep(self.delay)
             env.render()
 
-    def evaluate_Q_value(self, filename, traj, inv_traj):
+    def evaluate_Q_value(self, filename1, filename2, traj=None, inv_traj=None):
+        traj_list = []
+        for file in self.files:
+            traj_name = self.traj_prefix + file
+            traj = joblib.load(traj_name)
+            traj_list.append(traj)
         beta=0.7
+        kwargs = {
+            "env_name": self.env_name,
+            "state_dim": env_statedict_to_state(self.env.env._get_obs(), self.env_name).shape[0],
+            "action_dim": self.env.action_space.shape[0],
+            "beta": beta,
+            "max_action": 1.0,
+            "file_name": ""
+        }
+        policy1 = TD3.TD3(**kwargs)
+        policy1.load(filename1)
+        policy2 = TD3.TD3(**kwargs)
+        policy2.load(filename2)
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        for i in range(1, len(traj["sim_states"])-1):
+            self.env.reset()
+            self.env.env.sim.set_state(traj["sim_states"][i])
+            self.env.goal = traj["goal"]
+            self.env.env.goal = traj["goal"]
+            self.env.sim.forward()
+            obs = self.env.env._get_obs()
+            state = env_statedict_to_state(obs, self.env_name)
+            action = traj["actions"][i]
+            prev_action = traj["actions"][i-1]
+
+            # self.env.reset()
+            # self.env.env.sim.set_state(inv_traj["sim_states"][i])
+            # self.env.goal = inv_traj["goal"]
+            # self.env.env.goal = inv_traj["goal"]
+            # obs = self.env.env._get_obs()
+            # inv_state = env_statedict_to_state(obs, self.env_name)
+            # inv_action = inv_traj["actions"][i]
+            # inv_prev_action = inv_traj["actions"][i-1]
+
+            # hand invariance
+            env_list1 = ["EggCatchUnderarm-v0", "EggCatchUnderarm-v1"]
+            env_list2 = ["EggCatchOverarm-v0"]
+            if self.env_name in env_list1:
+                self.y_axis_index = 1
+                self.throwing_threshold = 0.3
+                self.catching_threshold = 0.6
+                self.initial_pos = np.array([0.98953, 0.36191, 0.33070])
+            elif self.env_name in env_list2:
+                self.y_axis_index = 1
+                self.throwing_threshold = 0.5
+                self.catching_threshold = 1.2
+                self.initial_pos = np.array([1, -0.2, 0.40267])
+            if np.linalg.norm(state[-20:-17] - self.initial_pos) >= self.throwing_threshold:
+                inv_state = np.copy(state)
+                inv_prev_action = np.copy(prev_action)
+                inv_action = np.copy(action)
+                inv_action[40:46] = (np.random.rand(6) - 0.5) * 2
+                inv_action[20:40] = (np.random.rand(20) - 0.5) * 2
+
+                with torch.no_grad():
+                    state = torch.FloatTensor(state.reshape(1, -1)).to(device)
+                    action = torch.FloatTensor(action.reshape(1, -1)).to(device)
+                    prev_action = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
+                    inv_state = torch.FloatTensor(inv_state.reshape(1, -1)).to(device)
+                    inv_action = torch.FloatTensor(inv_action.reshape(1, -1)).to(device)
+                    inv_prev_action = torch.FloatTensor(inv_prev_action.reshape(1, -1)).to(device)
+                    current_Q1, current_Q2 = policy1.critic(state, action, prev_action)
+                    inv_current_Q1, inv_current_Q2 = policy1.critic(inv_state, inv_action, inv_prev_action)
+                    print("loss at time: ", i)
+                    print(torch.nn.functional.mse_loss(current_Q1, inv_current_Q1).item())
+                    print(torch.nn.functional.mse_loss(current_Q2, inv_current_Q2).item())
+                    current_Q1, current_Q2 = policy2.critic(state, action, prev_action)
+                    inv_current_Q1, inv_current_Q2 = policy2.critic(inv_state, inv_action, inv_prev_action)
+                    print("loss of another model at time: ", i)
+                    print(torch.nn.functional.mse_loss(current_Q1, inv_current_Q1).item())
+                    print(torch.nn.functional.mse_loss(current_Q2, inv_current_Q2).item())
+
+    def evaluate_transformed_policy(self, filename, eval_episodes=10, steps=75, render=False, delay=0.03):
+        beta = 0.7
         kwargs = {
             "env_name":self.env_name,
             "state_dim": env_statedict_to_state(self.env.env._get_obs(), self.env_name).shape[0],
@@ -422,44 +499,42 @@ class InvariantTrajGenerator():
         }
         policy = TD3.TD3(**kwargs)
         policy.load(filename)
-        initial_policy = TD3.TD3(**kwargs)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        for i in range(1, len(traj["sim_states"])-1):
-            self.env.reset()
-            self.env.env.sim.set_state(traj["sim_states"][i])
-            self.env.goal = traj["goal"]
-            self.env.env.goal = traj["goal"]
-            obs = self.env.env._get_obs()
-            state = env_statedict_to_state(obs, self.env_name)
-            action = traj["actions"][i]
-            prev_action = traj["actions"][i-1]
+        self.env.seed(100)
 
-            self.env.reset()
-            self.env.env.sim.set_state(inv_traj["sim_states"][i])
-            self.env.goal = inv_traj["goal"]
-            self.env.env.goal = inv_traj["goal"]
-            obs = self.env.env._get_obs()
-            inv_state = env_statedict_to_state(obs, self.env_name)
-            inv_action = inv_traj["actions"][i]
-            inv_prev_action = inv_traj["actions"][i-1]
-            with torch.no_grad():
-                state = torch.FloatTensor(state.reshape(1, -1)).to(device)
-                action = torch.FloatTensor(action.reshape(1, -1)).to(device)
-                prev_action = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
-                inv_state = torch.FloatTensor(inv_state.reshape(1, -1)).to(device)
-                inv_action = torch.FloatTensor(inv_action.reshape(1, -1)).to(device)
-                inv_prev_action = torch.FloatTensor(inv_prev_action.reshape(1, -1)).to(device)
-                current_Q1, current_Q2 = policy.critic(state, action, prev_action)
-                inv_current_Q1, inv_current_Q2 = policy.critic(inv_state, inv_action, inv_prev_action)
-                print("loss at time: ", i)
-                print(torch.nn.functional.mse_loss(current_Q1, inv_current_Q1))
-                print(torch.nn.functional.mse_loss(current_Q2, inv_current_Q2))
-                current_Q1, current_Q2 = initial_policy.critic(state, action, prev_action)
-                inv_current_Q1, inv_current_Q2 = initial_policy.critic(inv_state, inv_action, inv_prev_action)
-                print("loss of untrained model at time: ", i)
-                print(torch.nn.functional.mse_loss(current_Q1, inv_current_Q1))
-                print(torch.nn.functional.mse_loss(current_Q2, inv_current_Q2))
+        avg_reward = 0.
+        for _ in range(eval_episodes):
+            state_dict = self.env.reset()
+            state = env_statedict_to_state(state_dict, self.env_name)
+
+            global_bias_obj = state[120:123] - np.array([1, -0.2, 0.40267])
+            global_bias = state[0:3] - np.array([-1.69092e-16, 1.28969e-13, -0.0983158])
+            print(global_bias_obj==global_bias)
+
+            if render:
+                self.env.render()
+                time.sleep(delay)
+            num_steps = 0
+            inv_prev_action = np.zeros((self.env.action_space.shape[0],))
+            while num_steps < steps:
+                state = env_statedict_to_state(state_dict, self.env_name)
+                self.global_bias = -global_bias
+                inv_state = self.translation_inv_state(state)
+
+                inv_action = policy.select_action(np.array(inv_state), inv_prev_action)
+                self.global_bias = global_bias
+                action = self.translation_inv_action(inv_action)
+
+                state_dict, reward, done, _ = self.env.step(action)
+                if render:
+                    self.env.render()
+                    time.sleep(delay)
+                inv_prev_action = inv_action.copy()
+                avg_reward += reward
+                num_steps += 1
+
+        avg_reward /= eval_episodes
+        print("average reward: ", avg_reward)
 
 
 

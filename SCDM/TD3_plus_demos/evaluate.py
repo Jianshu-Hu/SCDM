@@ -5,30 +5,14 @@ import numpy as np
 import time
 from main import env_statedict_to_state
 
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her"
-# env_name = "EggCatchOverarm-v0"
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_her_exclude_demo"
-# env_name = "EggCatchOverarm-v0"
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_normalizer"
-# env_name = "EggCatchOverarm-v0"
-filename = "models/TD3_EggCatchOverarm-v0_0_1_random_goal_demo_with_01_translation"
-env_name = "EggCatchOverarm-v1"
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_restricted_translation_traj"
-# env_name = "EggCatchOverarm-v0"
-# filename = "models/TD3_EggCatchOverarm-v0_0_EggCatchOverarm-v0_with_rotation_traj"
-# env_name = "EggCatchOverarm-v0"
+filename = "models/TD3_EggCatchOverarm-v0_0_random_goal_demo_2"
+env_name = "EggCatchOverarm-v0"
 
-# filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her"
-# env_name = "EggCatchUnderarm-v0"
-# filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_her_exclude_demo"
-# env_name = "EggCatchUnderarm-v0"
-# filename = "models/TD3_EggCatchUnderarm-v0_0_EggCatchUnderarm-v0_with_translation_traj"
-# env_name = "EggCatchUnderarm-v0"
+filename = "models/TD3_EggCatchOverarm-v0_1_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions"
+env_name = "EggCatchOverarm-v0"
 
-# filename = "models/TD3_TwoEggCatchUnderArm-v0_0_without_symmetry_traj_without_normalizer"
-# env_name = "TwoEggCatchUnderArm-v0"
-# filename = "models/TD3_TwoEggCatchUnderArm-v0_0_add_symmetry_to_replay_buffer"
-# env_name = "TwoEggCatchUnderArm-v0"
+# filename = "models/TD3_EggCatchUnderarm-v0_0_1_random_goal_demo_exclude_demo_egg_in_the_air"
+# env_name = "EggCatchUnderarm-v0"
 
 # filename = "models/TD3_EggHandOver-v0_0_EggHandOver-v0_with_normalizer"
 # env_name = "EggHandOver-v0"
@@ -60,7 +44,8 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
         prev_action = np.zeros((eval_env.action_space.shape[0],))
         while num_steps < steps:
             state = env_statedict_to_state(state_dict, env_name)
-            action = policy.select_action(np.array(state), prev_action)
+            action = policy.select_action(np.array(state), prev_action, use_invariance_in_policy=False)
+
             state_dict, reward, done, _ = eval_env.step(action)
             if render:
                 eval_env.render()
@@ -82,10 +67,11 @@ kwargs = {
     "state_dim": env_statedict_to_state(env.env._get_obs(), env_name).shape[0],
     "action_dim": env.action_space.shape[0],
     "beta": beta,
-    "max_action": 1.0
+    "max_action": 1.0,
+    "file_name": ""
 }
 
 policy = TD3.TD3(**kwargs)
 policy.load(filename)
 
-eval_policy(policy, env_name, seed=1, eval_episodes=5, render=True, delay=0.03)
+eval_policy(policy, env_name, seed=1, eval_episodes=10, render=True, delay=0.03)

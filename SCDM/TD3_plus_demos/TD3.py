@@ -76,6 +76,7 @@ class TD3(object):
 		action_dim,
 		max_action,
 		env_name,
+		file_name,
 		discount=0.99,
 		tau=0.005,
 		policy_noise=0.2,
@@ -104,16 +105,22 @@ class TD3(object):
 		self.normaliser = Normaliser(state_dim, default_clip_range=5.0)
 
 		self.total_it = 0
+		self.save_freq = 5000
+		self.file_name_critic = file_name + "_critic_loss"
+		self.file_name_actor = file_name + "_actor_loss"
+		self.critic_loss_saver = []
+		self.actor_loss_saver = []
 
+		self.env_name = env_name
 		# invariant sample generator
 		if env_name == 'TwoEggCatchUnderArm-v0':
 			self.invariance_definition = invariance.TwoEggCatchUnderArmInvariance()
 		elif env_name == 'EggCatchOverarm-v0':
 			self.invariance_definition = invariance.CatchOverarmInvariance()
-		elif env_name == 'EggCatchUnderarm-v0' or env_name == "EggCatchUnderarm-v1":
+		elif env_name == 'EggCatchUnderarm-v0':
 			self.invariance_definition = invariance.CatchUnderarmInvariance()
 		else:
-			print('Invariance is not implemented for these envs')
+			print('Invariance regularization is not implemented for these envs')
 
 	def initialize_with_demo(self, demo_replay_buffer, batch_size=256, max_iteration=50000):
 		# train policy
@@ -172,7 +179,7 @@ class TD3(object):
 			self.critic_optimizer.step()
 			print("iter: ", iter, " loss: ", critic_loss.cpu().data.numpy())
 
-	def select_action(self, state, prev_action, noise=None):
+	def select_action(self, state, prev_action, noise=None, use_invariance_in_policy=False):
 		state = torch.FloatTensor(self.normaliser.normalize(state.reshape(1, -1))).to(device)
 		prev_action = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
 		mean_ac = self.actor(state, prev_action).cpu().data.numpy().flatten()
@@ -182,14 +189,30 @@ class TD3(object):
 
 
 	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, batch_size=100,
-			  add_invariance=False, add_bc_loss=False):
+			  add_invariance_regularization=False, add_hand_invariance_regularization=False, add_bc_loss=False):
 		self.total_it += 1
 
 		# Sample replay buffer 
-		state, action, next_state, reward, prev_action, ind = replay_buffer.sample(batch_size)
+		state, action, next_state, reward, prev_action, all_invariance, ind = replay_buffer.sample(batch_size)
+
+		if add_hand_invariance_regularization:
+			invariance = (all_invariance!=0)
+			invariant_state = state[invariance, :]
+			invariant_state = torch.FloatTensor(self.normaliser.normalize(invariant_state.cpu().data.numpy())).to(device)
+
+			invariant_action = action[invariance, :]
+			new_invariant_action = torch.FloatTensor(self.invariance_definition.hand_invariance_samples_generator
+													 (invariant_action.cpu().data.numpy(), all_invariance)).to(device)
+
+			invariant_next_state = next_state[invariance, :]
+			invariant_next_state = torch.FloatTensor(self.normaliser.normalize(invariant_next_state.cpu().data.numpy())).to(device)
+
+			# invariant_reward = reward[invariance, :]
+			invariant_prev_action = prev_action[invariance, :]
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
+		add_hand_invariance_regularization_target = False
 		with torch.no_grad():
 			# Select action according to policy and add clipped noise
 			noise = (
@@ -203,14 +226,25 @@ class TD3(object):
 			).clamp(-self.max_action, self.max_action)
 
 			# Compute the target Q value
-			target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
+			if add_hand_invariance_regularization_target:
+				invariant_next_action = next_action[invariance, :]
+				target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
+				inv_target_Q1, inv_target_Q2 = self.critic_target(invariant_next_state,
+																		invariant_next_action, new_invariant_action)
+				target_Q1[invariance, :] = (target_Q1[invariance, :]+inv_target_Q1)/2
+				target_Q2[invariance, :] = (target_Q2[invariance, :]+inv_target_Q2)/2
+			else:
+				target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
+
 			target_Q = torch.min(target_Q1, target_Q2)
 			target_Q = reward + self.discount * target_Q
 
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
 
-		if add_invariance:
+		add_hand_invariance_regularization_Q=False
+		add_hand_invariance_regularization_auto = True
+		if add_invariance_regularization:
 			sum_artificial_Q1 = torch.zeros(current_Q1.size()).to(device)
 			sum_artificial_Q2 = torch.zeros(current_Q2.size()).to(device)
 			for i in range(len(invariance_replay_buffer_list)):
@@ -230,38 +264,74 @@ class TD3(object):
 			critic_loss =  F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)\
 						   + F.mse_loss(current_Q1, sum_artificial_Q1/len(invariance_replay_buffer_list)) \
 						   + F.mse_loss(current_Q2, sum_artificial_Q2/len(invariance_replay_buffer_list))
+		elif add_hand_invariance_regularization_Q:
+			Q1 = current_Q1[invariance, :]
+			Q2 = current_Q2[invariance, :]
+			inv_Q1, inv_Q2 = self.critic(invariant_state, new_invariant_action, invariant_prev_action)
+			regularization_loss = F.mse_loss(inv_Q1, Q1)+F.mse_loss(inv_Q2, Q2)
+			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + regularization_loss
+		elif add_hand_invariance_regularization_auto:
+			with torch.no_grad():
+				throwing_hand_fixed_action = torch.FloatTensor(
+					self.invariance_definition.throwing_hand_invariance_samples_generator(action.cpu().data.numpy()))\
+					.to(device)
+				inv_Q1, inv_Q2 = self.critic(state, throwing_hand_fixed_action, prev_action)
+				diff = F.mse_loss(inv_Q1, current_Q1, reduction='none') + F.mse_loss(inv_Q2, current_Q2, reduction='none')
+				size = torch.exp(-diff)
+			regularization_loss = (size*(F.mse_loss(inv_Q1, current_Q1, reduction='none')+F.mse_loss(inv_Q2, current_Q2, reduction='none'))).mean()
+			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + regularization_loss
 		else:
 			# Compute critic loss
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
 
+		self.critic_loss_saver.append(critic_loss.item())
 		# Optimize the critic
 		self.critic_optimizer.zero_grad()
 		critic_loss.backward()
 		self.critic_optimizer.step()
 
+
 		# Delayed policy updates
+		add_hand_invariance_regularization_policy = True
 		if self.total_it % self.policy_freq == 0:
 			if add_bc_loss:
 				# sample from demonstrations
-				demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, demo_ind = \
+				demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, _, _ = \
 					demo_replay_buffer.sample(int(batch_size/10))
 				demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
-				demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
+				# demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
 				policy_action = self.beta*self.actor(demo_state, demo_prev_action) + (1-self.beta)*demo_prev_action
-				# behavior cloing loss
-				behavior_cloning_loss = torch.mean(F.mse_loss(policy_action, demo_action, reduction='none'), dim=1)
-				# Q-filter
-				policy_Q1, policy_Q2 = self.critic(demo_state, policy_action, demo_prev_action)
-				demo_Q1, demo_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
-				filter = torch.where(demo_Q1+demo_Q2 > policy_Q1+policy_Q2, 1, 0)
-				filtered_bc_loss = torch.mean(behavior_cloning_loss*filter)
-				# Compute actor losse
+				Q_filter=True
+				if Q_filter:
+					# behavior cloing loss
+					behavior_cloning_loss = torch.mean(F.mse_loss(policy_action, demo_action, reduction='none'), dim=1)
+					# Q-filter
+					policy_Q1, policy_Q2 = self.critic(demo_state, policy_action, demo_prev_action)
+					demo_Q1, demo_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
+					filter = torch.where(demo_Q1+demo_Q2 > policy_Q1+policy_Q2, 1, 0)
+					filtered_bc_loss = torch.mean(behavior_cloning_loss*filter)
+					# Compute actor losse
+					actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
+						+ filtered_bc_loss
+				else:
+					# behavior cloing loss
+					behavior_cloning_loss = F.mse_loss(policy_action, demo_action)
+					# Compute actor losse
+					actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
+						+ behavior_cloning_loss
+			elif add_hand_invariance_regularization_policy:
+				# fix the throwing hand after throwing
+				new_fixed_action = torch.FloatTensor(np.zeros(invariant_action.cpu().data.numpy().shape)).to(device)
+				# new_fixed_action = torch.FloatTensor(self.invariance_definition.hand_fixed_samples_generator
+				# 									 (invariant_action.cpu().data.numpy(), all_invariance)).to(device)
+				hand_moving_loss = F.mse_loss(invariant_action, new_fixed_action)
 				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
-					+ filtered_bc_loss
+							 + 0.1*hand_moving_loss
 			else:
 				# Compute actor losse
 				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
-			
+
+			self.actor_loss_saver.append(actor_loss.item())
 			# Optimize the actor 
 			self.actor_optimizer.zero_grad()
 			actor_loss.backward()
@@ -273,6 +343,9 @@ class TD3(object):
 
 			for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
 				target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
+		if self.total_it % self.save_freq == 0:
+			np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)
+			np.save(f"./results/{self.file_name_actor}", self.actor_loss_saver)
 
 
 	def save(self, filename):

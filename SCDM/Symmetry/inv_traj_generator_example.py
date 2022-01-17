@@ -30,9 +30,9 @@ class CatchUnderarmInvTrajGenerator(InvariantTrajGenerator):
         self.tf_global_to_hand2 = np.linalg.inv(self.tf_hand2_to_global)
 
         # translation max bias
-        self.x_max_bias = 0.01
-        self.y_max_bias = 0.01
-        self.z_max_bias = 0.01
+        self.x_max_bias = 0.1
+        self.y_max_bias = 0.1
+        self.z_max_bias = 0.1
 
         # rotation max bias
         self.zrot_max_bias = 0.01
@@ -67,9 +67,9 @@ class CatchOverarmInvTrajGenerator(InvariantTrajGenerator):
         self.tf_global_to_hand2 = np.linalg.inv(self.tf_hand2_to_global)
 
         # translation max bias
-        self.x_max_bias = 0.01
-        self.y_max_bias = 0.01
-        self.z_max_bias = 0.01
+        self.x_max_bias = 0.1
+        self.y_max_bias = 0.1
+        self.z_max_bias = 0.1
 
         # rotation max bias
         self.zrot_max_bias = 0.01
@@ -82,15 +82,17 @@ class CatchOverarmInvTrajGenerator(InvariantTrajGenerator):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env', type=str, default="EggCatchUnderarm-v1")
+    parser.add_argument('--env', type=str, default="EggCatchOverarm-v0")
     parser.add_argument('--delay', type=float, default=0.03, help="time between frames")
     args = parser.parse_args()
 
-    invtrajgen = CatchUnderarmInvTrajGenerator(args)
-    traj_list, invariant_traj_list = invtrajgen.generate_translation_inv_traj()
-    # model_file = "../TD3_plus_demos/models/TD3_EggCatchUnderarm-v0_0_random_goal_demo_1"
-    # for i in range(len(traj_list)):
-    #     invtrajgen.evaluate_Q_value(model_file, traj_list[i], invariant_traj_list[i])
+    invtrajgen = CatchOverarmInvTrajGenerator(args)
+    #traj_list, invariant_traj_list = invtrajgen.generate_translation_inv_traj()
+    model_file_1 = "../TD3_plus_demos/models/TD3_EggCatchOverarm-v0_0_random_goal_demo_2"
+    model_file_2 = "../TD3_plus_demos/models/TD3_EggCatchOverarm-v0_1_random_goal_demo_exclude_demo_egg" \
+                 "_in_the_air_add_hand_action_invariance_regularization_new"
+    # invtrajgen.evaluate_transformed_policy(model_file)
+    invtrajgen.evaluate_Q_value(model_file_1, model_file_2)
     # traj_list, invariant_traj_list = invtrajgen.generate_rotation_inv_traj()
     # invtrajgen.inv_traj_render(traj_list[1], invariant_traj_list[1], False)
     # invtrajgen.inv_traj_render(traj_list[2], invariant_traj_list[2], False)

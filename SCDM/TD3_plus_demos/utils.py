@@ -10,8 +10,7 @@ def env_statedict_to_state(state_dict, env_name):
 	# one hand
 	env_list1 = ['PenSpin-v0']
 	# two hands with one object
-	env_list2 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggHandOver-v0',
-				 'EggCatchOverarm-v1', 'EggCatchUnderarm-v1',
+	env_list2 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggHandOver-v0', 'EggCatchUnderarmHard-v0',
 				 'BlockCatchOverarm-v0', 'BlockCatchUnderarm-v0', 'BlockHandOver-v0',
 				 'PenCatchOverarm-v0', 'PenCatchUnderarm-v0', 'PenHandOver-v0']
 	# two hands with two objects
@@ -49,11 +48,14 @@ class DemoProcessor():
 		demo_goals = []
 		for file in self.files:
 			traj = joblib.load("demonstrations/demonstrations" + "_" + self.env + self.demo_tag + "/" + file)
+			#if len(traj["actions"]) != 50:
+			#	continue
 			demo_states_traj_throw = []
 			demo_prev_actions_traj_throw = []
 			demo_states_traj_catch = []
 			demo_prev_actions_traj_catch = []
-			env_list1 = ["EggCatchUnderarm-v0", "EggCatchUnderarm-v1", "EggCatchOverarm-v0", "EggCatchOverarm-v1"]
+			env_list1 = ["EggCatchUnderarm-v0", "EggCatchUnderarm-v1", "EggCatchUnderarmHard-v0",
+						 "EggCatchOverarm-v0"]
 			if self.env in env_list1:
 				initial_position = traj["sim_states"][0].qpos[60:63]
 				goal_position = traj["goal"][0:3]
@@ -66,12 +68,20 @@ class DemoProcessor():
 					prev_action = np.zeros(traj["actions"][0].shape)
 				else:
 					prev_action = traj["actions"][k - 1]
-				if abs((state.qpos[60:63] - initial_position)[y_axis_index]) <= 0.1:
-					demo_states_traj_throw.append(state)
-					demo_prev_actions_traj_throw.append(prev_action.copy())
-				elif abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
+
+				if abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
 					demo_states_traj_catch.append(state)
 					demo_prev_actions_traj_catch.append(prev_action.copy())
+				else:
+					demo_states_traj_throw.append(state)
+					demo_prev_actions_traj_throw.append(prev_action.copy())
+
+				#if abs((state.qpos[60:63] - initial_position)[y_axis_index]) <= 0.15:
+				#	demo_states_traj_throw.append(state)
+				#	demo_prev_actions_traj_throw.append(prev_action.copy())
+				#elif abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
+				#	demo_states_traj_catch.append(state)
+				#	demo_prev_actions_traj_catch.append(prev_action.copy())
 			demo_states_throw.append(demo_states_traj_throw)
 			demo_prev_actions_throw.append(demo_prev_actions_traj_throw)
 			demo_states_catch.append(demo_states_traj_catch)
@@ -82,16 +92,42 @@ class DemoProcessor():
 
 
 class ReplayBuffer(object):
-	def __init__(self, state_dim, action_dim, max_size=int(1e6)):
+	def __init__(self, state_dim, action_dim, env_name, max_size=int(1e6)):
 		self.max_size = max_size
 		self.ptr = 0
 		self.size = 0
+		self.env = env_name
 
 		self.state = np.zeros((max_size, state_dim))
 		self.action = np.zeros((max_size, action_dim))
 		self.prev_action = np.zeros((max_size, action_dim))
 		self.next_state = np.zeros((max_size, state_dim))
 		self.reward = np.zeros((max_size, 1))
+
+		self.invariance = np.zeros((max_size, 1)).astype(int)
+		env_list1 = ["EggCatchUnderarm-v0"]
+		env_list2 = ["EggCatchOverarm-v0"]
+		env_list3 = ["EggCatchUnderarmHard-v0"]
+		if self.env in env_list1:
+			self.y_axis_index = 1
+			self.throwing_threshold = 0.3
+			# self.catching_threshold = 0.6
+			self.catching_threshold = 0.8
+			self.initial_pos = np.array([0.98953, 0.36191, 0.33070])
+		elif self.env in env_list2:
+			self.y_axis_index = 1
+			# self.throwing_threshold = 0.5
+			self.throwing_threshold = 0.6
+			self.catching_threshold = 1.2
+			self.initial_pos = np.array([1, -0.2, 0.40267])
+		elif self.env in env_list3:
+			self.y_axis_index = 1
+			self.throwing_threshold = 0.5
+			self.catching_threshold = 1
+			self.initial_pos = np.array([0.99774, 0.06903, 0.31929])
+		else:
+			raise NotImplementedError
+
 
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -101,6 +137,13 @@ class ReplayBuffer(object):
 		self.next_state[self.ptr] = next_state
 		self.reward[self.ptr] = reward
 		self.prev_action[self.ptr] = prev_action
+
+		# throwing hand2 invariance
+		if np.linalg.norm(state[-20:-17] - self.initial_pos) >= self.throwing_threshold:
+			self.invariance[self.ptr] = 2
+		# catching hand1 invariance
+		elif np.linalg.norm(state[-20:-17] - state[-7:-4]) >= self.catching_threshold:
+			self.invariance[self.ptr] = 1
 
 		self.ptr = (self.ptr + 1) % self.max_size
 		self.size = min(self.size + 1, self.max_size)
@@ -118,13 +161,15 @@ class ReplayBuffer(object):
 			torch.FloatTensor(self.next_state[ind]).to(self.device),
 			torch.FloatTensor(self.reward[ind]).to(self.device),
 			torch.FloatTensor(self.prev_action[ind]).to(self.device),
+			self.invariance[ind].reshape(-1),
 			ind
 		)
 
 
+
 class HindsightReplayBuffer(ReplayBuffer):
 	def __init__(self, state_dim, action_dim, env_name, segment_length, her_type, compute_reward):
-		super().__init__(state_dim, action_dim, segment_length)
+		super().__init__(state_dim, action_dim, env_name, segment_length)
 		# two hands with one object
 		env_list2 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggHandOver-v0',
 					 'BlockCatchOverarm-v0', 'BlockCatchUnderarm-v0', 'BlockHandOver-v0',
@@ -206,15 +251,16 @@ class HindsightReplayBuffer(ReplayBuffer):
 
 class InvariantReplayBuffer(ReplayBuffer):
 	def __init__(self, state_dim, action_dim, env_name, max_size=int(1e6)):
-		super().__init__(state_dim, action_dim, max_size)
+		super().__init__(state_dim, action_dim, env_name, max_size)
 		if env_name == 'TwoEggCatchUnderArm-v0':
 			self.invariance_definition = invariance.TwoEggCatchUnderArmInvariance()
-		elif env_name == 'EggCatchOverarm-v0':
+		elif env_name == 'EggCatchOverarm-v0' or env_name == 'EggCatchOverarm-v1' or env_name == 'EggCatchOverarm-v2'\
+				or env_name == 'EggCatchOverarm-v3':
 			self.invariance_definition = invariance.CatchOverarmInvariance()
-		elif env_name == 'EggCatchUnderarm-v0' or env_name == "EggCatchUnderarm-v1":
+		elif env_name == 'EggCatchUnderarm-v0' or env_name == "EggCatchUnderarm-v1" or env_name == "EggCatchUnderarm-v3":
 			self.invariance_definition = invariance.CatchUnderarmInvariance()
 		else:
-			print('Invariance is not implemented for these envs')
+			print('Invariant replay buffer is not implemented for these envs')
 
 	def create_invariant_trajectory(self, inv_type, use_informative, policy):
 		if use_informative:
@@ -252,7 +298,7 @@ class InvariantReplayBuffer(ReplayBuffer):
 
 class DemoReplayBuffer(ReplayBuffer):
 	def __init__(self, state_dim, action_dim, env_name, demo_tag, env_demo, max_size=int(1e6)):
-		super().__init__(state_dim, action_dim, max_size)
+		super().__init__(state_dim, action_dim, env_name, max_size)
 		self.env = env_name
 		self.demo_tag = demo_tag
 		files = os.listdir("demonstrations/demonstrations" + "_" + env_name + demo_tag)
@@ -260,6 +306,8 @@ class DemoReplayBuffer(ReplayBuffer):
 
 		for file in self.files:
 			traj = joblib.load("demonstrations/demonstrations" + "_" + self.env + self.demo_tag + "/" + file)
+			#if len(traj["actions"]) != 50:
+			#	continue
 			env_demo.reset()
 			for k, state in enumerate(traj["sim_states"]):
 				prev_obs_dict = env_demo.env._get_obs()

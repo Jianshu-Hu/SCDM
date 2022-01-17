@@ -3,9 +3,19 @@ import matplotlib.pyplot as plt
 import math
 overarm_prefix = "results/TD3_EggCatchOverarm-v0_"
 overarm_critic_prefix = "results_critic/TD3_EggCatchOverarm-v0_"
+overarm_prefix_v1 = "results/TD3_EggCatchOverarm-v1_"
+overarm_critic_prefix_v1 = "results_critic/TD3_EggCatchOverarm-v1_"
+overarm_prefix_v2 = "results/TD3_EggCatchOverarm-v2_"
+overarm_critic_prefix_v2 = "results_critic/TD3_EggCatchOverarm-v2_"
+overarm_prefix_v3 = "results/TD3_EggCatchOverarm-v3_"
+overarm_critic_prefix_v3 = "results_critic/TD3_EggCatchOverarm-v3_"
+
 underarm_prefix = "results/TD3_EggCatchUnderarm-v0_"
+underarmhard_prefix = "results/TD3_EggCatchUnderarmHard-v0_"
 underarm_prefix_v1 = "results/TD3_EggCatchUnderarm-v1_"
 underarm_critic_prefix_v1 = "results_critic/TD3_EggCatchUnderarm-v1_"
+underarm_prefix_v3 = "results/TD3_EggCatchUnderarm-v3_"
+underarm_critic_prefix_v3 = "results_critic/TD3_EggCatchUnderarm-v3_"
 # overarm and underarm
 tag_1 = ["0_random_goal_demo_1", "0_random_goal_demo_2", "0_random_goal_demo_3", "0_random_goal_demo_4", "0_random_goal_demo_5"]
 tag_2 = ["random_goal_demo_with_normalizer_1", "random_goal_demo_with_normalizer_2", "random_goal_demo_with_normalizer_3"]
@@ -73,18 +83,196 @@ tag_25 = ["0_1_random_goal_demo_exclude_demo_egg_in_the_air_5e5_buffer_size_add_
           "0_2_random_goal_demo_exclude_demo_egg_in_the_air_5e5_buffer_size_add_bc_loss",
           "0_3_random_goal_demo_exclude_demo_egg_in_the_air_5e5_buffer_size_add_bc_loss"]
 
+# tag_26 = ["0_1_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air",
+#           "0_2_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air",
+#           "0_3_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air"]
 tag_26 = ["0_1_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air",
-          "0_2_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air",
           "0_3_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air"]
 
+# tag_27 = ["0_1_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization",
+#           "2_2_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization",
+#           "3_3_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization"]
 tag_27 = ["0_1_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization",
-          "2_2_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization",
-          "3_3_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization"]
+          "2_2_random_goal_demo_larger_workspace_exclude_demo_egg_in_the_air_translation_regularization"]
 
 tag_28 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_initialize_with_demo",
           "2_random_goal_demo_exclude_demo_egg_in_the_air_initialize_with_demo",
           "3_random_goal_demo_exclude_demo_egg_in_the_air_initialize_with_demo"]
 
+tag_29 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state"]
+
+tag_30 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_with_translation",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_with_translation",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_with_translation"]
+
+tag_31 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_bc_loss_larger_critic_lr",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_bc_loss_larger_critic_lr",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_bc_loss_larger_critic_lr"]
+
+tag_32 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_bc_loss_4e-4_critic_lr",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_bc_loss_4e-4_critic_lr",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_bc_loss_4e-4_critic_lr"]
+
+tag_33 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_translated_demos",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_translated_demos",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_translated_demos"]
+
+tag_34 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos"]
+
+
+tag_35 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation"]
+tag_36 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_with_translation_regularization",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_with_translation_regularization",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_with_translation_regularization"]
+
+tag_37 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation_regularization",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation_regularization",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation_regularization"]
+
+tag_38 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation_samples",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation_samples",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_translation_samples"]
+
+tag_39 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_bc_loss",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_bc_loss",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_bc_loss"]
+
+tag_40 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_bc_loss_without_filter",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_bc_loss_without_filter",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_random_initial_state_new_demos_with_bc_loss_without_filter"]
+
+tag_41 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization"]
+
+tag_42 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_more_samples",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_more_samples",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_more_samples"]
+
+tag_43 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_with_normalizer",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_with_normalizer",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_with_normalizer"]
+
+tag_44 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_with_normalizer_add_bc_loss_without_filter",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_with_normalizer_add_bc_loss_without_filter",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_with_normalizer_add_bc_loss_without_filter"]
+
+tag_45 = ["0_random_goal_demo_with_normalizer_1",
+          "0_random_goal_demo_with_normalizer_2",
+          "0_random_goal_demo_with_normalizer_3"]
+
+tag_46 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_use_invariance_in_policy",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_use_invariance_in_policy",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_use_invariance_in_policy"]
+
+tag_47 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_more_samples_more_actions",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_more_samples_more_actions",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_more_samples_more_actions"]
+
+tag_48 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_throw_decay_slower",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_throw_decay_slower",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_throw_decay_slower"]
+
+tag_49 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_throw_decay_faster",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_throw_decay_faster",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_throw_decay_faster"]
+tag_50 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_fix_throw_prob",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_fix_throw_prob",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_fix_throw_prob"]
+
+tag_51 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new"]
+
+tag_52 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new_average_target",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new_average_target",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new_average_target"]
+
+tag_53 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new_add_policy_penalty",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new_add_policy_penalty",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_hand_action_invariance_regularization_new_add_policy_penalty"]
+
+tag_54 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_add_two_hand_action_invariance_regularization_new",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_add_two_hand_action_invariance_regularization_new",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_add_two_hand_action_invariance_regularization_new"]
+
+tag_55 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_fix_larger_throw_prob",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_fix_larger_throw_prob",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_fix_larger_throw_prob"]
+
+tag_56 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_fix_smaller_throw_prob",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_fix_smaller_throw_prob",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_fix_smaller_throw_prob"]
+
+tag_57 = ["1_random_goal_demo_demo_divided_into_two_part",
+          "2_random_goal_demo_demo_divided_into_two_part",
+          "3_random_goal_demo_demo_divided_into_two_part"]
+
+tag_58 = ["1_random_goal_demo_only_exclude_demo_egg_in_the_air",
+          "2_random_goal_demo_only_exclude_demo_egg_in_the_air",
+          "3_random_goal_demo_only_exclude_demo_egg_in_the_air"]
+
+tag_59 = ["1_random_goal_demo_exclude_demo_egg_in_the_air_fix_smaller_throw_prob_with_normalizer",
+          "2_random_goal_demo_exclude_demo_egg_in_the_air_fix_smaller_throw_prob_with_normalizer",
+          "3_random_goal_demo_exclude_demo_egg_in_the_air_fix_smaller_throw_prob_with_normalizer"]
+
+tag_60 = ["1_random_goal_demo_demo_divided_into_two_part_catch_first",
+          "2_random_goal_demo_demo_divided_into_two_part_catch_first",
+          "3_random_goal_demo_demo_divided_into_two_part_catch_first"]
+
+tag_61 = ["1_random_goal_demo_demo_divided_into_two_part_add_bc_loss_with_Q_filter",
+          "2_random_goal_demo_demo_divided_into_two_part_add_bc_loss_with_Q_filter",
+          "3_random_goal_demo_demo_divided_into_two_part_add_bc_loss_with_Q_filter"]
+tag_62 = ["1_random_goal_demo_demo_divided_into_two_part_catch_first_add_bc_loss_with_Q_filter",
+          "2_random_goal_demo_demo_divided_into_two_part_catch_first_add_bc_loss_with_Q_filter",
+          "3_random_goal_demo_demo_divided_into_two_part_catch_first_add_bc_loss_with_Q_filter"]
+
+tag_63 = ["1_random_goal_demo_demo_divided_into_two_part_average_target",
+          "2_random_goal_demo_demo_divided_into_two_part_average_target",
+          "3_random_goal_demo_demo_divided_into_two_part_average_target"]
+
+tag_64 = ["1_random_goal_demo_demo_divided_into_two_part_add_two_hand_action_invariance_regularization_larger_threshold",
+          "2_random_goal_demo_demo_divided_into_two_part_add_two_hand_action_invariance_regularization_larger_threshold",
+          "3_random_goal_demo_demo_divided_into_two_part_add_two_hand_action_invariance_regularization_larger_threshold"]
+
+tag_65 = ["1_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions",
+          "2_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions",
+          "3_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions"]
+tag_66 = ["1_random_goal_demo_demo_divided_into_two_part_add_two_hand_action_invariance_regularization",
+          "2_random_goal_demo_demo_divided_into_two_part_add_two_hand_action_invariance_regularization",
+          "3_random_goal_demo_demo_divided_into_two_part_add_two_hand_action_invariance_regularization"]
+tag_67 = ["1_random_goal_demo_demo_divided_into_two_part_only_long_demo",
+          "2_random_goal_demo_demo_divided_into_two_part_only_long_demo",
+          "3_random_goal_demo_demo_divided_into_two_part_only_long_demo"]
+tag_68 = ["1_random_goal_demo_demo_divided_into_two_part_only_short_demo",
+          "2_random_goal_demo_demo_divided_into_two_part_only_short_demo",
+          "3_random_goal_demo_demo_divided_into_two_part_only_short_demo"]
+
+tag_69 = ["4_random_goal_demo_demo_divided_into_two_part_debug_Q_at_50",
+          "5_random_goal_demo_demo_divided_into_two_part_debug_Q_at_50",
+          "6_random_goal_demo_demo_divided_into_two_part_debug_Q_at_50"]
+
+tag_70 = ["1_random_goal_demo_demo_divided_into_two_part_add_hand_action_invariance_regularization_larger_threshold",
+          "2_random_goal_demo_demo_divided_into_two_part_add_hand_action_invariance_regularization_larger_threshold",
+          "3_random_goal_demo_demo_divided_into_two_part_add_hand_action_invariance_regularization_larger_threshold"]
+tag_71 = ["1_random_goal_demo","2_random_goal_demo","3_random_goal_demo"]
+
+tag_72 = ["1_random_goal_demo_demo_divided_into_two_part_average_target_larger_threshold",
+          "2_random_goal_demo_demo_divided_into_two_part_average_target_larger_threshold",
+          "3_random_goal_demo_demo_divided_into_two_part_average_target_larger_threshold"]
+
+tag_73 = ["1_random_goal_demo_demo_divided_into_two_part_add_auto_regularization",
+          "2_random_goal_demo_demo_divided_into_two_part_add_auto_regularization",
+          "3_random_goal_demo_demo_divided_into_two_part_add_auto_regularization"]
+tag_74 = ["1_random_goal_demo_demo_divided_into_two_part_add_auto_regularization_add_policy_penalty_all_actions",
+          "2_random_goal_demo_demo_divided_into_two_part_add_auto_regularization_add_policy_penalty_all_actions",
+          "3_random_goal_demo_demo_divided_into_two_part_add_auto_regularization_add_policy_penalty_all_actions"]
 
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
@@ -205,30 +393,92 @@ def compare_policy_critic(prefix, prefix_critic, tag):
     plt.show()
 
 
-compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_25)
-compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_26)
-compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_20)
-compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_27)
+def plot_loss(prefix=overarm_prefix, tag=tag_59):
+    fig, axs = plt.subplots(2*len(tag), 1)
+    for i in range(len(tag)):
+        critic_loss = np.load(prefix + tag[i] + "_critic_loss.npy")
+        actor_loss = np.load(prefix + tag[i] + "_actor_loss.npy")
+        axs[2*i].plot(range(len(critic_loss)), critic_loss, label="critic_loss")
+        axs[2*i+1].plot(range(len(actor_loss)), actor_loss, label="actor_loss")
+
+        axs[2*i].set_xlabel('timesteps')
+        axs[2*i].set_ylabel('critic loss')
+        axs[2*i].legend()
+
+        axs[2*i+1].set_xlabel('timesteps/2')
+        axs[2*i+1].set_ylabel('actor loss')
+        axs[2 * i+1].legend()
+
+        axs[0].set_title(prefix + tag[0])
+    plt.show()
+
+#labellist = ["random_initial_state", "random_initial_state_new_demos", "with_translation", "with_translation_regularization"]
+#compare(prefix=overarm_prefix_v3, tag_list=[tag_29, tag_34, tag_35, tag_37], title="new_demos", label_list=labellist)
+
+# compare_policy_critic(underarm_prefix_v3, underarm_critic_prefix_v3, tag_33)
+# compare_policy_critic(overarm_prefix_v3, overarm_critic_prefix_v3, tag_30)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_44)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_48)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_50)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_55)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_56)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_57)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_58)
+# compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_32)
+# compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_264
+# compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_20)
+# compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_27)
 # baseline
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_22, tag_23, tag_24], title="baseline")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_24, tag_28], title="baseline")
+# plot_loss(prefix=overarm_prefix, tag=tag_59)
+# plot_loss(prefix=overarm_prefix, tag=tag_60)
+#plot_all_fig(prefix=overarm_prefix, tag=tag_57)
+#plot_all_fig(prefix=overarm_prefix, tag=tag_59)
+#plot_all_fig(prefix=overarm_prefix, tag=tag_60)
+#plot_all_fig(prefix=overarm_prefix, tag=tag_61)
+#plot_all_fig(prefix=overarm_prefix, tag=tag_62)
+#plot_all_fig(prefix=underarm_prefix, tag=tag_67)
+#plot_all_fig(prefix=overarm_prefix, tag=tag_69)
+#plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
+compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63,tag_64,tag_65], title="hand_invariance")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_70, tag_65, tag_66, tag_72], title="hand_invariance")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_73, tag_74], title="hand_invariance")
+compare(prefix=underarm_prefix, tag_list=[tag_57, tag_67, tag_68], title="demo_len")
+plot_all_fig(prefix=overarm_prefix, tag=tag_69)
+compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_69)
+
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_43, tag_24, tag_28], title="baseline")
+compare(prefix=underarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53, tag_54], title="new_hand_invariance")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_22, tag_23, tag_24, tag_25], title="baseline")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_24], title="baseline")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_45, tag_21, tag_24, tag_43, tag_44], title="baseline")
+compare(prefix=overarm_prefix, tag_list=[tag_21, tag_48, tag_49, tag_50, tag_55, tag_56, tag_59], title="decay rate")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_57, tag_58, tag_60, tag_61, tag_62], title="exclude demo")
+# compare(prefix=overarm_prefix, tag_list=[tag_21, tag_41, tag_42, tag_46, tag_47], title="hand_invariance")
+compare(prefix=overarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53,tag_54], title="new_hand_invariance")
+# compare(prefix=overarm_prefix, tag_list=[tag_24, tag_32, tag_31], title="critic_lr")
 # plot_all_fig(prefix=overarm_prefix, tag=tag_1)
 # plot_all_fig(prefix=overarm_prefix, tag=tag_21)
 # plot_all_fig(prefix=overarm_prefix, tag=tag_24)
-compare(prefix=underarm_prefix_v1, tag_list=[tag_19, tag_26, tag_20, tag_27], title="baseline")
+
+# compare(prefix=underarm_prefix_v1, tag_list=[tag_19, tag_26, tag_20, tag_27], title="baseline")
+# compare(prefix=overarm_prefix_v1, tag_list=[tag_29, tag_30, tag_33], title="baseline")
+# compare(prefix=overarm_prefix_v2, tag_list=[tag_29, tag_30, tag_33], title="baseline")
+# compare(prefix=overarm_prefix_v3, tag_list=[tag_29, tag_30, tag_36, tag_33], title="baseline")
+# compare(prefix=overarm_prefix_v3, tag_list=[tag_29, tag_34, tag_35, tag_37, tag_38], title="new_demos")
+# compare(prefix=overarm_prefix_v3, tag_list=[tag_34, tag_39, tag_40], title="new_demos_add_bc_loss")
+# compare(prefix=underarm_prefix_v3, tag_list=[tag_29, tag_30, tag_36, tag_33], title="baseline")
 
 
 # # translation/rotation
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_10, tag_12, tag_14, tag_18], title="translation")
+# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_10, tag_12, tag_14, tag_18], title="translation")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_11, tag_13, tag_15], title="rotation")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_10, tag_12, tag_14, tag_18], title="translation")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_10, tag_12, tag_14, tag_18], title="translation")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_11, tag_13, tag_15], title="rotation")
 
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_5, tag_6], title="regularization")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_5, tag_6], title="regularization")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_16, tag_17], title="regularization")
+# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_5, tag_6], title="regularization")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_5, tag_6], title="regularization")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_16, tag_17], title="regularization")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_16, tag_17], title="regularization",
 #         label_list=["learning from demo", "001 translation regularization averaged by 2 samples",
 #                     "001 rotation regularization averaged by 2 samples"])

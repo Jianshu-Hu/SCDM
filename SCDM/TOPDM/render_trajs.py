@@ -6,7 +6,7 @@ import time
 import dexterous_gym
 
 delay = 0.03
-env_name = "EggCatchUnderarm-v1"
+env_name = "EggCatchUnderarmHard-v0"
 env = gym.make(env_name)
 tag = "traj"
 
@@ -36,7 +36,7 @@ def render_demonstration():
 
 def from_generated_traj_to_demonstration():
     print('starting transferring generated trajectories to demonstrations')
-    for index in range(15):
+    for index in range(30):
         trajectory_files = "experiments/"+env_name + '_' + tag + '_' + str(index) + '.pkl'
         traj = joblib.load(trajectory_files)[0]
         #traj = joblib.load(trajectory_files)

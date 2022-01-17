@@ -61,7 +61,7 @@ hand_2_mount_joint #6
 hand_2_wrist_joint #2
 hand_2_finger_joint #22
 
-# for overarm, obj in hand1
+# for overarm, obj in hand2
 # for underarm, obj in hand2
 obj_joint #7
 obj_target_joint #7
