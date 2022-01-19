@@ -1,21 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-overarm_prefix = "results/TD3_EggCatchOverarm-v0_"
-overarm_critic_prefix = "results_critic/TD3_EggCatchOverarm-v0_"
-overarm_prefix_v1 = "results/TD3_EggCatchOverarm-v1_"
-overarm_critic_prefix_v1 = "results_critic/TD3_EggCatchOverarm-v1_"
-overarm_prefix_v2 = "results/TD3_EggCatchOverarm-v2_"
-overarm_critic_prefix_v2 = "results_critic/TD3_EggCatchOverarm-v2_"
-overarm_prefix_v3 = "results/TD3_EggCatchOverarm-v3_"
-overarm_critic_prefix_v3 = "results_critic/TD3_EggCatchOverarm-v3_"
+overarm_prefix = "TD3_EggCatchOverarm-v0_"
+overarm_prefix_v1 = "TD3_EggCatchOverarm-v1_"
+overarm_prefix_v2 = "TD3_EggCatchOverarm-v2_"
+overarm_prefix_v3 = "TD3_EggCatchOverarm-v3_"
 
-underarm_prefix = "results/TD3_EggCatchUnderarm-v0_"
-underarmhard_prefix = "results/TD3_EggCatchUnderarmHard-v0_"
-underarm_prefix_v1 = "results/TD3_EggCatchUnderarm-v1_"
-underarm_critic_prefix_v1 = "results_critic/TD3_EggCatchUnderarm-v1_"
-underarm_prefix_v3 = "results/TD3_EggCatchUnderarm-v3_"
-underarm_critic_prefix_v3 = "results_critic/TD3_EggCatchUnderarm-v3_"
+underarm_prefix = "TD3_EggCatchUnderarm-v0_"
+underarmhard_prefix = "TD3_EggCatchUnderarmHard-v0_"
+underarm_prefix_v1 = "TD3_EggCatchUnderarm-v1_"
+underarm_prefix_v3 = "TD3_EggCatchUnderarm-v3_"
 # overarm and underarm
 tag_1 = ["0_random_goal_demo_1", "0_random_goal_demo_2", "0_random_goal_demo_3", "0_random_goal_demo_4", "0_random_goal_demo_5"]
 tag_2 = ["random_goal_demo_with_normalizer_1", "random_goal_demo_with_normalizer_2", "random_goal_demo_with_normalizer_3"]
@@ -318,12 +312,12 @@ tag_74 = ["1_random_goal_demo_demo_divided_into_two_part_add_auto_regularization
 #           "3_random_goal_demo_with_rotation_regularization_new"]
 
 
-def plot_all_fig(prefix=underarm_prefix, tag=tag_2):
+def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
     data_list = []
     min_len = np.inf
     for i in range(len(tag)):
-        data = np.load(prefix + tag[i] + ".npy")
+        data = np.load('results/'+prefix + tag[i] + ".npy")
         data_list.append(data)
         min_len = min(min_len, data.shape[0])
 
@@ -340,14 +334,17 @@ def plot_all_fig(prefix=underarm_prefix, tag=tag_2):
     axs[1].set_xlabel('timesteps/5000')
     axs[1].set_ylabel('average rewards')
     axs[1].legend()
-    plt.show()
+    if plot_or_save == 'plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/' + prefix + tag[0] + '_all')
 
 
 def average_over_experiments(prefix, tag):
     data_list = []
     min_len = np.inf
     for i in range(len(tag)):
-        data = np.load(prefix + tag[i] + ".npy")
+        data = np.load('results/'+prefix + tag[i] + ".npy")
         data_list.append(data)
         min_len = min(min_len, data.shape[0])
     data_np = np.zeros([len(tag), min_len])
@@ -358,7 +355,8 @@ def average_over_experiments(prefix, tag):
     return mean, std
 
 
-def compare(prefix, tag_list, title='', label_list=[""]):
+def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
+    plt.rcParams['figure.figsize'] = (10, 6)
     fig, axs = plt.subplots(1, 1)
     for i in range(len(tag_list)):
         mean, std = average_over_experiments(prefix, tag_list[i])
@@ -376,28 +374,34 @@ def compare(prefix, tag_list, title='', label_list=[""]):
     axs.set_xlabel('timesteps/5000')
     axs.set_ylabel('average rewards')
     axs.legend()
-    plt.show()
+    if plot_or_save=='plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/'+prefix+title)
 
 
-def compare_policy_critic(prefix, prefix_critic, tag):
+def compare_policy_critic(prefix, prefix_critic, tag, plot_or_save='save'):
     fig, axs = plt.subplots(len(tag), 1)
     for i in range(len(tag)):
-        data1 = np.load(prefix + tag[i] + ".npy")
-        data2 = np.load(prefix_critic + tag[i] + ".npy")
+        data1 = np.load('results/'+prefix + tag[i] + ".npy")
+        data2 = np.load('results_critic/'+prefix_critic + tag[i] + ".npy")
         axs[i].plot(range(len(data1)), data1, label="policy")
         axs[i].plot(range(len(data2)), data2, label="critic")
         axs[i].set_xlabel('timesteps/5000')
         axs[i].set_ylabel('average rewards')
         axs[i].legend()
     axs[0].set_title(prefix+tag[0])
-    plt.show()
+    if plot_or_save == 'plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/' + prefix + tag[0] + '_policy_critic')
 
 
-def plot_loss(prefix=overarm_prefix, tag=tag_59):
+def plot_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
     fig, axs = plt.subplots(2*len(tag), 1)
     for i in range(len(tag)):
-        critic_loss = np.load(prefix + tag[i] + "_critic_loss.npy")
-        actor_loss = np.load(prefix + tag[i] + "_actor_loss.npy")
+        critic_loss = np.load('results/'+prefix + tag[i] + "_critic_loss.npy")
+        actor_loss = np.load('results/'+prefix + tag[i] + "_actor_loss.npy")
         axs[2*i].plot(range(len(critic_loss)), critic_loss, label="critic_loss")
         axs[2*i+1].plot(range(len(actor_loss)), actor_loss, label="actor_loss")
 
@@ -410,7 +414,10 @@ def plot_loss(prefix=overarm_prefix, tag=tag_59):
         axs[2 * i+1].legend()
 
         axs[0].set_title(prefix + tag[0])
-    plt.show()
+    if plot_or_save == 'plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/' + prefix + tag[0] + 'loss')
 
 #labellist = ["random_initial_state", "random_initial_state_new_demos", "with_translation", "with_translation_regularization"]
 #compare(prefix=overarm_prefix_v3, tag_list=[tag_29, tag_34, tag_35, tag_37], title="new_demos", label_list=labellist)
@@ -438,15 +445,18 @@ def plot_loss(prefix=overarm_prefix, tag=tag_59):
 #plot_all_fig(prefix=overarm_prefix, tag=tag_61)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_62)
 #plot_all_fig(prefix=underarm_prefix, tag=tag_67)
-#plot_all_fig(prefix=overarm_prefix, tag=tag_69)
-#plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
+plot_all_fig(prefix=overarm_prefix, tag=tag_73)
+plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
 compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63,tag_64,tag_65], title="hand_invariance")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_70, tag_65, tag_66, tag_72], title="hand_invariance")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_73, tag_74], title="hand_invariance")
+
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63, tag_64, tag_65], title="tuned_hand_invariance")
+compare(prefix=underarm_prefix, tag_list=[tag_57, tag_73, tag_74], title="auto_hand_invariance")
+
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_70, tag_65, tag_66, tag_72], title="tuned_hand_invariance")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_73, tag_74], title="auto_hand_invariance")
 compare(prefix=underarm_prefix, tag_list=[tag_57, tag_67, tag_68], title="demo_len")
 plot_all_fig(prefix=overarm_prefix, tag=tag_69)
-compare_policy_critic(overarm_prefix, overarm_critic_prefix, tag_69)
+compare_policy_critic(overarm_prefix, overarm_prefix, tag_69)
 
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_43, tag_24, tag_28], title="baseline")
 compare(prefix=underarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53, tag_54], title="new_hand_invariance")

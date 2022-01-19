@@ -292,7 +292,7 @@ class TD3(object):
 
 
 		# Delayed policy updates
-		add_hand_invariance_regularization_policy = True
+		add_hand_invariance_regularization_policy = False
 		if self.total_it % self.policy_freq == 0:
 			if add_bc_loss:
 				# sample from demonstrations

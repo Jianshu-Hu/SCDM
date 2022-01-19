@@ -15,6 +15,7 @@ SCDM/TD3_plus_demos/output/
 SCDM/TD3_plus_demos/results/
 SCDM/TD3_plus_demos/results_critic/
 SCDM/TD3_plus_demos/video/
+SCDM/TD3_plus_demos/saved_fig/
 
 #results from TOPDM
 SCDM/TOPDM/experiments/

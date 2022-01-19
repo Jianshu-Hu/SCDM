@@ -6,9 +6,9 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-#env_name="EggCatchUnderarm-v0"
+env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchUnderarmHard-v0"
-env_name="EggCatchOverarm-v0"
+#env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
 #env_name="EggCatchUnderarm-v1"
@@ -28,7 +28,7 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=random_goal_demo_demo_divided_into_two_part_add_auto_regularization_add_policy_penalty_all_actions
+tag=random_goal_demo_demo_divided_into_two_part_add_auto_regularization
 seed=3
 
 demo_tag=""
