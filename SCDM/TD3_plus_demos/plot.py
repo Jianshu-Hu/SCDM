@@ -268,6 +268,8 @@ tag_74 = ["1_random_goal_demo_demo_divided_into_two_part_add_auto_regularization
           "2_random_goal_demo_demo_divided_into_two_part_add_auto_regularization_add_policy_penalty_all_actions",
           "3_random_goal_demo_demo_divided_into_two_part_add_auto_regularization_add_policy_penalty_all_actions"]
 
+tag_75 = ["1_random_goal_demo_learn_transition", "2_random_goal_demo_learn_transition", "3_random_goal_demo_learn_transition"]
+
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
 #          "3_random_goal_demo_her_type_4_segment"]
@@ -397,7 +399,7 @@ def compare_policy_critic(prefix, prefix_critic, tag, plot_or_save='save'):
         plt.savefig('saved_fig/' + prefix + tag[0] + '_policy_critic')
 
 
-def plot_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
+def plot_actor_critic_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
     fig, axs = plt.subplots(2*len(tag), 1)
     for i in range(len(tag)):
         critic_loss = np.load('results/'+prefix + tag[i] + "_critic_loss.npy")
@@ -417,7 +419,23 @@ def plot_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
     if plot_or_save == 'plot':
         plt.show()
     else:
-        plt.savefig('saved_fig/' + prefix + tag[0] + 'loss')
+        plt.savefig('saved_fig/' + prefix + tag[0] + '_actor_critic_loss')
+
+
+def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
+    fig, axs = plt.subplots(1, 1)
+    for i in range(len(tag)):
+        loss = np.load('results/'+prefix + tag[i] + "_transition_model_loss.npy")
+        axs.plot(range(len(loss)), loss, label=tag[i])
+
+        axs.set_xlabel('timesteps')
+        axs.set_ylabel('model loss')
+        axs.legend()
+        axs.set_title(prefix + tag[0])
+    if plot_or_save == 'plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/' + prefix + tag[0] + '_transition_loss')
 
 #labellist = ["random_initial_state", "random_initial_state_new_demos", "with_translation", "with_translation_regularization"]
 #compare(prefix=overarm_prefix_v3, tag_list=[tag_29, tag_34, tag_35, tag_37], title="new_demos", label_list=labellist)
@@ -445,7 +463,10 @@ def plot_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 #plot_all_fig(prefix=overarm_prefix, tag=tag_61)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_62)
 #plot_all_fig(prefix=underarm_prefix, tag=tag_67)
-plot_all_fig(prefix=overarm_prefix, tag=tag_73)
+plot_all_fig(prefix=underarm_prefix, tag=tag_75)
+plot_transition_model_loss(prefix=underarm_prefix, tag=tag_75)
+plot_all_fig(prefix=overarm_prefix, tag=tag_75)
+plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
 plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
 compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
 

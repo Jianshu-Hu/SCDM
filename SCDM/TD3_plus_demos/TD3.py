@@ -105,7 +105,7 @@ class TD3(object):
 		self.normaliser = Normaliser(state_dim, default_clip_range=5.0)
 
 		self.total_it = 0
-		self.save_freq = 5000
+		self.save_freq = 10000
 		self.file_name_critic = file_name + "_critic_loss"
 		self.file_name_actor = file_name + "_actor_loss"
 		self.critic_loss_saver = []
@@ -242,8 +242,8 @@ class TD3(object):
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
 
-		add_hand_invariance_regularization_Q=False
-		add_hand_invariance_regularization_auto = True
+		add_hand_invariance_regularization_Q = False
+		add_hand_invariance_regularization_auto = False
 		if add_invariance_regularization:
 			sum_artificial_Q1 = torch.zeros(current_Q1.size()).to(device)
 			sum_artificial_Q2 = torch.zeros(current_Q2.size()).to(device)

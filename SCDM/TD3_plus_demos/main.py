@@ -11,6 +11,7 @@ import joblib
 import SCDM.TD3_plus_demos.utils as utils
 import SCDM.TD3_plus_demos.TD3 as TD3
 from SCDM.TD3_plus_demos.utils import env_statedict_to_state
+import SCDM.TD3_plus_demos.transition_model as transition_model
 
 # Runs policy for X episodes and returns average reward
 # Runs critic for X episodes and returns average Q value for some states
@@ -105,7 +106,7 @@ if __name__ == "__main__":
 	parser.add_argument("--N_artificial_sample", type=int, default=1) #number of artificial samples generated
 	parser.add_argument("--inv_type", type=str, default='translation')  # use translation or rotation
 	parser.add_argument("--use_informative_segment", action="store_true") # use informative segment instead of restricted segment
-	parser.add_argument("--demo_goal_type", type=str, default='True') # set the goal of the segment from the demonstration
+	parser.add_argument("--demo_goal_type", type=str, default='Random') # set the goal of the segment from the demonstration
 	# True: the true goal of the segment
 	# Noisy: add noise to the true goal of the segment
 	# Random: randomly sample a goal
@@ -120,7 +121,8 @@ if __name__ == "__main__":
 	# type4: type1 + noise
 	# type5: type2 + noise
 
-	parser.add_argument("--pd_throw_decay", type=float, default=0.99999)     # after each segment scale probability down by this amount
+	parser.add_argument("--divide_demos_into_N_parts", type=int, default=1) #divide the demos into N parts
+	parser.add_argument("--pd_throw_decay", type=float, default=0.99999)    # after each segment scale probability down by this amount
 
 	args = parser.parse_args()
 
@@ -164,9 +166,12 @@ if __name__ == "__main__":
 	# 	demo_states.append(demo_states_traj)
 	# 	demo_prev_actions.append(demo_prev_actions_traj)
 	# 	demo_goals.append(traj["goal"])
-	demo_processor = utils.DemoProcessor(args.env, args.demo_tag)
+	demo_processor = utils.DemoProcessor(args.env, args.demo_tag, args.divide_demos_into_N_parts)
 	demo_states_throw, demo_prev_actions_throw, demo_states_catch, demo_prev_actions_catch, demo_goals =\
 		demo_processor.process()
+	# if not dividing the demos, there will not be a decay for the throwing part.
+	if args.divide_demos_into_N_parts == 1:
+		args.pd_throw_decay = args.pd_decay
 
 	# Set seeds
 	env_main.seed(args.seed)
@@ -196,6 +201,7 @@ if __name__ == "__main__":
 	# Initialize policy
 	# Target policy smoothing is scaled wrt the action scale
 	policy = TD3.TD3(**kwargs)
+	transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.batch_size)
 
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
@@ -394,6 +400,10 @@ if __name__ == "__main__":
 			policy.normaliser.update(observation)
 			if t % args.update_normaliser_every == 0:
 				policy.normaliser.recompute_stats()
+
+			transition.normaliser.update(observation)
+			if t % args.update_normaliser_every == 0:
+				transition.normaliser.recompute_stats()
 		prev_action = action.copy()
 		observation = next_observation.copy()
 		if segment_type == "full":
@@ -405,6 +415,7 @@ if __name__ == "__main__":
 		if t >= args.start_timesteps:
 			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, args.batch_size,
 						 args.add_invariance_regularization, args.add_hand_invariance_regularization, args.add_bc_loss)
+			transition.train(replay_buffer)
 
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)

@@ -6,9 +6,9 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-env_name="EggCatchUnderarm-v0"
+#env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchUnderarmHard-v0"
-#env_name="EggCatchOverarm-v0"
+env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
 #env_name="EggCatchUnderarm-v1"
@@ -28,7 +28,7 @@ env_name="EggCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=random_goal_demo_demo_divided_into_two_part_add_auto_regularization
+tag=random_goal_demo_learn_transition
 seed=3
 
 demo_tag=""
@@ -66,6 +66,6 @@ demo_tag=""
 #--her_type=1
 #--use_her --her_timesteps=0 --her_type=2 --N_her=4
 echo "start running $env_name $tag with seed $seed"
-python main.py --seed=$seed --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --demo_goal_type="Random" --add_hand_invariance_regularization --save_model
+python main.py --seed=$seed --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 
 #| tee $FILE

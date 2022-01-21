@@ -34,11 +34,13 @@ def env_statedict_to_state(state_dict, env_name):
 
 # process the demonstrations
 class DemoProcessor():
-	def __init__(self, env, demo_tag):
+	def __init__(self, env, demo_tag, divide_into_N_parts):
 		self.env = env
 		self.demo_tag = demo_tag
 		files = os.listdir("demonstrations/demonstrations" + "_" + env + demo_tag)
 		self.files = [file for file in files if file.endswith(".pkl")]
+
+		self.divide_into_N_parts = divide_into_N_parts
 
 	def process(self):
 		demo_states_throw = []
@@ -69,19 +71,25 @@ class DemoProcessor():
 				else:
 					prev_action = traj["actions"][k - 1]
 
-				if abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
-					demo_states_traj_catch.append(state)
-					demo_prev_actions_traj_catch.append(prev_action.copy())
-				else:
+				if self.divide_into_N_parts == 1:
 					demo_states_traj_throw.append(state)
 					demo_prev_actions_traj_throw.append(prev_action.copy())
-
-				#if abs((state.qpos[60:63] - initial_position)[y_axis_index]) <= 0.15:
-				#	demo_states_traj_throw.append(state)
-				#	demo_prev_actions_traj_throw.append(prev_action.copy())
-				#elif abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
-				#	demo_states_traj_catch.append(state)
-				#	demo_prev_actions_traj_catch.append(prev_action.copy())
+				elif self.divide_into_N_parts == 2:
+					if abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
+						demo_states_traj_catch.append(state)
+						demo_prev_actions_traj_catch.append(prev_action.copy())
+					else:
+						demo_states_traj_throw.append(state)
+						demo_prev_actions_traj_throw.append(prev_action.copy())
+				elif self.divide_into_N_parts == 3:
+					if abs((state.qpos[60:63] - initial_position)[y_axis_index]) <= 0.15:
+						demo_states_traj_throw.append(state)
+						demo_prev_actions_traj_throw.append(prev_action.copy())
+					elif abs((state.qpos[60:63] - goal_position)[y_axis_index]) <= 0.15:
+						demo_states_traj_catch.append(state)
+						demo_prev_actions_traj_catch.append(prev_action.copy())
+				else:
+					raise ValueError('Wrong number of dividing the dmeos')
 			demo_states_throw.append(demo_states_traj_throw)
 			demo_prev_actions_throw.append(demo_prev_actions_traj_throw)
 			demo_states_catch.append(demo_states_traj_catch)
