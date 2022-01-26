@@ -270,6 +270,10 @@ tag_74 = ["1_random_goal_demo_demo_divided_into_two_part_add_auto_regularization
 
 tag_75 = ["1_random_goal_demo_learn_transition", "2_random_goal_demo_learn_transition", "3_random_goal_demo_learn_transition"]
 
+tag_76 = ["1_random_goal_demo_add_artificial_transitions",
+          "2_random_goal_demo_add_artificial_transitions",
+          "3_random_goal_demo_add_artificial_transitions"]
+
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
 #          "3_random_goal_demo_her_type_4_segment"]
@@ -469,6 +473,9 @@ plot_all_fig(prefix=overarm_prefix, tag=tag_75)
 plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
 plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
 compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
+
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76], title="add_transitions")
 
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63, tag_64, tag_65], title="tuned_hand_invariance")
 compare(prefix=underarm_prefix, tag_list=[tag_57, tag_73, tag_74], title="auto_hand_invariance")

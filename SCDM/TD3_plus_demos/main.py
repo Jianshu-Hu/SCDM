@@ -102,6 +102,8 @@ if __name__ == "__main__":
 	parser.add_argument("--add_invariance_regularization", action="store_true")  # add regularization term to the loss of critic
 	parser.add_argument("--add_hand_invariance_regularization",
 						action="store_true")  # add regularization term to the loss of critic
+	parser.add_argument("--add_artificial_transitions",
+						action="store_true")  # add artificial transitions during the training
 	parser.add_argument("--use_invariance_in_policy", action="store_true")  # use invariance in selecting actions
 	parser.add_argument("--N_artificial_sample", type=int, default=1) #number of artificial samples generated
 	parser.add_argument("--inv_type", type=str, default='translation')  # use translation or rotation
@@ -201,7 +203,7 @@ if __name__ == "__main__":
 	# Initialize policy
 	# Target policy smoothing is scaled wrt the action scale
 	policy = TD3.TD3(**kwargs)
-	transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.batch_size)
+	transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.batch_size, env_main)
 
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
@@ -413,9 +415,10 @@ if __name__ == "__main__":
 				observation = main_episode_obs = env_main.reset()
 
 		if t >= args.start_timesteps:
-			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, args.batch_size,
-						 args.add_invariance_regularization, args.add_hand_invariance_regularization, args.add_bc_loss)
 			transition.train(replay_buffer)
+			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition, args.batch_size,
+						 args.add_invariance_regularization, args.add_hand_invariance_regularization, args.add_bc_loss,
+						 args.add_artificial_transitions)
 
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)

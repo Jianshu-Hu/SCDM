@@ -187,9 +187,9 @@ class TD3(object):
 			mean_ac += noise
 		return self.beta*mean_ac + (1-self.beta)*prev_action.cpu().data.numpy().flatten()
 
-
-	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, batch_size=100,
-			  add_invariance_regularization=False, add_hand_invariance_regularization=False, add_bc_loss=False):
+	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, transition, batch_size=100,
+			  add_invariance_regularization=False, add_hand_invariance_regularization=False, add_bc_loss=False,
+			  add_artificial_transitions=False):
 		self.total_it += 1
 
 		# Sample replay buffer 
@@ -211,6 +211,18 @@ class TD3(object):
 			invariant_prev_action = prev_action[invariance, :]
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
+
+		if add_artificial_transitions:
+			random_action = torch.rand(action.size())
+			new_next_state = transition.forward_model(state, random_action)
+			new_reward = transition.compute_reward(new_next_state)
+
+			state = torch.cat([state, state], dim=0)
+			action = torch.cat([action, random_action], dim=0)
+			next_state = torch.cat([next_state, new_next_state], dim=0)
+			reward = torch.cat([reward, new_reward], dim=0)
+			prev_action = torch.cat([prev_action, prev_action], dim=0)
+
 
 		add_hand_invariance_regularization_target = False
 		with torch.no_grad():
