@@ -23,7 +23,7 @@ class ForwardModel(nn.Module):
 
 
 class TransitionModel():
-    def __init__(self, state_dim, action_dim, file_name, batch_size, env):
+    def __init__(self, state_dim, action_dim, file_name, batch_size, compute_reward):
         self.forward_model = ForwardModel(state_dim, action_dim)
         self.model_optimizer = torch.optim.Adam(self.forward_model.parameters(), lr=1e-4)
         self.batch_size = batch_size
@@ -36,7 +36,7 @@ class TransitionModel():
 
         self.file_name_loss = file_name + "_transition_model_loss"
 
-        self.env = env
+        self.embed_compute_reward = compute_reward
 
         self.achieved_pose_index = -20
         self.goal_pose_index = -7
@@ -68,7 +68,7 @@ class TransitionModel():
         inv_normalize_state = state*self.normaliser.std+self.normaliser.mean
         achieved_goal = inv_normalize_state[:, self.achieved_pose_index:self.achieved_pose_index+7]
         goal = inv_normalize_state[:, self.goal_pose_index:]
-        reward = self.env.env.compute_reward(achieved_goal, goal, info=None)
+        reward = self.embed_compute_reward(achieved_goal, goal, info=None)
 
         return torch.FloatTensor(reward.reshape([-1, 1])).to(device)
 
