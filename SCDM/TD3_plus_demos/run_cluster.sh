@@ -6,8 +6,8 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-env_name="EggCatchUnderarm-v0"
-#env_name="EggCatchUnderarmHard-v0"
+#env_name="EggCatchUnderarm-v0"
+env_name="EggCatchUnderarmHard-v0"
 #env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
@@ -29,7 +29,7 @@ env_name="EggCatchUnderarm-v0"
 
 #tag=random_goal_demo_5
 tag=random_goal_demo_add_artificial_transitions
-seed=1
+seed=3
 
 demo_tag=""
 

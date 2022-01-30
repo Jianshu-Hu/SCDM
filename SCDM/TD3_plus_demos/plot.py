@@ -274,6 +274,14 @@ tag_76 = ["1_random_goal_demo_add_artificial_transitions",
           "2_random_goal_demo_add_artificial_transitions",
           "3_random_goal_demo_add_artificial_transitions"]
 
+tag_77 = ["1_random_goal_demo_add_artificial_transitions_restricted_02_actions",
+          "2_random_goal_demo_add_artificial_transitions_restricted_02_actions",
+          "3_random_goal_demo_add_artificial_transitions_restricted_02_actions"]
+
+tag_78 = ["1_random_goal_demo_add_artificial_transitions_random_one_hand",
+          "2_random_goal_demo_add_artificial_transitions_random_one_hand",
+          "3_random_goal_demo_add_artificial_transitions_random_one_hand"]
+
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
 #          "3_random_goal_demo_her_type_4_segment"]
@@ -467,33 +475,44 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 #plot_all_fig(prefix=overarm_prefix, tag=tag_61)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_62)
 #plot_all_fig(prefix=underarm_prefix, tag=tag_67)
-plot_all_fig(prefix=underarm_prefix, tag=tag_75)
-plot_transition_model_loss(prefix=underarm_prefix, tag=tag_75)
-plot_all_fig(prefix=overarm_prefix, tag=tag_75)
-plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
-plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
-compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
+# plot_all_fig(prefix=underarm_prefix, tag=tag_75)
+# plot_transition_model_loss(prefix=underarm_prefix, tag=tag_75)
+# plot_all_fig(prefix=overarm_prefix, tag=tag_75)
+# plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
+# plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76], title="add_transitions")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76], title="add_transitions")
+compare_policy_critic(overarm_prefix, overarm_prefix, tag_76)
+compare_policy_critic(overarm_prefix, underarm_prefix, tag_77)
+compare_policy_critic(overarm_prefix, underarm_prefix, tag_78)
+
+compare_policy_critic(underarm_prefix, overarm_prefix, tag_76)
+compare_policy_critic(underarm_prefix, underarm_prefix, tag_77)
+compare_policy_critic(underarm_prefix, underarm_prefix, tag_78)
+#plot_transition_model_loss(prefix=underarm_prefix, tag=tag_76)
+#plot_transition_model_loss(prefix=overarm_prefix, tag=tag_76)
+
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78], title="add_transitions")
+compare(prefix=underarmhard_prefix, tag_list=[tag_71, tag_76], title="add_transitions")
 
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63, tag_64, tag_65], title="tuned_hand_invariance")
 compare(prefix=underarm_prefix, tag_list=[tag_57, tag_73, tag_74], title="auto_hand_invariance")
 
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_70, tag_65, tag_66, tag_72], title="tuned_hand_invariance")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_73, tag_74], title="auto_hand_invariance")
-compare(prefix=underarm_prefix, tag_list=[tag_57, tag_67, tag_68], title="demo_len")
-plot_all_fig(prefix=overarm_prefix, tag=tag_69)
-compare_policy_critic(overarm_prefix, overarm_prefix, tag_69)
+# compare(prefix=underarm_prefix, tag_list=[tag_57, tag_67, tag_68], title="demo_len")
+# plot_all_fig(prefix=overarm_prefix, tag=tag_69)
+# compare_policy_critic(overarm_prefix, overarm_prefix, tag_69)
 
+# compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_43, tag_24, tag_28], title="baseline")
-compare(prefix=underarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53, tag_54], title="new_hand_invariance")
+# compare(prefix=underarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53, tag_54], title="new_hand_invariance")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_22, tag_23, tag_24, tag_25], title="baseline")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_45, tag_21, tag_24, tag_43, tag_44], title="baseline")
-compare(prefix=overarm_prefix, tag_list=[tag_21, tag_48, tag_49, tag_50, tag_55, tag_56, tag_59], title="decay rate")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_57, tag_58, tag_60, tag_61, tag_62], title="exclude demo")
+# compare(prefix=overarm_prefix, tag_list=[tag_21, tag_48, tag_49, tag_50, tag_55, tag_56, tag_59], title="decay rate")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_57, tag_58, tag_60, tag_61, tag_62], title="exclude demo")
 # compare(prefix=overarm_prefix, tag_list=[tag_21, tag_41, tag_42, tag_46, tag_47], title="hand_invariance")
-compare(prefix=overarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53,tag_54], title="new_hand_invariance")
+# compare(prefix=overarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53,tag_54], title="new_hand_invariance")
 # compare(prefix=overarm_prefix, tag_list=[tag_24, tag_32, tag_31], title="critic_lr")
 # plot_all_fig(prefix=overarm_prefix, tag=tag_1)
 # plot_all_fig(prefix=overarm_prefix, tag=tag_21)

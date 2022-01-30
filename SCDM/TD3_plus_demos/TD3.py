@@ -117,7 +117,7 @@ class TD3(object):
 			self.invariance_definition = invariance.TwoEggCatchUnderArmInvariance()
 		elif env_name == 'EggCatchOverarm-v0':
 			self.invariance_definition = invariance.CatchOverarmInvariance()
-		elif env_name == 'EggCatchUnderarm-v0':
+		elif env_name == 'EggCatchUnderarm-v0' or env_name == 'EggCatchUnderarmHard-v0':
 			self.invariance_definition = invariance.CatchUnderarmInvariance()
 		else:
 			print('Invariance regularization is not implemented for these envs')
@@ -213,12 +213,20 @@ class TD3(object):
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
 		if add_artificial_transitions:
-			random_action = torch.rand(action.size())
-			new_next_state = transition.forward_model(state, random_action)
+			# random action
+			new_action = 2*(torch.rand(action.size())-0.5)
+			# noisy new action
+			# random_action = 2*(torch.rand(action.size())-0.5)
+			# new_action = (action + 0.2*random_action).clamp(-self.max_action, self.max_action)
+
+			# random actions of only one hand
+			# new_action = torch.FloatTensor(self.invariance_definition.random_one_hand_sample_generator
+			# 							(action.cpu().data.numpy())).to(device)
+			new_next_state = transition.forward_model(state, new_action)
 			new_reward = transition.compute_reward(new_next_state)
 
 			state = torch.cat([state, state], dim=0)
-			action = torch.cat([action, random_action], dim=0)
+			action = torch.cat([action, new_action], dim=0)
 			next_state = torch.cat([next_state, new_next_state], dim=0)
 			reward = torch.cat([reward, new_reward], dim=0)
 			prev_action = torch.cat([prev_action, prev_action], dim=0)

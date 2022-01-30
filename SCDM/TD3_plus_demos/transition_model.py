@@ -23,7 +23,7 @@ class ForwardModel(nn.Module):
 
 
 class TransitionModel():
-    def __init__(self, state_dim, action_dim, file_name, batch_size, compute_reward):
+    def __init__(self, state_dim, action_dim, file_name, env_name, batch_size, compute_reward):
         self.forward_model = ForwardModel(state_dim, action_dim)
         self.model_optimizer = torch.optim.Adam(self.forward_model.parameters(), lr=1e-4)
         self.batch_size = batch_size
@@ -38,8 +38,12 @@ class TransitionModel():
 
         self.embed_compute_reward = compute_reward
 
-        self.achieved_pose_index = -20
-        self.goal_pose_index = -7
+        env_list1 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggCatchUnderarmHard-v0']
+        if env_name in env_list1:
+            self.achieved_pose_index = -20
+            self.goal_pose_index = -7
+        else:
+            print('Check the index for other environments')
 
     def train(self, replay_buffer):
         self.total_iter += 1

@@ -203,7 +203,7 @@ if __name__ == "__main__":
 	# Initialize policy
 	# Target policy smoothing is scaled wrt the action scale
 	policy = TD3.TD3(**kwargs)
-	transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.batch_size,
+	transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
 					env_main.env.compute_reward)
 
 	if args.load_model != "":
