@@ -111,6 +111,9 @@ class TD3(object):
 		self.critic_loss_saver = []
 		self.actor_loss_saver = []
 
+		self.lamb = 1
+		self.lamb_decay = 0.9999995
+
 		self.env_name = env_name
 		# invariant sample generator
 		if env_name == 'TwoEggCatchUnderArm-v0':
@@ -213,23 +216,46 @@ class TD3(object):
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
 		if add_artificial_transitions:
-			# random action
-			new_action = 2*(torch.rand(action.size())-0.5)
-			# noisy new action
-			# random_action = 2*(torch.rand(action.size())-0.5)
-			# new_action = (action + 0.2*random_action).clamp(-self.max_action, self.max_action)
+			# use different action
+			# # random action
+			# new_action = 2*(torch.rand(action.size())-0.5)
+			# # noisy new action
+			# # random_action = 2*(torch.rand(action.size())-0.5)
+			# # new_action = (action + 0.2*random_action).clamp(-self.max_action, self.max_action)
+			#
+			# # random actions of only one hand
+			# # new_action = torch.FloatTensor(self.invariance_definition.random_one_hand_sample_generator
+			# # 							(action.cpu().data.numpy())).to(device)
+			# new_next_state = transition.forward_model(state, new_action)
+			# new_reward = transition.compute_reward(new_next_state)
+			#
+			# # state = torch.cat([state, state], dim=0)
+			# # action = torch.cat([action, new_action], dim=0)
+			# # next_state = torch.cat([next_state, new_next_state], dim=0)
+			# # reward = torch.cat([reward, new_reward], dim=0)
+			# # prev_action = torch.cat([prev_action, prev_action], dim=0)
 
-			# random actions of only one hand
-			# new_action = torch.FloatTensor(self.invariance_definition.random_one_hand_sample_generator
-			# 							(action.cpu().data.numpy())).to(device)
-			new_next_state = transition.forward_model(state, new_action)
+			# forward one step
+			with torch.no_grad():
+				# Select action according to policy and add clipped noise
+				noise = (
+						torch.randn_like(action) * self.policy_noise
+				).clamp(-self.noise_clip, self.noise_clip)
+
+				new_action = self.actor_target(next_state, action) + noise
+				new_action = self.beta * new_action + (1 - self.beta) * action
+				new_action = (
+					new_action
+				).clamp(-self.max_action, self.max_action)
+			new_next_state = transition.forward_model(next_state, new_action)
 			new_reward = transition.compute_reward(new_next_state)
 
-			state = torch.cat([state, state], dim=0)
+			state = torch.cat([state, next_state], dim=0)
 			action = torch.cat([action, new_action], dim=0)
 			next_state = torch.cat([next_state, new_next_state], dim=0)
 			reward = torch.cat([reward, new_reward], dim=0)
-			prev_action = torch.cat([prev_action, prev_action], dim=0)
+			prev_action = torch.cat([prev_action, action], dim=0)
+
 
 
 		add_hand_invariance_regularization_target = False
@@ -259,8 +285,27 @@ class TD3(object):
 			target_Q = torch.min(target_Q1, target_Q2)
 			target_Q = reward + self.discount * target_Q
 
+			# if add_artificial_transitions:
+			# 	# Select action according to policy and add clipped noise
+			# 	noise = (
+			# 			torch.randn_like(action) * self.policy_noise
+			# 	).clamp(-self.noise_clip, self.noise_clip)
+			#
+			# 	new_next_action = self.actor_target(new_next_state, new_action) + noise
+			# 	new_next_action = self.beta * new_next_action + (1 - self.beta) * new_action
+			# 	new_next_action = (
+			# 		new_next_action
+			# 	).clamp(-self.max_action, self.max_action)
+			#
+			# 	# Compute the target Q value
+			# 	new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action, new_action)
+			#
+			# 	new_target_Q = torch.min(new_target_Q1, new_target_Q2)
+			# 	new_target_Q = new_reward + self.discount * new_target_Q
+
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
+		new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
 
 		add_hand_invariance_regularization_Q = False
 		add_hand_invariance_regularization_auto = False
@@ -300,6 +345,11 @@ class TD3(object):
 				size = torch.exp(-diff)
 			regularization_loss = (size*(F.mse_loss(inv_Q1, current_Q1, reduction='none')+F.mse_loss(inv_Q2, current_Q2, reduction='none'))).mean()
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + regularization_loss
+		# elif add_artificial_transitions:
+		# 	# Compute critic loss
+		# 	critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + \
+		# 			self.lamb*(F.mse_loss(new_current_Q1, new_target_Q)+F.mse_loss(new_current_Q2, new_target_Q))
+		# 	self.lamb *= self.lamb_decay
 		else:
 			# Compute critic loss
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
