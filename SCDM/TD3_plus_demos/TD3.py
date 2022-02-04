@@ -230,10 +230,10 @@ class TD3(object):
 			# new_reward = transition.compute_reward(new_next_state)
 			#
 			# # state = torch.cat([state, state], dim=0)
+			# # prev_action = torch.cat([prev_action, prev_action], dim=0)
 			# # action = torch.cat([action, new_action], dim=0)
 			# # next_state = torch.cat([next_state, new_next_state], dim=0)
 			# # reward = torch.cat([reward, new_reward], dim=0)
-			# # prev_action = torch.cat([prev_action, prev_action], dim=0)
 
 			# forward one step
 			with torch.no_grad():
@@ -251,10 +251,10 @@ class TD3(object):
 			new_reward = transition.compute_reward(new_next_state)
 
 			state = torch.cat([state, next_state], dim=0)
+			prev_action = torch.cat([prev_action, action], dim=0)
 			action = torch.cat([action, new_action], dim=0)
 			next_state = torch.cat([next_state, new_next_state], dim=0)
 			reward = torch.cat([reward, new_reward], dim=0)
-			prev_action = torch.cat([prev_action, action], dim=0)
 
 
 
@@ -305,7 +305,7 @@ class TD3(object):
 
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
-		new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
+		# new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
 
 		add_hand_invariance_regularization_Q = False
 		add_hand_invariance_regularization_auto = False

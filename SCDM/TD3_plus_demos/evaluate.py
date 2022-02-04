@@ -53,7 +53,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
             prev_action = action.copy()
             avg_reward += reward
             num_steps += 1
-            print(num_steps)
+            print("num_steps: ", num_steps, "reward: ", reward)
 
     avg_reward /= eval_episodes
 
@@ -74,4 +74,4 @@ kwargs = {
 policy = TD3.TD3(**kwargs)
 policy.load(filename)
 
-eval_policy(policy, env_name, seed=1, eval_episodes=10, render=True, delay=0.03)
+eval_policy(policy, env_name, seed=1, eval_episodes=1, render=False, delay=0.03)

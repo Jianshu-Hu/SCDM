@@ -6,9 +6,9 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-#env_name="EggCatchUnderarm-v0"
+env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchUnderarmHard-v0"
-env_name="EggCatchOverarm-v0"
+#env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
 #env_name="EggCatchUnderarm-v1"
