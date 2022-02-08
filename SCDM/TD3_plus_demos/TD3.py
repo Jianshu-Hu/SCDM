@@ -311,22 +311,24 @@ class TD3(object):
 
 
 			if add_artificial_transitions:
-				# use different action
-				if np.random.rand() <= self.epsilon:
-					# random action
-					new_action = 2*(torch.rand(action.size())-0.5)
-				else:
-					# policy action
-					noise = (
-							torch.randn_like(action) * self.policy_noise
-					).clamp(-self.noise_clip, self.noise_clip)
-
-					new_action = self.actor_target(state, prev_action) + noise
-					new_action = self.beta * new_action + (1 - self.beta) * prev_action
-					new_action = (
-						new_action
-					).clamp(-self.max_action, self.max_action)
-				self.epsilon *= self.epsilon_decay
+				# random action
+				new_action = 2 * (torch.rand(action.size()) - 0.5)
+				# # use different action
+				# if np.random.rand() <= self.epsilon:
+				# 	# random action
+				# 	new_action = 2*(torch.rand(action.size())-0.5)
+				# else:
+				# 	# policy action
+				# 	noise = (
+				# 			torch.randn_like(action) * self.policy_noise
+				# 	).clamp(-self.noise_clip, self.noise_clip)
+				#
+				# 	new_action = self.actor_target(state, prev_action) + noise
+				# 	new_action = self.beta * new_action + (1 - self.beta) * prev_action
+				# 	new_action = (
+				# 		new_action
+				# 	).clamp(-self.max_action, self.max_action)
+				# self.epsilon *= self.epsilon_decay
 
 				new_next_state = transition.forward_model(state, new_action)
 				new_reward = transition.compute_reward(new_next_state)
@@ -348,10 +350,16 @@ class TD3(object):
 				new_target_Q = torch.min(new_target_Q1, new_target_Q2)
 				new_target_Q = new_reward + self.discount * new_target_Q
 
+				# filter artificial transitions with target Q
+				filter = torch.where(new_target_Q > target_Q, 1, 0)
+				new_target_Q *= filter
+
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
 		if add_artificial_transitions:
 			new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
+			new_current_Q1 *= filter
+			new_current_Q2 *= filter
 
 		add_hand_invariance_regularization_Q = False
 		add_hand_invariance_regularization_auto = False

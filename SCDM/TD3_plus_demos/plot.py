@@ -305,6 +305,10 @@ tag_83 = ["1_random_goal_demo_add_artificial_transitions_epsilon_greedy",
 tag_84 = ["1_random_goal_demo_fix_target_rotation",
           "2_random_goal_demo_fix_target_rotation",
           "3_random_goal_demo_fix_target_rotation"]
+
+tag_85 = ["1_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q",
+          "2_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q",
+          "3_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q"]
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
 #          "3_random_goal_demo_her_type_4_segment"]
@@ -518,11 +522,11 @@ compare_policy_critic(underarm_prefix, underarm_prefix, tag_81)
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_83], title="add_transitions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_83, tag_85], title="add_transitions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_83], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_83, tag_85], title="add_transitions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
