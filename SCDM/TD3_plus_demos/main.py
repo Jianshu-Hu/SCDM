@@ -16,8 +16,8 @@ import SCDM.TD3_plus_demos.transition_model as transition_model
 # Runs policy for X episodes and returns average reward
 # Runs critic for X episodes and returns average Q value for some states
 # A fixed seed is used for the eval environment
-def eval_policy(policy, env_name, seed, use_invariance_in_policy=False, eval_episodes=10, evaluate_critic_t=50):
-	eval_env = gym.make(env_name)
+def eval_policy(policy, env_name, seed, target_rotation, eval_episodes=10, evaluate_critic_t=50):
+	eval_env = gym.make(env_name, target_rotation=target_rotation)
 	eval_env.seed(seed + 100)
 
 	avg_reward = 0.
@@ -30,7 +30,7 @@ def eval_policy(policy, env_name, seed, use_invariance_in_policy=False, eval_epi
 		prev_action = np.zeros((eval_env.action_space.shape[0],))
 		while num_steps < eval_env._max_episode_steps:
 			state = env_statedict_to_state(state_dict, env_name)
-			action = policy.select_action(state, prev_action, use_invariance_in_policy=use_invariance_in_policy)
+			action = policy.select_action(state, prev_action)
 			state_dict, reward, done, _ = eval_env.step(action)
 			prev_action = action.copy()
 			avg_reward += reward
@@ -38,7 +38,7 @@ def eval_policy(policy, env_name, seed, use_invariance_in_policy=False, eval_epi
 
 			if num_steps==evaluate_critic_t:
 				state_critic = env_statedict_to_state(state_dict, env_name)
-				action_critic = policy.select_action(state_critic, prev_action, use_invariance_in_policy=use_invariance_in_policy)
+				action_critic = policy.select_action(state_critic, prev_action)
 
 				state_critic = torch.FloatTensor(policy.normaliser.normalize(state_critic)).to(device)
 				state_critic = torch.reshape(state_critic, (1, -1))
@@ -104,7 +104,6 @@ if __name__ == "__main__":
 						action="store_true")  # add regularization term to the loss of critic
 	parser.add_argument("--add_artificial_transitions",
 						action="store_true")  # add artificial transitions during the training
-	parser.add_argument("--use_invariance_in_policy", action="store_true")  # use invariance in selecting actions
 	parser.add_argument("--N_artificial_sample", type=int, default=1) #number of artificial samples generated
 	parser.add_argument("--inv_type", type=str, default='translation')  # use translation or rotation
 	parser.add_argument("--use_informative_segment", action="store_true") # use informative segment instead of restricted segment
@@ -112,6 +111,11 @@ if __name__ == "__main__":
 	# True: the true goal of the segment
 	# Noisy: add noise to the true goal of the segment
 	# Random: randomly sample a goal
+
+	parser.add_argument("--target_rotation", type=str, default="xyz")  #set the target rotation
+	# xyz: rotation in xyz
+	# z: rotation in z
+	# ignore: without rotation
 	parser.add_argument("--sparse_reward", action="store_true")  # reward type
 	parser.add_argument("--use_her", action="store_true")  # use hindsight replay buffer
 	parser.add_argument("--her_timesteps", default=0, type=int)  # time steps to start using hindsight replay buffer
@@ -141,13 +145,16 @@ if __name__ == "__main__":
 	if args.save_model and not os.path.exists("./models"):
 		os.makedirs("./models")
 	if args.sparse_reward:
-		env_main = gym.make(args.env, reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-		env_demo = gym.make(args.env, reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-		env_reset = gym.make(args.env, reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
+		env_main = gym.make(args.env, target_rotation=args.target_rotation,
+							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
+		env_demo = gym.make(args.env, target_rotation=args.target_rotation,
+							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
+		env_reset = gym.make(args.env, target_rotation=args.target_rotation,
+							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
 	else:
-		env_main = gym.make(args.env)
-		env_demo = gym.make(args.env)
-		env_reset = gym.make(args.env)
+		env_main = gym.make(args.env, target_rotation=args.target_rotation)
+		env_demo = gym.make(args.env, target_rotation=args.target_rotation)
+		env_reset = gym.make(args.env, target_rotation=args.target_rotation)
 
 	# demo_states = []
 	# demo_prev_actions = []
@@ -215,7 +222,8 @@ if __name__ == "__main__":
 	if args.initialize_with_demo:
 		policy.initialize_with_demo(demo_replay_buffer)
 		# debug
-		evaluate_initial_policy, evaluate_initial_critic = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)
+		evaluate_initial_policy, evaluate_initial_critic = eval_policy(policy, args.env, args.seed,
+																target_rotation=args.target_rotation)
 
 	if args.use_her:
 		hindsight_replay_buffer = utils.HindsightReplayBuffer(state_dim, action_dim, env_name=args.env,
@@ -231,7 +239,7 @@ if __name__ == "__main__":
 			invariant_replay_buffer_list.append(invariant_replay_buffer)
 	
 	# Evaluate untrained policy
-	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)
+	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, target_rotation=args.target_rotation)
 	evaluations_policy = [avg_reward]
 	evaluations_critic = [avg_Q]
 
@@ -255,7 +263,6 @@ if __name__ == "__main__":
 	print("add_invariance_traj: ", args.add_invariance_traj)
 	print("add_invariance_regularization: ", args.add_invariance_regularization)
 	print("add_hand_invariance_regularization: ", args.add_hand_invariance_regularization)
-	print("use_invariance_in_policy: ", args.use_invariance_in_policy)
 	if args.add_invariance_traj or args.add_invariance_regularization or \
 			args.add_hand_invariance_regularization:
 		print("inv_type: ", args.inv_type)
@@ -265,6 +272,7 @@ if __name__ == "__main__":
 		print("reward type: sparse reward")
 	else:
 		print("reward type: dense reward")
+	print("target rotation: ", args.target_rotation)
 	if args.use_her:
 		print("start HER from: ", args.her_timesteps)
 		if args.her_type == 1:
@@ -351,8 +359,7 @@ if __name__ == "__main__":
 		else:
 			noise = np.random.normal(0, max_action * args.expl_noise, size=action_dim)
 			action = (
-				policy.select_action(observation, prev_action, noise=noise,
-								 use_invariance_in_policy=args.use_invariance_in_policy)).clip(-max_action, max_action)
+				policy.select_action(observation, prev_action, noise=noise)).clip(-max_action, max_action)
 
 		segment_timestep += 1
 		total_timesteps += 1
@@ -422,7 +429,7 @@ if __name__ == "__main__":
 						 args.add_artificial_transitions)
 
 		if (t+1) % args.eval_freq == 0:
-			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_invariance_in_policy)
+			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed,target_rotation=args.target_rotation)
 			evaluations_policy.append(avg_reward)
 			evaluations_critic.append(avg_Q)
 			np.save(f"./results/{file_name}", evaluations_policy)

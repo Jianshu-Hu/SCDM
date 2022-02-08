@@ -44,7 +44,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
         prev_action = np.zeros((eval_env.action_space.shape[0],))
         while num_steps < steps:
             state = env_statedict_to_state(state_dict, env_name)
-            action = policy.select_action(np.array(state), prev_action, use_invariance_in_policy=False)
+            action = policy.select_action(np.array(state), prev_action)
 
             state_dict, reward, done, _ = eval_env.step(action)
             if render:
