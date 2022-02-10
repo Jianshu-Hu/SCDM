@@ -309,6 +309,24 @@ tag_84 = ["1_random_goal_demo_fix_target_rotation",
 tag_85 = ["1_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q",
           "2_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q",
           "3_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q"]
+
+tag_86 = ["1_random_goal_demo_add_artificial_transitions_policy_action",
+          "2_random_goal_demo_add_artificial_transitions_policy_action",
+          "3_random_goal_demo_add_artificial_transitions_policy_action"]
+
+tag_87 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_1",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_1"]
+tag_88 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_3",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_3",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_3"]
+tag_89 = ["1_random_goal_demo_add_artificial_transitions_epsilon_greedy_actor",
+          "2_random_goal_demo_add_artificial_transitions_epsilon_greedy_actor",
+          "3_random_goal_demo_add_artificial_transitions_epsilon_greedy_actor"]
+tag_90 = ["1_random_goal_demo_add_artificial_transitions_policy_action_actor",
+          "2_random_goal_demo_add_artificial_transitions_policy_action_actor",
+          "3_random_goal_demo_add_artificial_transitions_policy_action_actor"]
+
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
 #          "3_random_goal_demo_her_type_4_segment"]
@@ -522,13 +540,17 @@ compare_policy_critic(underarm_prefix, underarm_prefix, tag_81)
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_83, tag_85], title="add_transitions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85], title="add_transitions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88], title="MVE")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_83, tag_85], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88], title="MVE")
+# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarmhard_prefix, tag_list=[tag_71, tag_76, tag_84], title="add_transitions")
 
