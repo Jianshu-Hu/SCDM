@@ -220,7 +220,8 @@ class TD3(object):
 
 		add_hand_invariance_regularization_target = False
 		if add_artificial_transitions:
-			add_transitions_type = 'ours'
+			add_transitions_type = 'MVE'
+			forward_action = 'policy_action'
 			H = 1
 		else:
 			add_transitions_type = None
@@ -235,16 +236,20 @@ class TD3(object):
 				target_Q_H = []
 
 				for timestep in range(H):
-					# Select action according to policy and add clipped noise
-					noise = (
-							torch.randn_like(action) * self.policy_noise
-					).clamp(-self.noise_clip, self.noise_clip)
+					if forward_action == 'policy_action':
+						# Select action according to policy and add clipped noise
+						noise = (
+								torch.randn_like(action) * self.policy_noise
+						).clamp(-self.noise_clip, self.noise_clip)
 
-					next_action = self.actor(next_state_H[-1], action_H[-1]) + noise
-					next_action = self.beta * next_action + (1 - self.beta) * action_H[-1]
-					next_action = (
-						next_action
-					).clamp(-self.max_action, self.max_action)
+						next_action = self.actor_target(next_state_H[-1], action_H[-1]) + noise
+						next_action = self.beta * next_action + (1 - self.beta) * action_H[-1]
+						next_action = (
+							next_action
+						).clamp(-self.max_action, self.max_action)
+					elif forward_action == 'random':
+						# random action
+						next_action = 2 * (torch.rand(action.size()) - 0.5)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
 					new_reward = transition.compute_reward(new_next_state)
@@ -410,11 +415,11 @@ class TD3(object):
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + regularization_loss
 		elif add_artificial_transitions:
 			if add_transitions_type == 'MVE':
-				critic_loss = torch.zeros(1)
+				critic_loss = torch.zeros(1).to(device)
 				for timestep in range(H+1):
 					critic_loss += F.mse_loss(current_Q1_H[timestep], target_Q_H[-timestep-1])+\
 						F.mse_loss(current_Q2_H[timestep], target_Q_H[-timestep-1])
-				critic_loss = critic_loss/H
+				critic_loss = critic_loss/(H+1)
 			elif add_transitions_type == 'ours':
 				# # Compute critic loss
 				# critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + \

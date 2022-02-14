@@ -327,6 +327,14 @@ tag_90 = ["1_random_goal_demo_add_artificial_transitions_policy_action_actor",
           "2_random_goal_demo_add_artificial_transitions_policy_action_actor",
           "3_random_goal_demo_add_artificial_transitions_policy_action_actor"]
 
+tag_91 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action"]
+
+tag_92 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_0",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_0",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_0"]
+
 # underarm
 # tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
 #          "3_random_goal_demo_her_type_4_segment"]
@@ -525,14 +533,15 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 # plot_all_fig(prefix=overarm_prefix, tag=tag_75)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
 # plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
+# plot_actor_critic_loss(overarm_prefix, tag_87)
+# plot_actor_critic_loss(overarm_prefix, tag_88)
+# compare_policy_critic(overarm_prefix, overarm_prefix, tag_76)
+# compare_policy_critic(overarm_prefix, underarm_prefix, tag_80)
+# compare_policy_critic(overarm_prefix, underarm_prefix, tag_81)
 
-compare_policy_critic(overarm_prefix, overarm_prefix, tag_76)
-compare_policy_critic(overarm_prefix, underarm_prefix, tag_80)
-compare_policy_critic(overarm_prefix, underarm_prefix, tag_81)
-
-compare_policy_critic(underarm_prefix, overarm_prefix, tag_76)
-compare_policy_critic(underarm_prefix, underarm_prefix, tag_80)
-compare_policy_critic(underarm_prefix, underarm_prefix, tag_81)
+# compare_policy_critic(underarm_prefix, overarm_prefix, tag_76)
+# compare_policy_critic(underarm_prefix, underarm_prefix, tag_80)
+# compare_policy_critic(underarm_prefix, underarm_prefix, tag_81)
 #plot_transition_model_loss(prefix=underarm_prefix, tag=tag_76)
 #plot_transition_model_loss(prefix=overarm_prefix, tag=tag_76)
 
@@ -543,13 +552,13 @@ compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85], title="add_transitions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88], title="MVE")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92], title="MVE")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85], title="add_transitions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88], title="MVE")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92], title="MVE")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarmhard_prefix, tag_list=[tag_71, tag_76, tag_84], title="add_transitions")

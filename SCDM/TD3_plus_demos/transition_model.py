@@ -24,7 +24,7 @@ class ForwardModel(nn.Module):
 
 class TransitionModel():
     def __init__(self, state_dim, action_dim, file_name, env_name, batch_size, compute_reward):
-        self.forward_model = ForwardModel(state_dim, action_dim)
+        self.forward_model = ForwardModel(state_dim, action_dim).to(device)
         self.model_optimizer = torch.optim.Adam(self.forward_model.parameters(), lr=1e-4)
         self.batch_size = batch_size
 
