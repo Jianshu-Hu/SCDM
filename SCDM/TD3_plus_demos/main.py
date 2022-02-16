@@ -97,6 +97,7 @@ if __name__ == "__main__":
 	parser.add_argument("--demo_tag", type=str, default="")  #tag for the files of demonstration
 	parser.add_argument("--initialize_with_demo", action="store_true")  # initialize actor and critic with demonstrations
 	parser.add_argument("--add_bc_loss", action="store_true")  # add behavior cloning loss to actor training
+	parser.add_argument("--model_start_timesteps", default=10000, type=int)# Time steps of start training transition model
 
 	parser.add_argument("--add_invariance_traj", action="store_true")   # add invariant segment to the replay buffer
 	parser.add_argument("--add_invariance_regularization", action="store_true")  # add regularization term to the loss of critic
@@ -422,8 +423,9 @@ if __name__ == "__main__":
 				prev_action = main_episode_prev_ac = np.zeros((action_dim,))
 				observation = main_episode_obs = env_main.reset()
 
-		if t >= args.start_timesteps:
+		if t >= args.model_start_timesteps:
 			transition.train(replay_buffer)
+		if t >= args.start_timesteps:
 			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition, args.batch_size,
 						 args.add_invariance_regularization, args.add_hand_invariance_regularization, args.add_bc_loss,
 						 args.add_artificial_transitions)

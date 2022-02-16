@@ -334,49 +334,25 @@ tag_91 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action",
 tag_92 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_0",
           "2_random_goal_demo_add_artificial_transitions_MVE_H_0",
           "3_random_goal_demo_add_artificial_transitions_MVE_H_0"]
+tag_93 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000"]
 
-# underarm
-# tag_9 = ["1_random_goal_demo_her_type_4_segment", "2_random_goal_demo_her_type_4_segment",
-#          "3_random_goal_demo_her_type_4_segment"]
-# tag_10 = ["1_random_goal_demo_her_type_5_segment", "2_random_goal_demo_her_type_5_segment",
-#          "3_random_goal_demo_her_type_5_segment"]
-# tag_4 = ["1_random_goal_demo_with_0001_translation", "2_random_goal_demo_with_0001_translation",
-#          "3_random_goal_demo_with_0001_translation"]
-# tag_5 = ["1_random_goal_demo_with_0001_rotation", "2_random_goal_demo_with_0001_rotation",
-#          "3_random_goal_demo_with_0001_rotation"]
-# tag_25 = ["1_random_goal_demo_replaced_by_informative_001_translation", "2_random_goal_demo_replaced_by_informative_001_translation"]
-# tag_12 = ["1_random_goal_demo_her_type_4_full_trajectory_pd_init_08", "2_random_goal_demo_her_type_4_full_trajectory_pd_init_08",
-#          "3_random_goal_demo_her_type_4_full_trajectory_pd_init_08"]
-# tag_13 = ["1_random_goal_demo_her_type_5_full_trajectory_pd_init_08", "2_random_goal_demo_her_type_5_full_trajectory_pd_init_08",
-#          "3_random_goal_demo_her_type_5_full_trajectory_pd_init_08"]
-# tag_17 = ["1_random_goal_demo_her_type_4_full_trajectory_start_1e6", "2_random_goal_demo_her_type_4_full_trajectory_start_1e6",
-#           "3_random_goal_demo_her_type_4_full_trajectory_start_1e6"]
-# tag_18 = ["1_random_goal_demo_her_type_4_full_trajectory_start_2e6", "2_random_goal_demo_her_type_4_full_trajectory_start_2e6",
-#           "3_random_goal_demo_her_type_4_full_trajectory_start_2e6"]
-# tag_21 = ["1_random_goal_demo_her_type_4_full_trajectory_sparse_reward", "2_random_goal_demo_her_type_4_full_trajectory_sparse_reward",
-#           "3_random_goal_demo_her_type_4_full_trajectory_sparse_reward"]
-# tag_22 = ["1_random_goal_demo_sparse_reward", "2_random_goal_demo_sparse_reward", "3_random_goal_demo_sparse_reward"]
-# tag_27 = ["1_random_goal_demo_her_type_1_goal_from_demo", "2_random_goal_demo_her_type_1_goal_from_demo",
-#           "3_random_goal_demo_her_type_1_goal_from_demo"]
-# tag_28 = ["1_random_goal_demo_her_type_2_goal_from_demo", "2_random_goal_demo_her_type_2_goal_from_demo",
-#           "3_random_goal_demo_her_type_2_goal_from_demo"]
-# # overarm
-# tag_7 = ["1_random_goal_demo_with_informative_001_translation", "2_random_goal_demo_with_informative_001_translation",
-#          "3_random_goal_demo_with_informative_001_translation"]
-# tag_11 = ["1_random_goal_demo_with_informative_001_rotation", "2_random_goal_demo_with_informative_001_rotation",
-#          "3_random_goal_demo_with_informative_001_rotation"]
-# tag_15 = ["1_random_goal_demo_replaced_by_informative_001_translation", "2_random_goal_demo_replaced_by_informative_001_translation",
-#          "3_random_goal_demo_replaced_by_informative_001_translation"]
-# tag_19 = ["1_random_goal_demo_replaced_by_informative_001_translation_include_original_sample",
-#           "2_random_goal_demo_replaced_by_informative_001_translation_include_original_sample",
-#           "3_random_goal_demo_replaced_by_informative_001_translation_include_original_sample"]
-# tag_20 = ["1_random_goal_demo_replaced_by_informative_001_rotation_include_original_sample",
-#           "2_random_goal_demo_replaced_by_informative_001_rotation_include_original_sample",
-#           "3_random_goal_demo_replaced_by_informative_001_rotation_include_original_sample"]
-# tag_33 = ["1_random_goal_demo_with_translation_regularization_new", "2_random_goal_demo_with_translation_regularization_new",
-#           "3_random_goal_demo_with_translation_regularization_new"]
-# tag_34 = ["1_random_goal_demo_with_rotation_regularization_new", "2_random_goal_demo_with_rotation_regularization_new",
-#           "3_random_goal_demo_with_rotation_regularization_new"]
+tag_94 = ["1_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q_after_3e6",
+          "2_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q_after_3e6",
+          "3_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q_after_3e6"]
+
+tag_95 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000_one_step_return_for_real_transition",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000_one_step_return_for_real_transition",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000_one_step_return_for_real_transition"]
+
+tag_96 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000_debug_loss_calculation",
+          "2_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000_debug_loss_calculation",
+          "3_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000_debug_loss_calculation"]
+
+tag_97 = ["1_random_goal_demo_add_artificial_transitions_average_loss",
+          "2_random_goal_demo_add_artificial_transitions_average_loss",
+          "3_random_goal_demo_add_artificial_transitions_average_loss"]
 
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
@@ -528,37 +504,37 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 #plot_all_fig(prefix=overarm_prefix, tag=tag_61)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_62)
 #plot_all_fig(prefix=underarm_prefix, tag=tag_67)
-# plot_all_fig(prefix=underarm_prefix, tag=tag_75)
+plot_all_fig(prefix=underarm_prefix, tag=tag_92)
 # plot_transition_model_loss(prefix=underarm_prefix, tag=tag_75)
-# plot_all_fig(prefix=overarm_prefix, tag=tag_75)
+plot_all_fig(prefix=overarm_prefix, tag=tag_92)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
 # plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
 # plot_actor_critic_loss(overarm_prefix, tag_87)
 # plot_actor_critic_loss(overarm_prefix, tag_88)
 # compare_policy_critic(overarm_prefix, overarm_prefix, tag_76)
 # compare_policy_critic(overarm_prefix, underarm_prefix, tag_80)
-# compare_policy_critic(overarm_prefix, underarm_prefix, tag_81)
+compare_policy_critic(overarm_prefix, underarm_prefix, tag_92)
 
 # compare_policy_critic(underarm_prefix, overarm_prefix, tag_76)
 # compare_policy_critic(underarm_prefix, underarm_prefix, tag_80)
-# compare_policy_critic(underarm_prefix, underarm_prefix, tag_81)
-#plot_transition_model_loss(prefix=underarm_prefix, tag=tag_76)
-#plot_transition_model_loss(prefix=overarm_prefix, tag=tag_76)
+compare_policy_critic(underarm_prefix, underarm_prefix, tag_92)
+# plot_transition_model_loss(prefix=underarm_prefix, tag=tag_93)
+# plot_transition_model_loss(prefix=overarm_prefix, tag=tag_93)
 
 
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85], title="add_transitions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92], title="MVE")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92], title="MVE")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarmhard_prefix, tag_list=[tag_71, tag_76, tag_84], title="add_transitions")

@@ -223,6 +223,11 @@ class TD3(object):
 			add_transitions_type = 'MVE'
 			forward_action = 'policy_action'
 			H = 1
+			# # train the model before we start to use
+			# if self.total_it > 25000:
+			# 	H = 1
+			# else:
+			# 	H = 0
 		else:
 			add_transitions_type = None
 
@@ -275,7 +280,13 @@ class TD3(object):
 				target_Q = reward_H[-1] + self.discount*Q_H
 				target_Q_H.append(target_Q)
 				for timestep in range(H):
-					target_Q = reward_H[-timestep-2]+self.discount*target_Q_H[-1]
+					if timestep == H-1:
+						# for the real transition use the 1-step return instead of using N-step return
+						target_Q1, target_Q2 = self.critic_target(next_state_H[0], action_H[1], action_H[0])
+						target_Q = torch.min(target_Q1, target_Q2)
+						target_Q = reward_H[0]+self.discount*target_Q
+					else:
+						target_Q = reward_H[-timestep-2]+self.discount*target_Q_H[-1]
 					target_Q_H.append(target_Q)
 			else:
 				# Select action according to policy and add clipped noise
@@ -304,8 +315,8 @@ class TD3(object):
 				target_Q = reward + self.discount * target_Q
 
 				if add_transitions_type == 'ours':
-					# # random action
-					# new_action = 2 * (torch.rand(action.size()) - 0.5)
+					# random action
+					new_action = 2 * (torch.rand(action.size()) - 0.5)
 
 					# # policy action
 					# noise = (
@@ -318,22 +329,22 @@ class TD3(object):
 					# 	new_action
 					# ).clamp(-self.max_action, self.max_action)
 
-					# use different action
-					if np.random.rand() <= self.epsilon:
-						# random action
-						new_action = 2*(torch.rand(action.size())-0.5)
-					else:
-						# policy action
-						noise = (
-								torch.randn_like(action) * self.policy_noise
-						).clamp(-self.noise_clip, self.noise_clip)
-
-						new_action = self.actor(state, prev_action) + noise
-						new_action = self.beta * new_action + (1 - self.beta) * prev_action
-						new_action = (
-							new_action
-						).clamp(-self.max_action, self.max_action)
-					self.epsilon *= self.epsilon_decay
+					# # use different action
+					# if np.random.rand() <= self.epsilon:
+					# 	# random action
+					# 	new_action = 2*(torch.rand(action.size())-0.5)
+					# else:
+					# 	# policy action
+					# 	noise = (
+					# 			torch.randn_like(action) * self.policy_noise
+					# 	).clamp(-self.noise_clip, self.noise_clip)
+					#
+					# 	new_action = self.actor(state, prev_action) + noise
+					# 	new_action = self.beta * new_action + (1 - self.beta) * prev_action
+					# 	new_action = (
+					# 		new_action
+					# 	).clamp(-self.max_action, self.max_action)
+					# self.epsilon *= self.epsilon_decay
 
 					new_next_state = transition.forward_model(state, new_action)
 					new_reward = transition.compute_reward(new_next_state)
@@ -356,8 +367,9 @@ class TD3(object):
 					new_target_Q = new_reward + self.discount * new_target_Q
 
 					# # filter artificial transitions with target Q
-					# filter = torch.where(new_target_Q > target_Q, 1, 0)
-					# new_target_Q *= filter
+					# if self.total_it > 3e6:
+					# 	filter = torch.where(new_target_Q > target_Q, 1, 0)
+					# 	new_target_Q *= filter
 
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
@@ -371,8 +383,9 @@ class TD3(object):
 					current_Q2_H.append(current_Q2)
 			elif add_transitions_type == 'ours':
 				new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
-				# new_current_Q1 *= filter
-				# new_current_Q2 *= filter
+				# if self.total_it > 3e6:
+				# 	new_current_Q1 *= filter
+				# 	new_current_Q2 *= filter
 
 
 		add_hand_invariance_regularization_Q = False
@@ -415,11 +428,11 @@ class TD3(object):
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + regularization_loss
 		elif add_artificial_transitions:
 			if add_transitions_type == 'MVE':
-				critic_loss = torch.zeros(1).to(device)
+				critic_loss_list = []
 				for timestep in range(H+1):
-					critic_loss += F.mse_loss(current_Q1_H[timestep], target_Q_H[-timestep-1])+\
-						F.mse_loss(current_Q2_H[timestep], target_Q_H[-timestep-1])
-				critic_loss = critic_loss/(H+1)
+					critic_loss_list.append(F.mse_loss(current_Q1_H[timestep], target_Q_H[-timestep-1]) +\
+							F.mse_loss(current_Q2_H[timestep], target_Q_H[-timestep-1]))
+				critic_loss = sum(critic_loss_list)/(H+1)
 			elif add_transitions_type == 'ours':
 				# # Compute critic loss
 				# critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + \
@@ -427,8 +440,8 @@ class TD3(object):
 				# self.lamb *= self.lamb_decay
 
 				# Compute critic loss
-				critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) + \
-						(F.mse_loss(new_current_Q1, new_target_Q)+F.mse_loss(new_current_Q2, new_target_Q))
+				critic_loss = (F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
+						F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q))/2
 		else:
 			# Compute critic loss
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
