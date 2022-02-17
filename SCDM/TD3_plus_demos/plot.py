@@ -356,6 +356,14 @@ tag_99 = ["1_random_goal_demo_policy_freq_5",
           "2_random_goal_demo_policy_freq_5",
           "3_random_goal_demo_policy_freq_5"]
 
+tag_100 = ["1_random_goal_demo_add_artificial_transitions_favor_larger_diff",
+           "2_random_goal_demo_add_artificial_transitions_favor_larger_diff",
+           "3_random_goal_demo_add_artificial_transitions_favor_larger_diff"]
+
+tag_101 = ["1_random_goal_demo_add_artificial_transitions_favor_smaller_diff",
+           "2_random_goal_demo_add_artificial_transitions_favor_smaller_diff",
+           "3_random_goal_demo_add_artificial_transitions_favor_smaller_diff"]
+
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -528,13 +536,13 @@ compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86], title="different_actions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_100, tag_101], title="different_actions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86], title="different_actions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_100, tag_101], title="different_actions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")

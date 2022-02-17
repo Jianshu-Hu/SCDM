@@ -370,21 +370,22 @@ class Invariance():
 
         return inv_actions
 
-    def random_one_hand_sample_generator(self, actions):
-        inv_actions = np.copy(actions)
+    def invariant_one_hand_action_generator(self, actions):
+        inv_hand1_actions = np.copy(actions)
+        inv_hand2_actions = np.copy(actions)
 
-        mount_action_bias = (np.random.rand(actions.shape[0], 6)-0.5)*2
-        hand_action_bias = (np.random.rand(actions.shape[0], 20)-0.5)*2
+        inv_hand1_actions[:, self.hand1_mount_action_index:self.hand1_mount_action_index + 6] \
+            = (np.random.rand(actions.shape[0], 6)-0.5)*2
+        inv_hand1_actions[:, self.hand1_action_index:self.hand1_action_index + 20] \
+            = (np.random.rand(actions.shape[0], 20)-0.5)*2
 
-        hand_index = int(np.random.rand(1) > 0.5)+1
-        if hand_index == 1:
-            inv_actions[:, self.hand1_mount_action_index:self.hand1_mount_action_index + 6] = mount_action_bias
-            inv_actions[:, self.hand1_action_index:self.hand1_action_index + 20] = hand_action_bias
-        elif hand_index == 2:
-            inv_actions[:, self.hand2_mount_action_index:self.hand2_mount_action_index + 6] = mount_action_bias
-            inv_actions[:, self.hand2_action_index:self.hand2_action_index + 20] = hand_action_bias
+        inv_hand2_actions[:, self.hand2_mount_action_index:self.hand2_mount_action_index + 6] \
+            = (np.random.rand(actions.shape[0], 6)-0.5)*2
+        inv_hand2_actions[:, self.hand2_action_index:self.hand2_action_index + 20] \
+            = (np.random.rand(actions.shape[0], 20)-0.5)*2
 
-        return inv_actions
+        return [torch.FloatTensor(inv_hand1_actions).to(self.device), \
+               torch.FloatTensor(inv_hand2_actions).to(self.device)]
 
 
     def hand_fixed_samples_generator(self, actions, all_invariance):
