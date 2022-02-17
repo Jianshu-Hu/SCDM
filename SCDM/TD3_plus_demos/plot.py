@@ -320,12 +320,6 @@ tag_87 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1",
 tag_88 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_3",
           "2_random_goal_demo_add_artificial_transitions_MVE_H_3",
           "3_random_goal_demo_add_artificial_transitions_MVE_H_3"]
-tag_89 = ["1_random_goal_demo_add_artificial_transitions_epsilon_greedy_actor",
-          "2_random_goal_demo_add_artificial_transitions_epsilon_greedy_actor",
-          "3_random_goal_demo_add_artificial_transitions_epsilon_greedy_actor"]
-tag_90 = ["1_random_goal_demo_add_artificial_transitions_policy_action_actor",
-          "2_random_goal_demo_add_artificial_transitions_policy_action_actor",
-          "3_random_goal_demo_add_artificial_transitions_policy_action_actor"]
 
 tag_91 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action",
           "2_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action",
@@ -353,6 +347,14 @@ tag_96 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for
 tag_97 = ["1_random_goal_demo_add_artificial_transitions_average_loss",
           "2_random_goal_demo_add_artificial_transitions_average_loss",
           "3_random_goal_demo_add_artificial_transitions_average_loss"]
+
+tag_98 = ["1_random_goal_demo_policy_freq_4",
+          "2_random_goal_demo_policy_freq_4",
+          "3_random_goal_demo_policy_freq_4"]
+
+tag_99 = ["1_random_goal_demo_policy_freq_5",
+          "2_random_goal_demo_policy_freq_5",
+          "3_random_goal_demo_policy_freq_5"]
 
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
@@ -522,37 +524,37 @@ compare_policy_critic(underarm_prefix, underarm_prefix, tag_92)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_93)
 
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79], title="policy_freq")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86], title="different_actions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_89, tag_90], title="different_actions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86], title="different_actions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 compare(prefix=underarmhard_prefix, tag_list=[tag_71, tag_76, tag_84], title="add_transitions")
 
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63, tag_64, tag_65], title="tuned_hand_invariance")
+# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_57, tag_63, tag_64, tag_65], title="tuned_hand_invariance")
 # compare(prefix=underarm_prefix, tag_list=[tag_57, tag_73, tag_74], title="auto_hand_invariance")
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_70, tag_65, tag_66, tag_72], title="tuned_hand_invariance")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_70, tag_65, tag_66, tag_72], title="tuned_hand_invariance")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_57, tag_73, tag_74], title="auto_hand_invariance")
 # compare(prefix=underarm_prefix, tag_list=[tag_57, tag_67, tag_68], title="demo_len")
 # plot_all_fig(prefix=overarm_prefix, tag=tag_69)
 # compare_policy_critic(overarm_prefix, overarm_prefix, tag_69)
 
 # compare(prefix=underarmhard_prefix, tag_list=[tag_71], title="baseline")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_43, tag_24, tag_28], title="baseline")
+# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_43, tag_24, tag_28], title="baseline")
 # compare(prefix=underarm_prefix, tag_list=[tag_21, tag_51, tag_52, tag_53, tag_54], title="new_hand_invariance")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_22, tag_23, tag_24, tag_25], title="baseline")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_45, tag_21, tag_24, tag_43, tag_44], title="baseline")
+# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_45, tag_21, tag_24, tag_43, tag_44], title="baseline")
 # compare(prefix=overarm_prefix, tag_list=[tag_21, tag_48, tag_49, tag_50, tag_55, tag_56, tag_59], title="decay rate")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_21, tag_57, tag_58, tag_60, tag_61, tag_62], title="exclude demo")
 # compare(prefix=overarm_prefix, tag_list=[tag_21, tag_41, tag_42, tag_46, tag_47], title="hand_invariance")

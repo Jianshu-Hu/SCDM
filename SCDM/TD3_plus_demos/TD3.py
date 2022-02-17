@@ -222,7 +222,7 @@ class TD3(object):
 		if add_artificial_transitions:
 			add_transitions_type = 'MVE'
 			forward_action = 'policy_action'
-			H = 1
+			H = 0
 			# # train the model before we start to use
 			# if self.total_it > 25000:
 			# 	H = 1
@@ -316,7 +316,7 @@ class TD3(object):
 
 				if add_transitions_type == 'ours':
 					# random action
-					new_action = 2 * (torch.rand(action.size()) - 0.5)
+					new_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
 
 					# # policy action
 					# noise = (

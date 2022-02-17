@@ -184,11 +184,14 @@ if __name__ == "__main__":
 		args.pd_throw_decay = args.pd_decay
 
 	# Set seeds
-	env_main.seed(args.seed)
-	env_demo.seed(args.seed+1)
-	env_reset.seed(args.seed+2)
-	torch.manual_seed(args.seed)
 	np.random.seed(args.seed)
+	env_main.seed(args.seed)
+	env_main.action_space.np_random.seed(args.seed)
+	env_demo.seed(args.seed+1)
+	env_demo.action_space.np_random.seed(args.seed+1)
+	env_reset.seed(args.seed+2)
+	env_reset.action_space.np_random.seed(args.seed+2)
+	torch.manual_seed(args.seed)
 	
 	state_dim = env_statedict_to_state(env_main.env._get_obs(), args.env).shape[0]
 	action_dim = env_main.action_space.shape[0]
