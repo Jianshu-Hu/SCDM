@@ -364,6 +364,17 @@ tag_101 = ["1_random_goal_demo_add_artificial_transitions_favor_smaller_diff",
            "2_random_goal_demo_add_artificial_transitions_favor_smaller_diff",
            "3_random_goal_demo_add_artificial_transitions_favor_smaller_diff"]
 
+tag_102 = ["1_random_goal_demo_add_artificial_transitions_favor_higher_target_Q",
+           "2_random_goal_demo_add_artificial_transitions_favor_higher_target_Q",
+           "3_random_goal_demo_add_artificial_transitions_favor_higher_target_Q"]
+
+tag_103 = ["1_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q_when_having_a_small_diff",
+           "2_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q_when_having_a_small_diff",
+           "3_random_goal_demo_add_artificial_transitions_filter_with_higher_target_Q_when_having_a_small_diff"]
+
+tag_104 = ["1_random_goal_demo_add_artificial_transitions_filter_with_small_model_error",
+           "2_random_goal_demo_add_artificial_transitions_filter_with_small_model_error",
+           "3_random_goal_demo_add_artificial_transitions_filter_with_small_model_error"]
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -514,20 +525,22 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 #plot_all_fig(prefix=overarm_prefix, tag=tag_61)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_62)
 #plot_all_fig(prefix=underarm_prefix, tag=tag_67)
-plot_all_fig(prefix=underarm_prefix, tag=tag_92)
+# plot_all_fig(prefix=underarm_prefix, tag=tag_92)
 # plot_transition_model_loss(prefix=underarm_prefix, tag=tag_75)
-plot_all_fig(prefix=overarm_prefix, tag=tag_92)
+# plot_all_fig(prefix=overarm_prefix, tag=tag_92)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_75)
 # plot_all_fig(prefix=underarmhard_prefix, tag=tag_71)
 # plot_actor_critic_loss(overarm_prefix, tag_87)
 # plot_actor_critic_loss(overarm_prefix, tag_88)
 # compare_policy_critic(overarm_prefix, overarm_prefix, tag_76)
 # compare_policy_critic(overarm_prefix, underarm_prefix, tag_80)
-compare_policy_critic(overarm_prefix, underarm_prefix, tag_92)
+# compare_policy_critic(overarm_prefix, underarm_prefix, tag_92)
+# compare_policy_critic(overarm_prefix, underarm_prefix, tag_85)
 
 # compare_policy_critic(underarm_prefix, overarm_prefix, tag_76)
 # compare_policy_critic(underarm_prefix, underarm_prefix, tag_80)
-compare_policy_critic(underarm_prefix, underarm_prefix, tag_92)
+# compare_policy_critic(underarm_prefix, underarm_prefix, tag_92)
+# compare_policy_critic(underarm_prefix, underarm_prefix, tag_85)
 # plot_transition_model_loss(prefix=underarm_prefix, tag=tag_93)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_93)
 
@@ -535,14 +548,16 @@ compare_policy_critic(underarm_prefix, underarm_prefix, tag_92)
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_100, tag_101], title="different_actions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_81, tag_97], title="add_transitions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_85, tag_94, tag_103, tag_104], title="filter_transitions")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_76, tag_78, tag_83, tag_86, tag_100, tag_101, tag_102], title="different_actions")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=overarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_78, tag_81, tag_85, tag_94, tag_97], title="add_transitions")
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_83, tag_86, tag_100, tag_101], title="different_actions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_77, tag_81, tag_97], title="add_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_85, tag_94, tag_103, tag_104], title="filter_transitions")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_76, tag_78, tag_83, tag_86, tag_100, tag_101, tag_102], title="different_actions")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_80, tag_82], title="forward_one_step")
 compare(prefix=underarm_prefix, tag_list=[tag_1, tag_87, tag_88, tag_91, tag_92, tag_93, tag_95, tag_96], title="MVE")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")

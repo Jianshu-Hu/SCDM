@@ -28,7 +28,7 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=random_goal_demo_add_artificial_transitions_favor_smaller_diff
+tag=random_goal_demo_add_artificial_transitions_filter_with_small_model_error
 seed=3
 
 demo_tag=""

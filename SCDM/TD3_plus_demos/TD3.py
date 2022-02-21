@@ -117,6 +117,8 @@ class TD3(object):
 		self.epsilon = 1
 		self.epsilon_decay = 0.9999995
 
+		self.error_threshold = 0.1
+
 		self.env_name = env_name
 		# invariant sample generator
 		if env_name == 'TwoEggCatchUnderArm-v0':
@@ -230,8 +232,9 @@ class TD3(object):
 				# else:
 				# 	H = 0
 			elif add_transitions_type == 'ours':
-				forward_action = 'random_one_hand'
+				forward_action = 'random'
 				filter_with_higher_target_Q = False
+				filter_with_error = True
 		else:
 			add_transitions_type = None
 
@@ -369,21 +372,33 @@ class TD3(object):
 						new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action, new_action)
 
 						new_target_Q = torch.min(new_target_Q1, new_target_Q2)
+						target_Q_diff = torch.abs((new_target_Q1 - new_target_Q2) / new_target_Q)
 						new_target_Q = new_reward + self.discount * new_target_Q
 
 						# filter artificial transitions with target Q
 						if filter_with_higher_target_Q:
-							if self.total_it > 3e6:
-								filter = torch.where(new_target_Q > target_Q, 1, 0)
-								new_target_Q *= filter
+							# if self.total_it > 3e6:
+							# 	filter = torch.where(new_target_Q > target_Q, 1, 0)
+							# 	new_target_Q *= filter
+							# filter the transition when the target Q values from two networks have a small difference
+							filter_condition = torch.logical_and((target_Q_diff < self.error_threshold),
+																 (new_target_Q < target_Q))
+							filter = torch.where(filter_condition, 0, 1)
+							new_target_Q *= filter
+						elif filter_with_error:
+							imagined_next_state = transition.forward_model(state, action)
+							error = torch.mean(F.mse_loss(imagined_next_state, next_state, reduction='none'), dim=1, keepdim=True)
+							filter = torch.where(error < 0.2, 1, 0)
+							new_target_Q *= filter
+
 					elif forward_action == 'random_one_hand':
 						inv_hand_action_list\
 							= self.invariance_definition.invariant_one_hand_action_generator(action.cpu().data.numpy())
 						# initialize
-						best_action = torch.randn_like(action)
-						best_target_Q = torch.randn_like(target_Q)
+						best_action = torch.clone(inv_hand_action_list[0])
+						best_target_Q = torch.ones_like(target_Q)*torch.FloatTensor([-np.inf]).to(device)
 						# best_abs_diff = torch.zeros_like(target_Q)
-						best_abs_diff = torch.ones_like(target_Q)*torch.FloatTensor([np.inf]).to(device)
+						# best_abs_diff = torch.ones_like(target_Q)*torch.FloatTensor([np.inf]).to(device)
 						for action_ind in range(len(inv_hand_action_list)):
 							new_action = inv_hand_action_list[action_ind]
 							new_next_state = transition.forward_model(state, new_action)
@@ -407,11 +422,11 @@ class TD3(object):
 							new_target_Q = torch.min(new_target_Q1, new_target_Q2)
 							new_target_Q = new_reward + self.discount * new_target_Q
 
-							abs_diff = torch.abs(new_target_Q-target_Q)
+							# abs_diff = torch.abs(new_target_Q-target_Q)
 
-							best_action = torch.where(abs_diff < best_abs_diff, new_action, best_action)
-							best_target_Q = torch.where(abs_diff < best_abs_diff, new_target_Q, best_target_Q)
-							best_abs_diff = torch.where(abs_diff < best_abs_diff, abs_diff, best_abs_diff)
+							best_action = torch.where(best_target_Q < new_target_Q, new_action, best_action)
+							best_target_Q = torch.where(best_target_Q < new_target_Q, new_target_Q, best_target_Q)
+							# best_abs_diff = torch.where(abs_diff < best_abs_diff, abs_diff, best_abs_diff)
 
 
 		# Get current Q estimates
@@ -428,9 +443,14 @@ class TD3(object):
 				if forward_action == 'random':
 					new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
 					if filter_with_higher_target_Q:
-						if self.total_it > 3e6:
-							new_current_Q1 *= filter
-							new_current_Q2 *= filter
+						# if self.total_it > 3e6:
+						# 	new_current_Q1 *= filter
+						# 	new_current_Q2 *= filter
+						new_current_Q1 *= filter
+						new_current_Q2 *= filter
+					elif filter_with_error:
+						new_current_Q1 *= filter
+						new_current_Q2 *= filter
 				elif forward_action == 'random_one_hand':
 					new_current_Q1, new_current_Q2 = self.critic(state, best_action, prev_action)
 

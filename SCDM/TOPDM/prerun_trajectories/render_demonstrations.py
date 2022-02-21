@@ -7,7 +7,7 @@ import dexterous_gym
 import numpy as np
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--env', type=str, default="EggCatchUnderarmHard-v0")
+parser.add_argument('--env', type=str, default="EggCatchOverarm-v0")
 parser.add_argument('--delay', type=float, default=0.03, help="time between frames")
 args = parser.parse_args()
 
