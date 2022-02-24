@@ -6,9 +6,9 @@ conda activate SCDM
 
 #env_name="TwoEggCatchUnderArm-v0"
 
-#env_name="EggCatchUnderarm-v0"
+env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchUnderarmHard-v0"
-env_name="EggCatchOverarm-v0"
+#env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
 
 #env_name="EggCatchUnderarm-v1"
@@ -28,7 +28,7 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=random_goal_demo_add_artificial_transitions_invariance_forward_H_10
+tag=random_goal_demo_add_artificial_transitions_MVE_H_1_random_action_true_loss_for_true_transition
 seed=3
 
 demo_tag=""

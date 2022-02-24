@@ -247,7 +247,7 @@ class TD3(object):
 		add_hand_invariance_regularization_target = False
 		if add_artificial_transitions:
 			if self.total_it <= 10e6:
-				add_transitions_type = 'ours'
+				add_transitions_type = 'MVE'
 				if add_transitions_type == 'MVE':
 					forward_action = 'random'
 					H = 1
@@ -313,7 +313,20 @@ class TD3(object):
 				for timestep in range(H):
 					if timestep == H-1:
 						# for the real transition use the 1-step return instead of using N-step return
-						target_Q1, target_Q2 = self.critic_target(next_state_H[0], action_H[1], action_H[0])
+						if forward_action == 'random':
+							# Select action according to policy and add clipped noise
+							noise = (
+									torch.randn_like(action) * self.policy_noise
+							).clamp(-self.noise_clip, self.noise_clip)
+
+							next_action = self.actor_target(next_state, action) + noise
+							next_action = self.beta * next_action + (1 - self.beta) * action
+							next_action = (
+								next_action
+							).clamp(-self.max_action, self.max_action)
+							target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
+						elif forward_action == 'policy_action':
+							target_Q1, target_Q2 = self.critic_target(next_state_H[0], action_H[1], action_H[0])
 						target_Q = torch.min(target_Q1, target_Q2)
 						target_Q = reward_H[0]+self.discount*target_Q
 					else:
