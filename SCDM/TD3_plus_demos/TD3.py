@@ -195,6 +195,30 @@ class TD3(object):
 			mean_ac += noise
 		return self.beta*mean_ac + (1-self.beta)*prev_action.cpu().data.numpy().flatten()
 
+	def forward_with_learned_model(self, action, next_state, reward, H, transition):
+		return_H = torch.clone(reward)
+		for t in range(H):
+			# Select action according to policy and add clipped noise
+			noise = (
+					torch.randn_like(action) * self.policy_noise
+			).clamp(-self.noise_clip, self.noise_clip)
+
+			next_action = self.actor_target(next_state, action) + noise
+			next_action = self.beta * next_action + (1 - self.beta) * action
+			next_action = (
+				next_action
+			).clamp(-self.max_action, self.max_action)
+
+			state = torch.clone(next_state)
+			next_state = transition.forward_model(state, next_action)
+			action = torch.clone(next_action)
+			reward = transition.compute_reward(next_state)
+			return_H += self.discount**(t+1)*reward
+		return return_H
+
+
+
+
 	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, transition, batch_size=100,
 			  add_invariance_regularization=False, add_hand_invariance_regularization=False, add_bc_loss=False,
 			  add_artificial_transitions=False):
@@ -222,19 +246,19 @@ class TD3(object):
 
 		add_hand_invariance_regularization_target = False
 		if add_artificial_transitions:
-			add_transitions_type = 'ours'
-			if add_transitions_type == 'MVE':
-				forward_action = 'policy_action'
-				H = 0
-				# # train the model before we start to use
-				# if self.total_it > 25000:
-				# 	H = 1
-				# else:
-				# 	H = 0
-			elif add_transitions_type == 'ours':
-				forward_action = 'random'
-				filter_with_higher_target_Q = False
-				filter_with_error = True
+			if self.total_it <= 10e6:
+				add_transitions_type = 'ours'
+				if add_transitions_type == 'MVE':
+					forward_action = 'random'
+					H = 1
+				elif add_transitions_type == 'ours':
+					forward_action = 'invariance'
+					H = 10
+					filter_with_higher_target_Q = False
+					filter_with_error = False
+			else:
+				add_artificial_transitions = False
+				add_transitions_type = None
 		else:
 			add_transitions_type = None
 
@@ -261,7 +285,7 @@ class TD3(object):
 						).clamp(-self.max_action, self.max_action)
 					elif forward_action == 'random':
 						# random action
-						next_action = 2 * (torch.rand(action.size()) - 0.5)
+						next_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
 					new_reward = transition.compute_reward(new_next_state)
@@ -387,6 +411,27 @@ class TD3(object):
 							new_target_Q *= filter
 						elif filter_with_error:
 							imagined_next_state = transition.forward_model(state, action)
+							# debug
+							imagined_reward = transition.compute_reward(imagined_next_state)
+							reward_error = F.mse_loss(reward, imagined_reward, reduction='none')
+							# Select action according to policy and add clipped noise
+							noise = (
+									torch.randn_like(action) * self.policy_noise
+							).clamp(-self.noise_clip, self.noise_clip)
+
+							new_next_action = self.actor_target(imagined_next_state, action) + noise
+							new_next_action = self.beta * new_next_action + (1 - self.beta) * action
+							new_next_action = (
+								new_next_action
+							).clamp(-self.max_action, self.max_action)
+
+							# Compute the target Q value
+							new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action,
+																			  action)
+							new_target_Q = torch.min(new_target_Q1, new_target_Q2)
+							new_target_Q = imagined_reward + self.discount * new_target_Q
+							target_error = F.mse_loss(new_target_Q, target_Q, reduction='none')
+
 							error = torch.mean(F.mse_loss(imagined_next_state, next_state, reduction='none'), dim=1, keepdim=True)
 							filter = torch.where(error < 0.2, 1, 0)
 							new_target_Q *= filter
@@ -427,8 +472,37 @@ class TD3(object):
 							best_action = torch.where(best_target_Q < new_target_Q, new_action, best_action)
 							best_target_Q = torch.where(best_target_Q < new_target_Q, new_target_Q, best_target_Q)
 							# best_abs_diff = torch.where(abs_diff < best_abs_diff, abs_diff, best_abs_diff)
+					elif forward_action == 'invariance':
+						invariant_action_candidate = \
+							self.invariance_definition.throwing_hand_random_samples_generator(action.cpu().data.numpy())
+						new_next_state = transition.forward_model(state, invariant_action_candidate)
+						new_reward = transition.compute_reward(new_next_state)
 
+						# forward two states for H steps and calculate the return
+						return_H_origianl = self.forward_with_learned_model(action, next_state, reward, H, transition)
+						return_H_invariant = self.forward_with_learned_model(invariant_action_candidate, new_next_state,
+																			 new_reward, H, transition)
 
+						relative_diff = torch.abs((return_H_origianl - return_H_invariant) / return_H_origianl)
+						invariance = torch.where(relative_diff < 0.1, 1, 0)
+
+						noise = (
+								torch.randn_like(action) * self.policy_noise
+						).clamp(-self.noise_clip, self.noise_clip)
+
+						new_next_action = self.actor_target(new_next_state, invariant_action_candidate) + noise
+						new_next_action = self.beta * new_next_action + (1 - self.beta) * invariant_action_candidate
+						new_next_action = (
+							new_next_action
+						).clamp(-self.max_action, self.max_action)
+
+						# Compute the target Q value
+						new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action,
+																		  invariant_action_candidate)
+						new_target_Q = torch.min(new_target_Q1, new_target_Q2)
+						new_target_Q = new_reward + self.discount * new_target_Q
+
+						new_target_Q *= invariance
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
 		if add_artificial_transitions:
@@ -453,6 +527,10 @@ class TD3(object):
 						new_current_Q2 *= filter
 				elif forward_action == 'random_one_hand':
 					new_current_Q1, new_current_Q2 = self.critic(state, best_action, prev_action)
+				elif forward_action == 'invariance':
+					new_current_Q1, new_current_Q2 = self.critic(state, invariant_action_candidate, prev_action)
+					new_current_Q1 *= invariance
+					new_current_Q2 *= invariance
 
 
 		add_hand_invariance_regularization_Q = False
@@ -508,12 +586,16 @@ class TD3(object):
 					# self.lamb *= self.lamb_decay
 
 					# Compute critic loss
-					critic_loss = (F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
-							F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q))/2
+					critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
+							F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q)
 				elif forward_action == 'random_one_hand':
 					# Compute critic loss
-					critic_loss = (F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
-							F.mse_loss(new_current_Q1, best_target_Q) + F.mse_loss(new_current_Q2, best_target_Q))/2
+					critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
+							F.mse_loss(new_current_Q1, best_target_Q) + F.mse_loss(new_current_Q2, best_target_Q)
+				elif forward_action == 'invariance':
+					# Compute critic loss
+					critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
+							F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q)
 		else:
 			# Compute critic loss
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)

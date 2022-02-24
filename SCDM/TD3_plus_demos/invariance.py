@@ -370,6 +370,16 @@ class Invariance():
 
         return inv_actions
 
+    def throwing_hand_random_samples_generator(self, actions):
+        inv_actions = np.copy(actions)
+
+        inv_actions[:, self.hand2_mount_action_index:self.hand2_mount_action_index + 6] =\
+            (np.random.rand(actions.shape[0], 6)-0.5)*2
+        inv_actions[:, self.hand2_action_index:self.hand2_action_index + 20] = \
+            (np.random.rand(actions.shape[0], 20)-0.5)*2
+
+        return torch.FloatTensor(inv_actions).to(self.device)
+
     def invariant_one_hand_action_generator(self, actions):
         inv_hand1_actions = np.copy(actions)
         inv_hand2_actions = np.copy(actions)
