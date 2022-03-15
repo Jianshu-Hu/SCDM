@@ -105,7 +105,6 @@ if __name__ == "__main__":
 						action="store_true")  # add regularization term to the loss of critic
 	parser.add_argument("--add_artificial_transitions",
 						action="store_true")  # add artificial transitions during the training
-	parser.add_argument("--enable_exploratory_policy", action="store_true") # add a new actor-critic for exploration
 	parser.add_argument("--N_artificial_sample", type=int, default=1) #number of artificial samples generated
 	parser.add_argument("--inv_type", type=str, default='translation')  # use translation or rotation
 	parser.add_argument("--use_informative_segment", action="store_true") # use informative segment instead of restricted segment
@@ -119,15 +118,6 @@ if __name__ == "__main__":
 	# z: rotation in z
 	# ignore: without rotation
 	parser.add_argument("--sparse_reward", action="store_true")  # reward type
-	parser.add_argument("--use_her", action="store_true")  # use hindsight replay buffer
-	parser.add_argument("--her_timesteps", default=0, type=int)  # time steps to start using hindsight replay buffer
-	parser.add_argument("--N_her", type=int, default=1)  # use hindsight replay buffer
-	parser.add_argument("--her_type", type=int, default=1)
-	# type1: the final achieved goal of the segment is set as the new goal
-	# type2: randomly choose one of the following achieved goal in the segment as the new goal
-	# type3: original goal + noise
-	# type4: type1 + noise
-	# type5: type2 + noise
 
 	parser.add_argument("--divide_demos_into_N_parts", type=int, default=1) #divide the demos into N parts
 	parser.add_argument("--pd_throw_decay", type=float, default=0.99999)    # after each segment scale probability down by this amount
@@ -139,8 +129,6 @@ if __name__ == "__main__":
 	print(f"Policy: {args.policy}, Env: {args.env}, Seed: {args.seed}")
 	print("---------------------------------------")
 
-	if args.enable_exploratory_policy:
-		exploratory_file_name = file_name+"_exploration"
 
 	if not os.path.exists("./results"):
 		os.makedirs("./results")
@@ -225,26 +213,6 @@ if __name__ == "__main__":
 		policy_file = file_name if args.load_model == "default" else args.load_model
 		policy.load(f"./models/{policy_file}")
 
-	if args.enable_exploratory_policy:
-		# create a policy for exploration
-		new_kwargs = {
-			"state_dim": state_dim,
-			"action_dim": action_dim,
-			"max_action": max_action,
-			"env_name": args.env,
-			"file_name": exploratory_file_name,
-			"discount": args.discount,
-			"tau": args.tau,
-			"policy_noise": args.policy_noise * max_action,
-			"noise_clip": args.noise_clip * max_action,
-			"policy_freq": args.policy_freq,
-			"beta": args.beta
-		}
-		exploratory_policy = TD3.TD3(**new_kwargs)
-		if args.load_model != "":
-			exploratory_policy_file = exploratory_file_name if args.load_model == "default" else args.load_model
-			exploratory_policy.load(f"./models/{exploratory_policy_file}")
-
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, args.env)
 	demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
 	if args.initialize_with_demo:
@@ -253,9 +221,6 @@ if __name__ == "__main__":
 		evaluate_initial_policy, evaluate_initial_critic = eval_policy(policy, args.env, args.seed,
 																target_rotation=args.target_rotation)
 
-	if args.use_her:
-		hindsight_replay_buffer = utils.HindsightReplayBuffer(state_dim, action_dim, env_name=args.env,
-			segment_length=args.segment_len, her_type=args.her_type, compute_reward=env_main.env.compute_reward)
 	invariant_replay_buffer_list = []
 	if args.add_invariance_traj:
 		invariant_replay_buffer = utils.InvariantReplayBuffer(state_dim, action_dim, env_name=args.env,
@@ -270,12 +235,6 @@ if __name__ == "__main__":
 	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, target_rotation=args.target_rotation)
 	evaluations_policy = [avg_reward]
 	evaluations_critic = [avg_Q]
-
-	# Evaluate untrained exploratory policy
-	if args.enable_exploratory_policy:
-		avg_reward, avg_Q = eval_policy(exploratory_policy, args.env, args.seed, target_rotation=args.target_rotation)
-		evaluations_exploratory_policy = [avg_reward]
-		evaluations_exploratory_critic = [avg_Q]
 
 	total_timesteps = 0
 	segment_timestep = 0
@@ -301,25 +260,11 @@ if __name__ == "__main__":
 			args.add_hand_invariance_regularization:
 		print("inv_type: ", args.inv_type)
 		print("use_informative_segment: ", args.use_informative_segment)
-	print("use_her: ", args.use_her)
 	if args.sparse_reward:
 		print("reward type: sparse reward")
 	else:
 		print("reward type: dense reward")
 	print("target rotation: ", args.target_rotation)
-	if args.use_her:
-		print("start HER from: ", args.her_timesteps)
-		if args.her_type == 1:
-			print("her_type: ", args.her_type, " final")
-		elif args.her_type == 2:
-			print("her_type: ", args.her_type, " future")
-		elif args.her_type == 3:
-			print("her_type: ", args.her_type, " noisy")
-		elif args.her_type == 4:
-			print("her_type: ", args.her_type, " noisy final")
-		elif args.her_type == 5:
-			print("her_type: ", args.her_type, " noisy future")
-		print("N_her: ", args.N_her)
 
 	for t in range(int(args.max_timesteps)):
 		
@@ -349,16 +294,12 @@ if __name__ == "__main__":
 					env_demo.reset()
 					env_demo.env.sim.set_state(demo_states_throw[traj_ind][state_ind])
 					prev_action = demo_prev_actions_throw[traj_ind][state_ind]
-					# store the future states for HER
-					future_states = demo_states_catch[traj_ind]
 				else:
 					traj_ind = np.random.randint(0, len(demo_states_catch))
 					state_ind = np.random.randint(0, len(demo_states_catch[traj_ind]))
 					env_demo.reset()
 					env_demo.env.sim.set_state(demo_states_catch[traj_ind][state_ind])
 					prev_action = demo_prev_actions_catch[traj_ind][state_ind]
-					# store the future states for HER
-					future_states = [demo_states_catch[traj_ind][-1]]
 				# set the goal of the segment from the demonstrations
 				if args.demo_goal_type == "True":
 					env_demo.goal = np.copy(demo_goals[traj_ind])
@@ -392,12 +333,8 @@ if __name__ == "__main__":
 			).clip(-max_action, max_action)
 		else:
 			noise = np.random.normal(0, max_action * args.expl_noise, size=action_dim)
-			if args.enable_exploratory_policy:
-				action = (
-					exploratory_policy.select_action(observation, prev_action, noise=noise)).clip(-max_action, max_action)
-			else:
-				action = (
-					policy.select_action(observation, prev_action, noise=noise)).clip(-max_action, max_action)
+			action = (
+				policy.select_action(observation, prev_action, noise=noise)).clip(-max_action, max_action)
 
 		segment_timestep += 1
 		total_timesteps += 1
@@ -428,17 +365,6 @@ if __name__ == "__main__":
 		else:
 			replay_buffer.add(observation, action, next_observation, reward, prev_action)
 
-		# if args.use_her:
-		if args.use_her and segment_type == "pd" and total_timesteps > args.her_timesteps:
-			hindsight_replay_buffer.add(observation, action, next_observation, reward, prev_action)
-			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
-				for num_her in range(args.N_her):
-					random_goal = env_main.env._sample_goal()
-					her_state, her_action, her_next_state, her_reward, her_prev_action = \
-						hindsight_replay_buffer.choose_new_goal(random_goal, future_states)
-					replay_buffer.add_from_other_replay_buffer(her_state,
-										her_action, her_next_state,
-										her_reward, her_prev_action)
 		if args.add_invariance_regularization:
 			for i in range(args.N_artificial_sample):
 				invariant_replay_buffer_list[i].add_inv_sample(observation, action, next_observation, reward,
@@ -448,11 +374,6 @@ if __name__ == "__main__":
 			policy.normaliser.update(observation)
 			if t % args.update_normaliser_every == 0:
 				policy.normaliser.recompute_stats()
-
-			if args.enable_exploratory_policy:
-				exploratory_policy.normaliser.update(observation)
-				if t % args.update_normaliser_every == 0:
-					exploratory_policy.normaliser.recompute_stats()
 
 			transition.normaliser.update(observation)
 			if t % args.update_normaliser_every == 0:
@@ -468,22 +389,11 @@ if __name__ == "__main__":
 		if t >= args.model_start_timesteps:
 			transition.train(replay_buffer)
 		if t >= args.start_timesteps:
-			if args.enable_exploratory_policy:
-				policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
-							 args.batch_size,
-							 args.add_invariance_regularization, args.add_hand_invariance_regularization,
-							 args.add_bc_loss,
-							 args.add_artificial_transitions,
-							 args.enable_exploratory_policy, exploratory_policy.actor_target)
-				exploratory_policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
-					args.batch_size, args.add_invariance_regularization, args.add_hand_invariance_regularization,
-					args.add_bc_loss, add_artificial_transitions=True)
-			else:
-				policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
-							 args.batch_size,
-							 args.add_invariance_regularization, args.add_hand_invariance_regularization,
-							 args.add_bc_loss,
-							 args.add_artificial_transitions)
+			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
+						 args.batch_size,
+						 args.add_invariance_regularization, args.add_hand_invariance_regularization,
+						 args.add_bc_loss,
+						 args.add_artificial_transitions)
 
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, target_rotation=args.target_rotation)
@@ -494,13 +404,3 @@ if __name__ == "__main__":
 			if args.save_model: policy.save(f"./models/{file_name}")
 			print("Evaluation after %d steps - average reward: %f" % (total_timesteps, evaluations_policy[-1]))
 			print("Evaluation after %d steps - average Q: %f" % (total_timesteps, evaluations_critic[-1]))
-
-			if args.enable_exploratory_policy:
-				avg_reward, avg_Q = eval_policy(exploratory_policy, args.env, args.seed, target_rotation=args.target_rotation)
-				evaluations_exploratory_policy.append(avg_reward)
-				evaluations_exploratory_critic.append(avg_Q)
-				np.save(f"./results/{exploratory_file_name}", evaluations_exploratory_policy)
-				np.save(f"./results_critic/{exploratory_file_name}", evaluations_exploratory_critic)
-				if args.save_model: exploratory_policy.save(f"./models/{exploratory_file_name}")
-				print("Evaluation of exploration after %d steps - average reward: %f" % (total_timesteps, evaluations_exploratory_policy[-1]))
-				print("Evaluation of exploration after %d steps - average Q: %f" % (total_timesteps, evaluations_exploratory_critic[-1]))

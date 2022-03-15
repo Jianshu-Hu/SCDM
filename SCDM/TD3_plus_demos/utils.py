@@ -61,9 +61,11 @@ class DemoProcessor():
 			if self.env in env_list1:
 				initial_position = traj["sim_states"][0].qpos[60:63]
 				goal_position = traj["goal"][0:3]
+				y_axis_index = np.argmax(np.abs(goal_position - initial_position))
+			elif self.env == "PenSpin-v0":
+				self.divide_into_N_parts = 1
 			else:
 				raise NotImplementedError
-			y_axis_index = np.argmax(np.abs(goal_position-initial_position))
 
 			for k, state in enumerate(traj["sim_states"]):
 				if k == 0:
@@ -174,86 +176,6 @@ class ReplayBuffer(object):
 		)
 
 
-
-class HindsightReplayBuffer(ReplayBuffer):
-	def __init__(self, state_dim, action_dim, env_name, segment_length, her_type, compute_reward):
-		super().__init__(state_dim, action_dim, env_name, segment_length)
-		# two hands with one object
-		env_list2 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggHandOver-v0',
-					 'BlockCatchOverarm-v0', 'BlockCatchUnderarm-v0', 'BlockHandOver-v0',
-					 'PenCatchOverarm-v0', 'PenCatchUnderarm-v0', 'PenHandOver-v0']
-		if env_name in env_list2:
-			self.goal_index = -7
-			self.obj_index = -20
-			self.obj_qpos_index = -14
-		else:
-			raise ValueError('Wrong Env')
-
-		self.her_type = her_type
-		self.compute_reward = compute_reward
-
-	def choose_new_goal(self, random_goal, future_states):
-		new_state = np.copy(self.state)
-		new_action = np.copy(self.action)
-		new_next_state = np.copy(self.next_state)
-		new_reward = np.copy(self.reward)
-		new_prev_action = np.copy(self.prev_action)
-		# update new reward
-		if self.her_type == 1:
-			# new goal is the achieved goal of final sample in this segment
-			# new_goal = self.next_state[-1, self.obj_index:self.obj_index+7]
-			new_goal = future_states[-1].qpos[self.obj_qpos_index:self.obj_qpos_index + 7]
-			for i in range(self.max_size):
-				new_state[i, self.goal_index:] = np.copy(new_goal)
-				new_next_state[i, self.goal_index:] = np.copy(new_goal)
-				new_reward[i] = self.compute_reward(new_next_state[i, self.obj_index:self.obj_index+7], new_goal, info=None)
-		elif self.her_type == 2:
-			# new goal is the achieved goal of one following sample in this segment
-			for i in range(self.max_size):
-				if i < len(future_states)-1:
-					goal_sample_index = random.randint(i+1, len(future_states)-1)
-				else:
-					goal_sample_index = -1
-				new_goal = future_states[goal_sample_index].qpos[self.obj_qpos_index:self.obj_qpos_index + 7]
-				new_state[i, self.goal_index:] = np.copy(new_goal)
-				new_next_state[i, self.goal_index:] = np.copy(new_goal)
-				new_reward[i] = self.compute_reward(new_next_state[i, self.obj_index:self.obj_index+7], new_goal, info=None)
-		elif self.her_type == 3:
-			# new goal is a noisy goal
-			original_goal = self.next_state[-1, self.goal_index:]
-			new_goal = 0.9*original_goal+0.1*random_goal
-			for i in range(self.max_size):
-				new_state[i, self.goal_index:] = np.copy(new_goal)
-				new_next_state[i, self.goal_index:] = np.copy(new_goal)
-				new_reward[i] = self.compute_reward(new_next_state[i, self.obj_index:self.obj_index+7], new_goal, info=None)
-		elif self.her_type == 4:
-			# new goal is the noisy achieved goal of final sample in this segment
-			# final_achieved_goal = self.next_state[-1, self.obj_index:self.obj_index + 7]
-			final_achieved_goal = future_states[-1].qpos[self.obj_qpos_index:self.obj_qpos_index + 7]
-			# TODO:implement the noise correctly
-			new_goal = 0.9 * final_achieved_goal + 0.1 * random_goal
-			for i in range(self.max_size):
-				new_state[i, self.goal_index:] = np.copy(new_goal)
-				new_next_state[i, self.goal_index:] = np.copy(new_goal)
-				new_reward[i] = self.compute_reward(new_next_state[i, self.obj_index:self.obj_index + 7], new_goal,
-													 info=None)
-		elif self.her_type == 5:
-			# new goal is the noisy achieved goal of one following sample in this segment
-			for i in range(self.max_size):
-				if i < len(future_states)-1:
-					goal_sample_index = random.randint(i+1, len(future_states)-1)
-				else:
-					goal_sample_index = -1
-				random_achieved_goal = future_states[goal_sample_index].qpos[self.obj_qpos_index:self.obj_qpos_index + 7]
-				# TODO:implement the noise correctly
-				new_goal = 0.9 * random_achieved_goal + 0.1 * random_goal
-				new_state[i, self.goal_index:] = np.copy(new_goal)
-				new_next_state[i, self.goal_index:] = np.copy(new_goal)
-				new_reward[i] = self.compute_reward(new_next_state[i, self.obj_index:self.obj_index+7], new_goal, info=None)
-		else:
-			raise ValueError("Wrong her type")
-
-		return new_state, new_action, new_next_state, new_reward, new_prev_action
 
 
 

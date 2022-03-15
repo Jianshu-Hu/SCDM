@@ -62,11 +62,6 @@ demo_tag=""
 #--use_informative_segment
 #--add_invariance --inv_type="translation" --use_informative_segment
 
-#--use_her
-#--her_timesteps=1000000
-#--N_her=1
-#--her_type=1
-#--use_her --her_timesteps=0 --her_type=2 --N_her=4
 echo "start running $env_name $tag with seed $seed"
 python main.py --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --add_artificial_transitions --demo_tag=$demo_tag --save_model
 

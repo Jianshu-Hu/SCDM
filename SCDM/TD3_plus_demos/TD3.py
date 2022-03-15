@@ -245,7 +245,7 @@ class TD3(object):
 
 	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, transition, batch_size=100,
 			  add_invariance_regularization=False, add_hand_invariance_regularization=False, add_bc_loss=False,
-			  add_artificial_transitions=False, enable_exploratory_policy=False, exploratory_actor_target=None):
+			  add_artificial_transitions=False):
 		self.total_it += 1
 
 		# Sample replay buffer
@@ -371,10 +371,7 @@ class TD3(object):
 						torch.randn_like(action) * self.policy_noise
 				).clamp(-self.noise_clip, self.noise_clip)
 
-				if enable_exploratory_policy:
-					next_action = exploratory_actor_target(next_state, action) +noise
-				else:
-					next_action = self.actor_target(next_state, action) + noise
+				next_action = self.actor_target(next_state, action) + noise
 
 				next_action = self.beta * next_action + (1 - self.beta) * action
 				next_action = (
