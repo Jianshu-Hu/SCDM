@@ -17,7 +17,10 @@ import SCDM.TD3_plus_demos.transition_model as transition_model
 # Runs critic for X episodes and returns average Q value for some states
 # A fixed seed is used for the eval environment
 def eval_policy(policy, env_name, seed, target_rotation, eval_episodes=10, evaluate_critic_t=50):
-	eval_env = gym.make(env_name, target_rotation=target_rotation)
+	if env_name == 'PenSpin-v0':
+		eval_env = gym.make(env_name)
+	else:
+		eval_env = gym.make(env_name, target_rotation=target_rotation)
 	eval_env.seed(seed + 100)
 
 	avg_reward = 0.
@@ -95,7 +98,6 @@ if __name__ == "__main__":
 
 	# new paramters
 	parser.add_argument("--demo_tag", type=str, default="")  #tag for the files of demonstration
-	parser.add_argument("--initialize_with_demo", action="store_true")  # initialize actor and critic with demonstrations
 	parser.add_argument("--add_bc_loss", action="store_true")  # add behavior cloning loss to actor training
 	parser.add_argument("--model_start_timesteps", default=10000, type=int)# Time steps of start training transition model
 
@@ -137,7 +139,12 @@ if __name__ == "__main__":
 
 	if args.save_model and not os.path.exists("./models"):
 		os.makedirs("./models")
-	if args.sparse_reward:
+
+	if args.env == "PenSpin-v0":
+		env_main = gym.make(args.env)
+		env_demo = gym.make(args.env)
+		env_reset = gym.make(args.env)
+	elif args.sparse_reward:
 		env_main = gym.make(args.env, target_rotation=args.target_rotation,
 							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
 		env_demo = gym.make(args.env, target_rotation=args.target_rotation,
@@ -215,11 +222,6 @@ if __name__ == "__main__":
 
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, args.env)
 	demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
-	if args.initialize_with_demo:
-		policy.initialize_with_demo(demo_replay_buffer)
-		# debug
-		evaluate_initial_policy, evaluate_initial_critic = eval_policy(policy, args.env, args.seed,
-																target_rotation=args.target_rotation)
 
 	invariant_replay_buffer_list = []
 	if args.add_invariance_traj:
@@ -251,7 +253,6 @@ if __name__ == "__main__":
 	print("seed: ", args.seed)
 	print("env_name: ", args.env)
 	print("demo_goal_type: ", args.demo_goal_type)
-	print("initialize_with_demo: ", args.initialize_with_demo)
 	print("add_behavior_cloning_loss: ", args.add_bc_loss)
 	print("add_invariance_traj: ", args.add_invariance_traj)
 	print("add_invariance_regularization: ", args.add_invariance_regularization)
@@ -300,21 +301,25 @@ if __name__ == "__main__":
 					env_demo.reset()
 					env_demo.env.sim.set_state(demo_states_catch[traj_ind][state_ind])
 					prev_action = demo_prev_actions_catch[traj_ind][state_ind]
-				# set the goal of the segment from the demonstrations
-				if args.demo_goal_type == "True":
-					env_demo.goal = np.copy(demo_goals[traj_ind])
-					env_demo.env.goal = np.copy(demo_goals[traj_ind])
-				elif args.demo_goal_type == "Noisy":
-					random_goal = env_demo.env._sample_goal()
-					true_goal = np.copy(demo_goals[traj_ind])
-					env_demo.goal = 0.9*true_goal+random_goal*0.1
-					env_demo.env.goal = 0.9*true_goal+random_goal*0.1
-				elif args.demo_goal_type == "Random":
-					random_goal = env_demo.env._sample_goal()
-					env_demo.goal = np.copy(random_goal)
-					env_demo.env.goal = np.copy(random_goal)
+				if args.env == 'PenSpin-v0':
+					env_demo.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
+					env_demo.env.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
 				else:
-					raise ValueError("Wrong type for the goal of the demostration")
+					# set the goal of the segment from the demonstrations
+					if args.demo_goal_type == "True":
+						env_demo.goal = np.copy(demo_goals[traj_ind])
+						env_demo.env.goal = np.copy(demo_goals[traj_ind])
+					elif args.demo_goal_type == "Noisy":
+						random_goal = env_demo.env._sample_goal()
+						true_goal = np.copy(demo_goals[traj_ind])
+						env_demo.goal = 0.9*true_goal+random_goal*0.1
+						env_demo.env.goal = 0.9*true_goal+random_goal*0.1
+					elif args.demo_goal_type == "Random":
+						random_goal = env_demo.env._sample_goal()
+						env_demo.goal = np.copy(random_goal)
+						env_demo.env.goal = np.copy(random_goal)
+					else:
+						raise ValueError("Wrong type for the goal of the demostration")
 				pre_obs_dict = env_demo.env._get_obs()
 				env_demo.env.sim.forward()
 				observation_dict = env_demo.env._get_obs()

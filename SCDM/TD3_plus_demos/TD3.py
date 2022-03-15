@@ -133,63 +133,6 @@ class TD3(object):
 		else:
 			print('Invariance regularization is not implemented for these envs')
 
-	def initialize_with_demo(self, demo_replay_buffer, batch_size=256, max_iteration=50000):
-		# train policy
-		for iter in range(max_iteration):
-			# sample from demonstrations
-			demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, demo_ind = \
-				demo_replay_buffer.sample(batch_size)
-			demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
-			demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(
-				device)
-			policy_action = self.beta * self.actor(demo_state, demo_prev_action) + (
-						1 - self.beta) * demo_prev_action
-			# behavior cloing loss
-			actor_loss = F.mse_loss(policy_action, demo_action)
-
-			# Optimize the actor
-			self.actor_optimizer.zero_grad()
-			actor_loss.backward()
-			self.actor_optimizer.step()
-			print("iter: ", iter, " loss: ", actor_loss.cpu().data.numpy())
-
-		# train critic
-		for iter in range(int(max_iteration/5)):
-			# Sample from demonstrations
-			demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, demo_ind = \
-				demo_replay_buffer.sample(batch_size)
-			demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
-			demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
-
-			with torch.no_grad():
-				# Select action according to policy and add clipped noise
-				noise = (
-						torch.randn_like(demo_action) * self.policy_noise
-				).clamp(-self.noise_clip, self.noise_clip)
-
-				demo_next_action = self.actor_target(demo_next_state, demo_action) + noise
-				demo_next_action = self.beta * demo_next_action + (1 - self.beta) * demo_action
-				demo_next_action = (
-					demo_next_action
-				).clamp(-self.max_action, self.max_action)
-
-				# Compute the target Q value
-				target_Q1, target_Q2 = self.critic_target(demo_next_state, demo_next_action, demo_action)
-				target_Q = torch.min(target_Q1, target_Q2)
-				target_Q = demo_reward + self.discount * target_Q
-
-			# Get current Q estimates
-			current_Q1, current_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
-
-			# Compute critic loss
-			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
-
-			# Optimize the critic
-			self.critic_optimizer.zero_grad()
-			critic_loss.backward()
-			self.critic_optimizer.step()
-			print("iter: ", iter, " loss: ", critic_loss.cpu().data.numpy())
-
 	def select_action(self, state, prev_action, noise=None):
 		state = torch.FloatTensor(self.normaliser.normalize(state.reshape(1, -1))).to(device)
 		prev_action = torch.FloatTensor(prev_action.reshape(1, -1)).to(device)
@@ -320,7 +263,10 @@ class TD3(object):
 						next_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
-					new_reward = transition.compute_reward(new_next_state)
+					if self.env_name == 'PenSpin-v0':
+						new_reward = transition.reward_model(next_state_H[-1], next_action)
+					else:
+						new_reward = transition.compute_reward(new_next_state)
 
 					state_H.append(next_state_H[-1])
 					prev_action_H.append(action_H[-1])
@@ -432,7 +378,10 @@ class TD3(object):
 						# self.epsilon *= self.epsilon_decay
 
 						new_next_state = transition.forward_model(state, new_action)
-						new_reward = transition.compute_reward(new_next_state)
+						if self.env_name == 'PenSpin-v0':
+							new_reward = transition.reward_model(state, new_action)
+						else:
+							new_reward = transition.compute_reward(new_next_state)
 
 						# Select action according to policy and add clipped noise
 						noise = (
@@ -470,7 +419,10 @@ class TD3(object):
 							# new_target_Q *= filter
 						elif filter_with_error:
 							imagined_next_state = transition.forward_model(state, action)
-							imagined_reward = transition.compute_reward(imagined_next_state)
+							if self.env_name == 'PenSpin-v0':
+								imagined_reward = transition.reward_model(state, action)
+							else:
+								imagined_reward = transition.compute_reward(imagined_next_state)
 							if error_type == 'model_error':
 								model_error = torch.mean(F.mse_loss(imagined_next_state, next_state, reduction='none'),
 														 dim=1, keepdim=True)
@@ -506,7 +458,10 @@ class TD3(object):
 						for action_ind in range(num_actions):
 							new_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
 							new_next_state = transition.forward_model(state, new_action)
-							new_reward = transition.compute_reward(new_next_state)
+							if self.env_name == 'PenSpin-v0':
+								new_reward = transition.reward_model(state, new_action)
+							else:
+								new_reward = transition.compute_reward(new_next_state)
 
 							# Select action according to policy and add clipped noise
 							noise = (
@@ -532,7 +487,10 @@ class TD3(object):
 						invariant_action_candidate = \
 							self.invariance_definition.throwing_hand_random_samples_generator(action.cpu().data.numpy())
 						new_next_state = transition.forward_model(state, invariant_action_candidate)
-						new_reward = transition.compute_reward(new_next_state)
+						if self.env_name == 'PenSpin-v0':
+							new_reward = transition.reward_model(state, invarianct_action_candidate)
+						else:
+							new_reward = transition.compute_reward(new_next_state)
 
 						# forward two states for H steps and calculate the return
 						return_H_origianl = self.forward_with_learned_model(action, next_state, reward, H, transition)

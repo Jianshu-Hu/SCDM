@@ -96,7 +96,8 @@ class DemoProcessor():
 			demo_prev_actions_throw.append(demo_prev_actions_traj_throw)
 			demo_states_catch.append(demo_states_traj_catch)
 			demo_prev_actions_catch.append(demo_prev_actions_traj_catch)
-			demo_goals.append(traj["goal"])
+			if self.env != 'PenSpin-v0':
+				demo_goals.append(traj["goal"])
 
 		return demo_states_throw, demo_prev_actions_throw, demo_states_catch, demo_prev_actions_catch, demo_goals
 
@@ -118,6 +119,7 @@ class ReplayBuffer(object):
 		env_list1 = ["EggCatchUnderarm-v0"]
 		env_list2 = ["EggCatchOverarm-v0"]
 		env_list3 = ["EggCatchUnderarmHard-v0"]
+
 		if self.env in env_list1:
 			self.y_axis_index = 1
 			self.throwing_threshold = 0.3
@@ -135,9 +137,10 @@ class ReplayBuffer(object):
 			self.throwing_threshold = 0.5
 			self.catching_threshold = 1
 			self.initial_pos = np.array([0.99774, 0.06903, 0.31929])
+		elif self.env=="PenSpin-v0":
+			print("Invariance is not implemented for this env")
 		else:
 			raise NotImplementedError
-
 
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -148,12 +151,15 @@ class ReplayBuffer(object):
 		self.reward[self.ptr] = reward
 		self.prev_action[self.ptr] = prev_action
 
-		# throwing hand2 invariance
-		if np.linalg.norm(state[-20:-17] - self.initial_pos) >= self.throwing_threshold:
-			self.invariance[self.ptr] = 2
-		# catching hand1 invariance
-		elif np.linalg.norm(state[-20:-17] - state[-7:-4]) >= self.catching_threshold:
-			self.invariance[self.ptr] = 1
+		if self.env == "PenSpin-v0":
+			pass
+		else:
+			# throwing hand2 invariance
+			if np.linalg.norm(state[-20:-17] - self.initial_pos) >= self.throwing_threshold:
+				self.invariance[self.ptr] = 2
+			# catching hand1 invariance
+			elif np.linalg.norm(state[-20:-17] - state[-7:-4]) >= self.catching_threshold:
+				self.invariance[self.ptr] = 1
 
 		self.ptr = (self.ptr + 1) % self.max_size
 		self.size = min(self.size + 1, self.max_size)
@@ -174,9 +180,6 @@ class ReplayBuffer(object):
 			self.invariance[ind].reshape(-1),
 			ind
 		)
-
-
-
 
 
 class InvariantReplayBuffer(ReplayBuffer):
@@ -244,8 +247,12 @@ class DemoReplayBuffer(ReplayBuffer):
 				prev_obs = env_statedict_to_state(prev_obs_dict, env_name=self.env)
 
 				env_demo.env.sim.set_state(state)
-				env_demo.goal = np.copy(traj["goal"])
-				env_demo.env.goal = np.copy(traj["goal"])
+				if self.env == "PenSpin-v0":
+					env_demo.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
+					env_demo.env.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
+				else:
+					env_demo.goal = np.copy(traj["goal"])
+					env_demo.env.goal = np.copy(traj["goal"])
 				env_demo.env.sim.forward()
 
 				obs_dict = env_demo.env._get_obs()
