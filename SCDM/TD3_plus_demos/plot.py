@@ -10,6 +10,9 @@ underarm_prefix = "TD3_EggCatchUnderarm-v0_"
 underarmhard_prefix = "TD3_EggCatchUnderarmHard-v0_"
 underarm_prefix_v1 = "TD3_EggCatchUnderarm-v1_"
 underarm_prefix_v3 = "TD3_EggCatchUnderarm-v3_"
+
+pen_prefix = "TD3_PenSpin-v0_"
+
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
 # tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo"]
@@ -476,7 +479,81 @@ tag_131 = ["1_add_artificial_transitions_decaying_Q_loss_with_normaliser",
            "2_add_artificial_transitions_decaying_Q_loss_with_normaliser",
            "3_add_artificial_transitions_decaying_Q_loss_with_normaliser"]
 
+tag_132 = ["1_with_normaliser",
+           "2_with_normaliser",
+           "3_with_normaliser"]
 
+tag_133 = ["1_add_artificial_transitions_epsilon_decay_with_normaliser",
+           "2_add_artificial_transitions_epsilon_decay_with_normaliser",
+           "3_add_artificial_transitions_epsilon_decay_with_normaliser"]
+
+tag_134 = ["1_add_artificial_transitions_epsilon_greedy_with_normaliser",
+           "2_add_artificial_transitions_epsilon_greedy_with_normaliser",
+           "3_add_artificial_transitions_epsilon_greedy_with_normaliser"]
+
+tag_135 = ["1_add_artificial_transitions_selecting_among_2_actions_with_highest_target_Q",
+           "2_add_artificial_transitions_selecting_among_2_actions_with_highest_target_Q",
+           "3_add_artificial_transitions_selecting_among_2_actions_with_highest_target_Q"]
+
+tag_136 = ["1_MVE_H_1_one_step_return_for_true_transition",
+           "2_MVE_H_1_one_step_return_for_true_transition",
+           "3_MVE_H_1_one_step_return_for_true_transition"]
+
+tag_137 = ["1_add_artificial_transitions_forward_1_more_steps",
+           "2_add_artificial_transitions_forward_1_more_steps",
+           "3_add_artificial_transitions_forward_1_more_steps"]
+
+tag_138 = ["1_add_artificial_transitions_epsilon_decay_slower_7_with_normaliser",
+           "2_add_artificial_transitions_epsilon_decay_slower_7_with_normaliser",
+           "3_add_artificial_transitions_epsilon_decay_slower_7_with_normaliser"]
+
+tag_139 = ["1_apply_model_in_policy_gradient_with_normaliser",
+           "2_apply_model_in_policy_gradient_with_normaliser",
+           "3_apply_model_in_policy_gradient_with_normaliser"]
+
+tag_140 = ["1_apply_model_in_policy_gradient_unbiased_with_normaliser",
+           "2_apply_model_in_policy_gradient_unbiased_with_normaliser",
+           "3_apply_model_in_policy_gradient_unbiased_with_normaliser"]
+
+tag_141 = ["1_apply_model_in_policy_gradient_only_through_dynamics",
+           "2_apply_model_in_policy_gradient_only_through_dynamics",
+           "3_apply_model_in_policy_gradient_only_through_dynamics"]
+
+tag_142 = ["1_apply_model_in_policy_gradient_only_through_new_action",
+           "2_apply_model_in_policy_gradient_only_through_new_action",
+           "3_apply_model_in_policy_gradient_only_through_new_action"]
+
+tag_143 = ["1_epsilon_greedy_forward_one_step_for_policy_action",
+           "2_epsilon_greedy_forward_one_step_for_policy_action",
+           "3_epsilon_greedy_forward_one_step_for_policy_action"]
+
+tag_144 = ["1_MVE_H_1_without_noise",
+           "2_MVE_H_1_without_noise",
+           "3_MVE_H_1_without_noise"]
+
+tag_145 = ["1_add_artificial_transtions_policy_action_decaying_clipped_noise",
+           "2_add_artificial_transtions_policy_action_decaying_clipped_noise",
+           "3_add_artificial_transtions_policy_action_decaying_clipped_noise"]
+
+tag_146 = ["1_MVE_H_1_after_3e6",
+           "2_MVE_H_1_after_3e6",
+           "3_MVE_H_1_after_3e6"]
+
+tag_147 = ["1_epsilon_greedy_forward_one_step_for_policy_action_correct",
+           "2_epsilon_greedy_forward_one_step_for_policy_action_correct",
+           "3_epsilon_greedy_forward_one_step_for_policy_action_correct"]
+
+tag_148 = ["1_with_normaliser",
+           "2_with_normaliser",
+           "3_with_normaliser"]
+
+tag_149 = ["1_epsilon_greedy_policy_action_MVE_H_1",
+           "2_epsilon_greedy_policy_action_MVE_H_1",
+           "3_epsilon_greedy_policy_action_MVE_H_1"]
+
+tag_150 = ["1_with_normaliser_without_high_initialization_critic",
+           "2_with_normaliser_without_high_initialization_critic",
+           "3_with_normaliser_without_high_initialization_critic"]
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -587,15 +664,21 @@ def plot_actor_critic_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save
 
 
 def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
-    fig, axs = plt.subplots(1, 1)
+    fig, axs = plt.subplots(2, 1)
     for i in range(len(tag)):
         loss = np.load('results/'+prefix + tag[i] + "_transition_model_loss.npy")
-        axs.plot(range(len(loss)), loss, label=tag[i])
+        axs[0].plot(range(len(loss)), loss, label=tag[i]+"_transition_model_loss")
+        axs[0].set_xlabel('timesteps')
+        axs[0].set_ylabel('model loss')
+        axs[0].legend()
 
-        axs.set_xlabel('timesteps')
-        axs.set_ylabel('model loss')
-        axs.legend()
-        axs.set_title(prefix + tag[0])
+        loss = np.load('results/'+prefix + tag[i] + "_reward_model_loss.npy")
+        axs[1].plot(range(len(loss)), loss, label=tag[i]+"_reward_model_loss")
+        axs[1].set_xlabel('timesteps')
+        axs[1].set_ylabel('model loss')
+        axs[1].legend()
+
+        axs[0].set_title(prefix + tag[0])
     if plot_or_save == 'plot':
         plt.show()
     else:
@@ -656,38 +739,49 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 # tag_expl = ["0_test_exploration"]
 # compare_policy_critic(overarm_prefix,overarm_prefix,tag_test,plot_or_save='plot')
 # plot_actor_critic_loss(overarm_prefix,tag_expl,plot_or_save='plot')
-
+# plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
+compare(prefix=pen_prefix,tag_list=[tag_132, tag_128, tag_131, tag_134, tag_138, tag_143, tag_147], title="add_transitions")
 
-compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_125, tag_126, tag_127], title="filter")
+#compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
+#compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
+# compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_125, tag_126, tag_127], title="filter")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_124, tag_129, tag_131, tag_136, tag_137], title="different_action_with_normaliser")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_133, tag_143, tag_147, tag_149], title="epsilon_greedy")
+# compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148,tag_150], title='play_with_noise')
 
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_124, tag_129, tag_130, tag_131], title="different_action_with_normaliser")
 
-compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_85, tag_94, tag_103, tag_104, tag_113], title="filter_transitions")
+#compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_85, tag_94, tag_103, tag_104, tag_113], title="filter_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_78, tag_83, tag_86, tag_100, tag_101, tag_102], title="different_actions")
-compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_108, tag_110], title="add_invariance_H")
+#compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_108, tag_110], title="add_invariance_H")
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_80, tag_82], title="forward_one_step")
-compare(prefix=overarm_prefix, tag_list=[tag_1, tag_93, tag_109, tag_107, tag_115, tag_116, tag_117], title="MVE")
+#compare(prefix=overarm_prefix, tag_list=[tag_1, tag_93, tag_109, tag_107, tag_115, tag_116, tag_117], title="MVE")
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
-compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_125, tag_126, tag_127], title="filter")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_124, tag_129, tag_130, tag_131], title="different_action_with_normaliser")
+#compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
+#compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
+# compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_125, tag_126, tag_127], title="filter")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_124, tag_129, tag_131, tag_136,tag_137], title="different_action_with_normaliser")
+tag_143 = ["1_epsilon_greedy_forward_one_step_for_policy_action",
+           "2_epsilon_greedy_forward_one_step_for_policy_action"]
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_133, tag_143, tag_147, tag_149], title="epsilon_greedy")
+# compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148, tag_150], title='play_with_noise')
 
-compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_85, tag_94, tag_103, tag_104, tag_113], title="filter_transitions")
+#compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_85, tag_94, tag_103, tag_104, tag_113], title="filter_transitions")
 #compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_78, tag_83, tag_86, tag_100, tag_101, tag_102], title="different_actions")
-compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_108, tag_110], title="add_invariance_H")
+#compare(prefix=underarm_prefix, tag_list=[tag_79, tag_76, tag_108, tag_110], title="add_invariance_H")
 #compare(prefix=underarm_prefix, tag_list=[tag_79, tag_80, tag_82], title="forward_one_step")
-tag_107 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action_true_loss_for_true_transition",
-           "3_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action_true_loss_for_true_transition"]
-tag_93 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000",
-          "3_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000"]
-compare(prefix=underarm_prefix, tag_list=[tag_1, tag_93, tag_109, tag_107, tag_115, tag_116,tag_117], title="MVE")
+# tag_107 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action_true_loss_for_true_transition",
+#            "3_random_goal_demo_add_artificial_transitions_MVE_H_1_random_action_true_loss_for_true_transition"]
+# tag_93 = ["1_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000",
+#           "3_random_goal_demo_add_artificial_transitions_MVE_H_1_train_model_for_25000"]
+# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_93, tag_109, tag_107, tag_115, tag_116,tag_117], title="MVE")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_84], title="fix_target_rotation")
 
 #compare(prefix=underarmhard_prefix, tag_list=[tag_71, tag_76, tag_84], title="add_transitions")

@@ -4,6 +4,7 @@ cd /bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/
 source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
+#env_name="PenSpin-v0"
 #env_name="TwoEggCatchUnderArm-v0"
 
 #env_name="EggCatchUnderarm-v0"
@@ -28,7 +29,7 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=add_artificial_transitions_decaying_Q_loss_with_normaliser
+tag=with_normaliser_without_high_initialization_critic
 seed=3
 
 demo_tag=""
@@ -63,6 +64,6 @@ demo_tag=""
 #--add_invariance --inv_type="translation" --use_informative_segment
 
 echo "start running $env_name $tag with seed $seed"
-python main.py --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --add_artificial_transitions --demo_tag=$demo_tag --save_model
+python main.py --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 
 #| tee $FILE
