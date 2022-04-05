@@ -591,6 +591,14 @@ tag_159 = ["1_policy_action_with_decaying_clipped_uniform_noise_with_high_initia
            "2_policy_action_with_decaying_clipped_uniform_noise_with_high_initialization",
            "3_policy_action_with_decaying_clipped_uniform_noise_with_high_initialization"]
 
+tag_160 = ["1_policy_action_with_decaying_clipped_gaussian_noise_filter_with_variance_with_high_initialization",
+           "2_policy_action_with_decaying_clipped_gaussian_noise_filter_with_variance_with_high_initialization",
+           "3_policy_action_with_decaying_clipped_gaussian_noise_filter_with_variance_with_high_initialization"]
+
+tag_161 = ["1_policy_action_with_scheduled_decaying_clipped_gaussian_noise_with_high_initialization",
+           "2_policy_action_with_scheduled_decaying_clipped_gaussian_noise_with_high_initialization",
+           "3_policy_action_with_scheduled_decaying_clipped_gaussian_noise_with_high_initialization"]
+
 
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
@@ -722,6 +730,22 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
     else:
         plt.savefig('saved_fig/' + prefix + tag[0] + '_transition_loss')
 
+
+def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
+    fig, axs = plt.subplots(1, 1)
+    for i in range(len(tag)):
+        loss = np.load('results/'+prefix + tag[i] + "_debug_value.npy")
+        axs.plot(range(len(loss)), loss, label=tag[i]+"_debug_value")
+        axs.set_xlabel('timesteps')
+        axs.set_ylabel('debug value')
+        axs.legend()
+
+        axs.set_title(prefix + tag[0])
+    if plot_or_save == 'plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/' + prefix + tag[0] + '_debug_value')
+
 #labellist = ["random_initial_state", "random_initial_state_new_demos", "with_translation", "with_translation_regularization"]
 #compare(prefix=overarm_prefix_v3, tag_list=[tag_29, tag_34, tag_35, tag_37], title="new_demos", label_list=labellist)
 
@@ -740,8 +764,6 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 # compare_policy_critic(underarm_prefix_v1, underarm_critic_prefix_v1, tag_27)
 # baseline
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_21, tag_22, tag_23, tag_24], title="baseline")
-# plot_loss(prefix=overarm_prefix, tag=tag_59)
-# plot_loss(prefix=overarm_prefix, tag=tag_60)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_57)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_59)
 #plot_all_fig(prefix=overarm_prefix, tag=tag_60)
@@ -768,7 +790,7 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
 # compare_policy_critic(underarm_prefix, underarm_prefix, tag_85)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_151)
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_152)
-
+plot_debug_value(overarm_prefix, tag=tag_161)
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
@@ -793,7 +815,7 @@ compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_133, tag_143, tag_1
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_151, tag_152, tag_153, tag_154, tag_155, tag_157], title="noise_policy_action")
 tag_158_temp = ["1_policy_action_with_decaying_variance_gaussian_noise_with_high_initialization",
            "3_policy_action_with_decaying_variance_gaussian_noise_with_high_initialization"]
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_145, tag_156, tag_158_temp, tag_159], title="noise_policy_action_with_high_initialization")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_145, tag_156, tag_158_temp, tag_159, tag_160, tag_161], title="noise_policy_action_with_high_initialization")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148,tag_150], title='play_with_noise')

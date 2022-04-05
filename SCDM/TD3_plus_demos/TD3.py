@@ -117,6 +117,9 @@ class TD3(object):
 		self.file_name_actor = file_name + "_actor_loss"
 		self.critic_loss_saver = []
 		self.actor_loss_saver = []
+		# save some value during the training for debugging
+		self.file_name_debug = file_name + "_debug_value"
+		self.debug_value_saver = []
 
 		self.lamb = 1
 		self.lamb_decay = 0.9999996
@@ -239,10 +242,12 @@ class TD3(object):
 					else:
 						forward_action = 'policy_action'
 						noise_type = 'gaussian'
+					filter_with_variance = False
+					scheduled_dacaying = True
+
 					exploration_sampling = False
 					decaying_Q_loss = False
 					H = 20
-					filter_with_variance = True
 					if self.total_it > 3e6:
 						filter_with_higher_target_Q = False
 						filter_with_error = False
@@ -403,7 +408,6 @@ class TD3(object):
 								noise = (
 										torch.randn_like(action)
 								).clamp(-self.epsilon*self.max_action, self.epsilon*self.max_action)
-								self.epsilon *= self.epsilon_decay
 
 								# # decaying variance
 								# noise = (
@@ -413,7 +417,6 @@ class TD3(object):
 
 							elif noise_type == 'uniform':
 								noise = (2*torch.rand_like(action)-torch.ones_like(action))*(self.max_action*self.epsilon)
-								self.epsilon *= self.epsilon_decay
 
 							new_action = self.actor(state, prev_action) + noise
 
@@ -451,6 +454,14 @@ class TD3(object):
 							# target_Q_diff = torch.abs((new_target_Q1 - new_target_Q2) / new_target_Q)
 							new_target_Q = new_reward + self.discount * new_target_Q
 							# target_Q = reward + self.discount * new_target_Q
+
+							if scheduled_dacaying:
+								ratio = torch.sum(new_target_Q > target_Q)/batch_size
+								self.debug_value_saver.append(ratio.item())
+								if np.random.rand() > ratio.item():
+									self.epsilon *= self.epsilon_decay
+							else:
+								self.epsilon *= self.epsilon_decay
 
 						# filter artificial transitions with target Q
 						if filter_with_higher_target_Q:
@@ -806,6 +817,7 @@ class TD3(object):
 		if self.total_it % self.save_freq == 0:
 			np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)
 			np.save(f"./results/{self.file_name_actor}", self.actor_loss_saver)
+			np.save(f"./results/{self.file_name_debug}", self.debug_value_saver)
 
 
 	def save(self, filename):

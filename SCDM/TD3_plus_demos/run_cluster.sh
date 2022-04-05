@@ -29,8 +29,8 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=policy_action_with_decaying_variance_gaussian_noise_with_high_initialization
-seed=2
+tag=policy_action_with_scheduled_decaying_clipped_gaussian_noise_with_high_initialization
+seed=3
 
 demo_tag=""
 
