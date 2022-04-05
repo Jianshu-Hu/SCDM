@@ -29,8 +29,8 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=with_normaliser_without_high_initialization_critic
-seed=3
+tag=policy_action_with_decaying_variance_gaussian_noise_with_high_initialization
+seed=2
 
 demo_tag=""
 
@@ -64,6 +64,6 @@ demo_tag=""
 #--add_invariance --inv_type="translation" --use_informative_segment
 
 echo "start running $env_name $tag with seed $seed"
-python main.py --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --seed=$seed --use_normaliser --add_artificial_transitions --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 
 #| tee $FILE

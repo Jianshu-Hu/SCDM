@@ -91,8 +91,12 @@ class TD3(object):
 
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
-		# nn.init.constant_(self.critic.l3.bias.data, 10)
-		# nn.init.constant_(self.critic.l6.bias.data, 10)
+		if env_name == 'PenSpin-v0':
+			nn.init.constant_(self.critic.l3.bias.data, 100)
+			nn.init.constant_(self.critic.l6.bias.data, 100)
+		else:
+			nn.init.constant_(self.critic.l3.bias.data, 10)
+			nn.init.constant_(self.critic.l6.bias.data, 10)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -119,6 +123,9 @@ class TD3(object):
 
 		self.epsilon = 1
 		self.epsilon_decay = 0.9999996
+
+		self.noise_variance = 5
+		self.noise_variance_decay = 0.9999995
 
 		self.error_threshold = 0.1
 
@@ -235,6 +242,7 @@ class TD3(object):
 					exploration_sampling = False
 					decaying_Q_loss = False
 					H = 20
+					filter_with_variance = True
 					if self.total_it > 3e6:
 						filter_with_higher_target_Q = False
 						filter_with_error = False
@@ -275,7 +283,7 @@ class TD3(object):
 						).clamp(-self.max_action, self.max_action)
 					elif forward_action == 'random':
 						# random action
-						next_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
+						next_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
 					if self.env_name == 'PenSpin-v0':
@@ -362,7 +370,7 @@ class TD3(object):
 									device)
 							else:
 								# random action
-								new_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
+								new_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 							new_next_state = transition.forward_model(state, new_action)
 							if self.env_name == 'PenSpin-v0':
@@ -396,9 +404,17 @@ class TD3(object):
 										torch.randn_like(action)
 								).clamp(-self.epsilon*self.max_action, self.epsilon*self.max_action)
 								self.epsilon *= self.epsilon_decay
+
+								# # decaying variance
+								# noise = (
+								# 		torch.randn_like(action)*self.noise_variance
+								# ).clamp(-self.noise_clip, self.noise_clip)
+								# self.noise_variance *= self.noise_variance_decay
+
 							elif noise_type == 'uniform':
 								noise = (2*torch.rand_like(action)-torch.ones_like(action))*(self.max_action*self.epsilon)
 								self.epsilon *= self.epsilon_decay
+
 							new_action = self.actor(state, prev_action) + noise
 
 							# noise = (
@@ -483,6 +499,15 @@ class TD3(object):
 
 								filter = torch.where(target_error < 0.1, 1, 0)
 							new_target_Q *= filter
+						elif filter_with_variance:
+							# target_var = torch.var(torch.cat([new_target_Q1, new_target_Q2], dim=1), axis=1)
+							# filter = torch.where(target_var.reshape(-1, 1) > 0.1, 1, 0)
+
+							target_error = torch.abs((new_target_Q1-new_target_Q2)/new_target_Q1)
+							mean_error = torch.mean(target_error)
+							filter = torch.where(target_error > mean_error, 1, 0)
+							new_target_Q *= filter
+
 
 					elif forward_action == 'selecting_action':
 						# select the action with the highest target Q
@@ -554,7 +579,7 @@ class TD3(object):
 						new_target_Q *= invariance
 					elif forward_action == 'forward_n_steps':
 						# random action
-						new_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
+						new_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 						new_next_state = transition.forward_model(state, new_action)
 						if self.env_name == 'PenSpin-v0':
@@ -604,6 +629,9 @@ class TD3(object):
 						new_current_Q1 *= filter
 						new_current_Q2 *= filter
 					elif filter_with_error:
+						new_current_Q1 *= filter
+						new_current_Q2 *= filter
+					elif filter_with_variance:
 						new_current_Q1 *= filter
 						new_current_Q2 *= filter
 				elif forward_action == 'selecting_action':
