@@ -504,8 +504,8 @@ class TD3(object):
 							# filter = torch.where(target_var.reshape(-1, 1) > 0.1, 1, 0)
 
 							target_error = torch.abs((new_target_Q1-new_target_Q2)/new_target_Q1)
-							mean_error = torch.mean(target_error)
-							filter = torch.where(target_error > mean_error, 1, 0)
+							max_error = torch.max(target_error)
+							filter = torch.where(torch.rand_like(target_error) < target_error/max_error, 1, 0)
 							new_target_Q *= filter
 
 
