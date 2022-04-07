@@ -92,9 +92,12 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 100)
-			nn.init.constant_(self.critic.l6.bias.data, 100)
-		else:
+			nn.init.constant_(self.critic.l3.bias.data, 1000)
+			nn.init.constant_(self.critic.l6.bias.data, 1000)
+		elif env_name == 'EggCatchOverarm-v0':
+			nn.init.constant_(self.critic.l3.bias.data, 10)
+			nn.init.constant_(self.critic.l6.bias.data, 10)
+		elif env_name == 'EggCatchUnderarm-v0':
 			nn.init.constant_(self.critic.l3.bias.data, 10)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
 		self.critic_target = copy.deepcopy(self.critic)
@@ -117,6 +120,10 @@ class TD3(object):
 		self.file_name_actor = file_name + "_actor_loss"
 		self.critic_loss_saver = []
 		self.actor_loss_saver = []
+
+		self.file_name_variance = file_name + "_variance"
+		self.variance_saver = []
+
 		# save some value during the training for debugging
 		self.file_name_debug = file_name + "_debug_value"
 		self.debug_value_saver = []
@@ -242,8 +249,10 @@ class TD3(object):
 					else:
 						forward_action = 'policy_action'
 						noise_type = 'gaussian'
-					filter_with_variance = False
-					scheduled_dacaying = True
+					filter_with_variance = True
+					if filter_with_variance:
+						variance_type = 'error'
+					scheduled_dacaying = False
 
 					exploration_sampling = False
 					decaying_Q_loss = False
@@ -417,13 +426,12 @@ class TD3(object):
 
 							elif noise_type == 'uniform':
 								noise = (2*torch.rand_like(action)-torch.ones_like(action))*(self.max_action*self.epsilon)
+							elif noise_type == 'fixed':
+								noise = (
+									torch.randn_like(action)*self.policy_noise
+								).clamp(-self.noise_clip,self.noise_clip)
 
 							new_action = self.actor(state, prev_action) + noise
-
-							# noise = (
-							# 		torch.randn_like(action) * self.policy_noise
-							# ).clamp(-self.noise_clip, self.noise_clip)
-							# new_action = self.actor(next_state, action)
 							new_action = self.beta * new_action + (1 - self.beta) * prev_action
 							new_action = (
 								new_action
@@ -511,13 +519,24 @@ class TD3(object):
 								filter = torch.where(target_error < 0.1, 1, 0)
 							new_target_Q *= filter
 						elif filter_with_variance:
-							# target_var = torch.var(torch.cat([new_target_Q1, new_target_Q2], dim=1), axis=1)
-							# filter = torch.where(target_var.reshape(-1, 1) > 0.1, 1, 0)
+							if variance_type == 'mean_variance':
+								target_var = torch.var(torch.cat([new_target_Q1, new_target_Q2], dim=1), axis=1)
+								mean_var = torch.mean(target_var)
+								self.variance_saver.append(mean_var.item())
+								max_var = max(self.variance_saver)
+								# print(mean_var.item()/max_var)
+								if np.random.rand() < mean_var.item()/max_var:
+									filter = torch.ones_like(new_target_Q)
+								else:
+									filter = torch.zeros_like(new_target_Q)
+								new_target_Q *= filter
 
-							target_error = torch.abs((new_target_Q1-new_target_Q2)/new_target_Q1)
-							max_error = torch.max(target_error)
-							filter = torch.where(torch.rand_like(target_error) < target_error/max_error, 1, 0)
-							new_target_Q *= filter
+							elif variance_type == 'error':
+								max_target_Q = torch.max(new_target_Q1, new_target_Q2)
+								target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
+								max_error = torch.max(target_error)
+								filter = torch.where(torch.rand_like(target_error) < target_error/max_error, 1, 0)
+								new_target_Q *= filter
 
 
 					elif forward_action == 'selecting_action':
@@ -817,6 +836,7 @@ class TD3(object):
 		if self.total_it % self.save_freq == 0:
 			np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)
 			np.save(f"./results/{self.file_name_actor}", self.actor_loss_saver)
+			np.save(f"./results/{self.file_name_variance}", self.variance_saver)
 			np.save(f"./results/{self.file_name_debug}", self.debug_value_saver)
 
 
