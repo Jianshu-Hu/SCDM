@@ -615,6 +615,33 @@ tag_165 = ["1_policy_action_with_decaying_clipped_gaussian_noise_with_1000_initi
            "2_policy_action_with_decaying_clipped_gaussian_noise_with_1000_initialization",
            "3_policy_action_with_decaying_clipped_gaussian_noise_with_1000_initialization"]
 
+tag_166 = ["1_decaying_clipped_gaussian_noise_filter_with_variance_divided_by_max_with_high_initialization",
+           "2_decaying_clipped_gaussian_noise_filter_with_variance_divided_by_max_with_high_initialization",
+           "3_decaying_clipped_gaussian_noise_filter_with_variance_divided_by_max_with_high_initialization"]
+
+tag_167 = ["1_policy_action_with_decaying_clipped_gaussian_noise_with_500_initialization",
+           "2_policy_action_with_decaying_clipped_gaussian_noise_with_500_initialization",
+           "3_policy_action_with_decaying_clipped_gaussian_noise_with_500_initialization"]
+
+tag_168 = ["1_decaying_clipped_gaussian_noise_normalize_with_max_variance_so_far_with_high_initialization",
+           "2_decaying_clipped_gaussian_noise_normalize_with_max_variance_so_far_with_high_initialization",
+           "3_decaying_clipped_gaussian_noise_normalize_with_max_variance_so_far_with_high_initialization"]
+
+tag_168 = ["1_decaying_clipped_gaussian_noise_normalize_with_max_difference_so_far_with_high_initialization",
+           "2_decaying_clipped_gaussian_noise_normalize_with_max_difference_so_far_with_high_initialization",
+           "3_decaying_clipped_gaussian_noise_normalize_with_max_difference_so_far_with_high_initialization"]
+
+tag_169 = ["1_decaying_clipped_gaussian_noise_normalize_with_max_difference_with_high_initialization",
+           "2_decaying_clipped_gaussian_noise_normalize_with_max_difference_with_high_initialization",
+           "3_decaying_clipped_gaussian_noise_normalize_with_max_difference_with_high_initialization"]
+
+tag_170 = ["1_policy_action_with_decaying_clipped_gaussian_noise_with_20_initialization",
+           "2_policy_action_with_decaying_clipped_gaussian_noise_with_20_initialization",
+           "3_policy_action_with_decaying_clipped_gaussian_noise_with_20_initialization"]
+
+tag_171 = ["1_policy_action_with_decaying_clipped_gaussian_noise_with_200_initialization",
+           "2_policy_action_with_decaying_clipped_gaussian_noise_with_200_initialization",
+           "3_policy_action_with_decaying_clipped_gaussian_noise_with_200_initialization"]
 
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
@@ -746,6 +773,28 @@ def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='
     else:
         plt.savefig('saved_fig/' + prefix + tag[0] + '_transition_loss')
 
+def plot_variance(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
+    fig, axs = plt.subplots(1, 1)
+    for i in range(len(tag)):
+        loss = np.load('results/'+prefix + tag[i] + "_variance.npy")
+        averaged_loss = np.zeros((int(loss.shape[0]/1000)))
+        for j in range(averaged_loss.shape[0]):
+            averaged_loss[j] = np.sum(loss[j*1000:(j+1)*1000])/1000
+
+        # axs.plot(range(len(loss)), loss, label=tag[i] + "_variance")
+        # axs.set_xlabel('timesteps')
+        # axs.set_ylabel('variance')
+        axs.plot(range(len(averaged_loss)), averaged_loss, label=tag[i]+"_variance")
+        axs.set_xlabel('timesteps/1000')
+        axs.set_ylabel('averaged variance over 1000 timesteps')
+
+        axs.legend()
+
+        axs.set_title(prefix + tag[0])
+    if plot_or_save == 'plot':
+        plt.show()
+    else:
+        plt.savefig('saved_fig/' + prefix + tag[0] + '_variance')
 
 def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
     fig, axs = plt.subplots(1, 1)
@@ -811,8 +860,12 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_transition_model_loss(prefix=overarm_prefix, tag=tag_152)
 
 # plot_all_fig(overarm_prefix, tag=tag_161)
+
 plot_debug_value(overarm_prefix, tag=tag_161)
 plot_debug_value(underarm_prefix, tag=tag_161)
+
+plot_variance(overarm_prefix, tag=tag_168)
+plot_variance(underarm_prefix, tag=tag_168)
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
@@ -828,7 +881,7 @@ plot_debug_value(underarm_prefix, tag=tag_161)
 compare(prefix=pen_prefix,tag_list=[tag_132, tag_128, tag_131, tag_134, tag_138, tag_143, tag_147], title="add_transitions")
 compare(prefix=pen_prefix,tag_list=[tag_132, tag_151, tag_152], title="noise_policy_action")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165], title="high_initialization")
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
 
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
@@ -839,8 +892,9 @@ compare(prefix=overarm_prefix, tag_list=[tag_2, tag_145, tag_151, tag_152, tag_1
 tag_158_temp = ["1_policy_action_with_decaying_variance_gaussian_noise_with_high_initialization",
            "3_policy_action_with_decaying_variance_gaussian_noise_with_high_initialization"]
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_158_temp, tag_159], title="noise_policy_action_with_high_initialization")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_161], title="noise_policy_action_with_improvement")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164], title="high_initialization")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169], title="noise_policy_action_with_improvement")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_161], title="noise_policy_action_scheduled_decaying")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164, tag_170], title="high_initialization")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148,tag_150], title='play_with_noise')
@@ -862,8 +916,9 @@ tag_143 = ["1_epsilon_greedy_forward_one_step_for_policy_action",
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_133, tag_143, tag_147, tag_149], title="epsilon_greedy")
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_145, tag_151, tag_152], title="noise_policy_action")
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_161], title="noise_policy_action_with_improvement")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_162, tag_163], title="high_initialization")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169], title="noise_policy_action_with_improvement")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_161], title="noise_policy_action_scheduled_decaying")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_162, tag_163, tag_170], title="high_initialization")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148, tag_150], title='play_with_noise')

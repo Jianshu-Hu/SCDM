@@ -92,14 +92,14 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 1000)
-			nn.init.constant_(self.critic.l6.bias.data, 1000)
+			nn.init.constant_(self.critic.l3.bias.data, 200)
+			nn.init.constant_(self.critic.l6.bias.data, 200)
 		elif env_name == 'EggCatchOverarm-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 10)
-			nn.init.constant_(self.critic.l6.bias.data, 10)
+			nn.init.constant_(self.critic.l3.bias.data, 20)
+			nn.init.constant_(self.critic.l6.bias.data, 20)
 		elif env_name == 'EggCatchUnderarm-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 10)
-			nn.init.constant_(self.critic.l6.bias.data, 10)
+			nn.init.constant_(self.critic.l3.bias.data, 20)
+			nn.init.constant_(self.critic.l6.bias.data, 20)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -249,10 +249,12 @@ class TD3(object):
 					else:
 						forward_action = 'policy_action'
 						noise_type = 'gaussian'
-					filter_with_variance = True
+					filter_with_variance = False
 					if filter_with_variance:
 						variance_type = 'error'
-					scheduled_dacaying = False
+					scheduled_decaying = True
+					if scheduled_decaying:
+						scheduled_by_better = True
 
 					exploration_sampling = False
 					decaying_Q_loss = False
@@ -463,11 +465,55 @@ class TD3(object):
 							new_target_Q = new_reward + self.discount * new_target_Q
 							# target_Q = reward + self.discount * new_target_Q
 
-							if scheduled_dacaying:
-								ratio = torch.sum(new_target_Q > target_Q)/batch_size
-								self.debug_value_saver.append(ratio.item())
-								if np.random.rand() > ratio.item():
-									self.epsilon *= self.epsilon_decay
+							if scheduled_decaying:
+								if scheduled_by_better:
+									# decaying according to target Q value
+									noise = (
+											torch.randn_like(action) * self.policy_noise
+									).clamp(-self.noise_clip, self.noise_clip)
+									policy_action = self.actor(state, prev_action) + noise
+									policy_action = self.beta * policy_action + (1 - self.beta) * prev_action
+									policy_action = (
+										policy_action
+									).clamp(-self.max_action, self.max_action)
+
+									# next_state forwarded by current policy
+									next_state_current_policy = transition.forward_model(state, policy_action)
+									if self.env_name == 'PenSpin-v0':
+										reward_current_policy = transition.reward_model(state, policy_action)
+									else:
+										reward_current_policy = transition.compute_reward(next_state_policy)
+
+									# calculate target Q for the next state
+									noise = (
+											torch.randn_like(action) * self.policy_noise
+									).clamp(-self.noise_clip, self.noise_clip)
+
+									next_action_current_policy = self.actor_target(next_state_current_policy, policy_action) + noise
+									next_action_current_policy = self.beta * next_action_current_policy + (1 - self.beta) * policy_action
+									next_action_current_policy = (
+										next_action_current_policy
+									).clamp(-self.max_action, self.max_action)
+
+									target_Q1_current_policy, target_Q2_current_policy = self.critic_target(
+										next_state_current_policy, next_action_current_policy, policy_action)
+
+									target_Q_current_policy = torch.min(target_Q1_current_policy, target_Q2_current_policy)
+									target_Q_current_policy = reward_current_policy + self.discount * target_Q_current_policy
+
+									ratio = torch.sum(new_target_Q > target_Q_current_policy)/batch_size
+									self.debug_value_saver.append(ratio.item())
+									if np.random.rand() > ratio.item():
+										self.epsilon *= self.epsilon_decay
+
+								elif shceduled_by_variance:
+									#  decay according to the difference of target Q
+									target_error = torch.abs((new_target_Q1 - new_target_Q2))
+									mean_error = torch.mean(target_error)
+									self.variance_saver.append(mean_error.item())
+									max_error_so_far = max(self.variance_saver)
+									if np.random.rand() > mean_error/max_error_so_far:
+										self.epsilon *= self.epsilon_decay
 							else:
 								self.epsilon *= self.epsilon_decay
 
@@ -533,8 +579,11 @@ class TD3(object):
 
 							elif variance_type == 'error':
 								max_target_Q = torch.max(new_target_Q1, new_target_Q2)
-								target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
+								# target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
+								target_error = torch.abs((new_target_Q1 - new_target_Q2))
 								max_error = torch.max(target_error)
+								self.variance_saver.append(max_error.item())
+								max_error_so_far = max(self.variance_saver)
 								filter = torch.where(torch.rand_like(target_error) < target_error/max_error, 1, 0)
 								new_target_Q *= filter
 

@@ -29,7 +29,7 @@ env_name="PenSpin-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=policy_action_with_decaying_clipped_gaussian_noise_with_1000_initialization
+tag=policy_action_with_decaying_clipped_gaussian_noise_with_200_initialization
 seed=3
 
 demo_tag=""
