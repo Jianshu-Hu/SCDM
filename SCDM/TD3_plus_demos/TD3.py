@@ -92,14 +92,14 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 200)
-			nn.init.constant_(self.critic.l6.bias.data, 200)
+			nn.init.constant_(self.critic.l3.bias.data, 100)
+			nn.init.constant_(self.critic.l6.bias.data, 100)
 		elif env_name == 'EggCatchOverarm-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 20)
-			nn.init.constant_(self.critic.l6.bias.data, 20)
+			nn.init.constant_(self.critic.l3.bias.data, 10)
+			nn.init.constant_(self.critic.l6.bias.data, 10)
 		elif env_name == 'EggCatchUnderarm-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 20)
-			nn.init.constant_(self.critic.l6.bias.data, 20)
+			nn.init.constant_(self.critic.l3.bias.data, 10)
+			nn.init.constant_(self.critic.l6.bias.data, 10)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -249,10 +249,12 @@ class TD3(object):
 					else:
 						forward_action = 'policy_action'
 						noise_type = 'gaussian'
-					filter_with_variance = False
+					filter_with_variance = True
 					if filter_with_variance:
 						variance_type = 'error'
-					scheduled_decaying = True
+						max_var_so_far = torch.zeros(1)
+						max_error_so_far = torch.zeros(1)
+					scheduled_decaying = False
 					if scheduled_decaying:
 						scheduled_by_better = True
 
@@ -482,7 +484,7 @@ class TD3(object):
 									if self.env_name == 'PenSpin-v0':
 										reward_current_policy = transition.reward_model(state, policy_action)
 									else:
-										reward_current_policy = transition.compute_reward(next_state_policy)
+										reward_current_policy = transition.compute_reward(next_state_current_policy)
 
 									# calculate target Q for the next state
 									noise = (
@@ -569,7 +571,8 @@ class TD3(object):
 								target_var = torch.var(torch.cat([new_target_Q1, new_target_Q2], dim=1), axis=1)
 								mean_var = torch.mean(target_var)
 								self.variance_saver.append(mean_var.item())
-								max_var = max(self.variance_saver)
+								if mean_var > max_var_so_far:
+									max_var_so_far = torch.clone(mean_var)
 								# print(mean_var.item()/max_var)
 								if np.random.rand() < mean_var.item()/max_var:
 									filter = torch.ones_like(new_target_Q)
@@ -578,12 +581,13 @@ class TD3(object):
 								new_target_Q *= filter
 
 							elif variance_type == 'error':
-								max_target_Q = torch.max(new_target_Q1, new_target_Q2)
+								# max_target_Q = torch.max(new_target_Q1, new_target_Q2)
 								# target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
 								target_error = torch.abs((new_target_Q1 - new_target_Q2))
 								max_error = torch.max(target_error)
 								self.variance_saver.append(max_error.item())
-								max_error_so_far = max(self.variance_saver)
+								if max_error > max_error_so_far:
+									max_error_so_far = torch.clone(max_error)
 								filter = torch.where(torch.rand_like(target_error) < target_error/max_error, 1, 0)
 								new_target_Q *= filter
 
