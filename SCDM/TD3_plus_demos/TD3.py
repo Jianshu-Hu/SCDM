@@ -249,9 +249,9 @@ class TD3(object):
 					else:
 						forward_action = 'policy_action'
 						noise_type = 'gaussian'
-					filter_with_variance = True
+					filter_with_variance = False
 					if filter_with_variance:
-						variance_type = 'error'
+						variance_type = 'mean_variance'
 						max_var_so_far = torch.zeros(1)
 						max_error_so_far = torch.zeros(1)
 					scheduled_decaying = False
@@ -262,11 +262,11 @@ class TD3(object):
 					decaying_Q_loss = False
 					H = 20
 					if self.total_it > 3e6:
-						filter_with_higher_target_Q = False
+						filter_with_higher_target_Q = True
 						filter_with_error = False
 						error_type = 'model_error'
 					else:
-						filter_with_higher_target_Q = False
+						filter_with_higher_target_Q = True
 						filter_with_error = False
 						error_tyep = None
 
@@ -521,20 +521,50 @@ class TD3(object):
 
 						# filter artificial transitions with target Q
 						if filter_with_higher_target_Q:
-							filter = torch.where(new_target_Q > target_Q, 1, 0)
+							# filter = torch.where(new_target_Q > target_Q, 1, 0)
+							# new_target_Q *= filter
+
+							# filter according to target Q value
+							noise = (
+									torch.randn_like(action) * self.policy_noise
+							).clamp(-self.noise_clip, self.noise_clip)
+							policy_action = self.actor(state, prev_action) + noise
+							policy_action = self.beta * policy_action + (1 - self.beta) * prev_action
+							policy_action = (
+								policy_action
+							).clamp(-self.max_action, self.max_action)
+
+							# next_state forwarded by current policy
+							next_state_current_policy = transition.forward_model(state, policy_action)
+							if self.env_name == 'PenSpin-v0':
+								reward_current_policy = transition.reward_model(state, policy_action)
+							else:
+								reward_current_policy = transition.compute_reward(next_state_current_policy)
+
+							# calculate target Q for the next state
+							noise = (
+									torch.randn_like(action) * self.policy_noise
+							).clamp(-self.noise_clip, self.noise_clip)
+
+							next_action_current_policy = self.actor_target(next_state_current_policy,
+																		   policy_action) + noise
+							next_action_current_policy = self.beta * next_action_current_policy + (
+										1 - self.beta) * policy_action
+							next_action_current_policy = (
+								next_action_current_policy
+							).clamp(-self.max_action, self.max_action)
+
+							target_Q1_current_policy, target_Q2_current_policy = self.critic_target(
+								next_state_current_policy, next_action_current_policy, policy_action)
+
+							target_Q_current_policy = torch.min(target_Q1_current_policy, target_Q2_current_policy)
+							target_Q_current_policy = reward_current_policy + self.discount * target_Q_current_policy
+
+							ratio = torch.sum(new_target_Q > target_Q_current_policy) / batch_size
+							self.debug_value_saver.append(ratio.item())
+							filter = torch.where(new_target_Q > target_Q_current_policy, 1, 0)
 							new_target_Q *= filter
 
-							# # filter the transition when the target Q values from two networks have a small difference
-							# filter_condition = torch.logical_and((target_Q_diff < self.error_threshold),
-							# 									 (new_target_Q < target_Q))
-
-							# # decaying exploration
-							# if self.epsilon > np.random.rand(1):
-							# 	filter = torch.ones_like(target_Q)
-							# else:
-							# 	filter = torch.where(new_target_Q < target_Q, 0, 1)
-							# self.epsilon *= self.epsilon_decay
-							# new_target_Q *= filter
 						elif filter_with_error:
 							imagined_next_state = transition.forward_model(state, action)
 							if self.env_name == 'PenSpin-v0':
@@ -574,7 +604,7 @@ class TD3(object):
 								if mean_var > max_var_so_far:
 									max_var_so_far = torch.clone(mean_var)
 								# print(mean_var.item()/max_var)
-								if np.random.rand() < mean_var.item()/max_var:
+								if np.random.rand() < mean_var.item()/max_var_so_far:
 									filter = torch.ones_like(new_target_Q)
 								else:
 									filter = torch.zeros_like(new_target_Q)

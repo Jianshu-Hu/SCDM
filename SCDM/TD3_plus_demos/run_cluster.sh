@@ -29,7 +29,7 @@ env_name="EggCatchOverarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=decaying_clipped_gaussian_noise_normalize_with_max_difference_with_high_initialization
+tag=decaying_clipped_gaussian_noise_filter_with_higher_target_Q_with_high_initialization
 seed=3
 
 demo_tag=""
