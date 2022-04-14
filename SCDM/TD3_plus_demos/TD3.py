@@ -251,31 +251,29 @@ class TD3(object):
 						noise_type = 'gaussian'
 					filter_with_variance = False
 					if filter_with_variance:
-						variance_type = 'mean_variance'
+						variance_type = 'error'
 						max_var_so_far = torch.zeros(1)
 						max_error_so_far = torch.zeros(1)
-					scheduled_decaying = False
+					scheduled_decaying = True
 					if scheduled_decaying:
-						scheduled_by_better = True
+						scheduled_by_better = False
+						scheduled_by_error = True
+						max_error_so_far = torch.zeros(1)
 
 					exploration_sampling = False
 					decaying_Q_loss = False
 					H = 20
 					if self.total_it > 3e6:
-						filter_with_higher_target_Q = True
+						filter_with_higher_target_Q = False
 						filter_with_error = False
 						error_type = 'model_error'
 					else:
-						filter_with_higher_target_Q = True
+						filter_with_higher_target_Q = False
 						filter_with_error = False
 						error_tyep = None
 
 					if forward_action == 'forward_n_steps':
 						num_step = 1
-				elif add_transitions_type == 'policy_gradient':
-					add_artificial_transitions = False
-					gradient_through_dynamics = False
-					gradient_through_new_action = False
 			else:
 				add_artificial_transitions = False
 				add_transitions_type = None
@@ -508,13 +506,14 @@ class TD3(object):
 									if np.random.rand() > ratio.item():
 										self.epsilon *= self.epsilon_decay
 
-								elif shceduled_by_variance:
+								elif scheduled_by_error:
 									#  decay according to the difference of target Q
 									target_error = torch.abs((new_target_Q1 - new_target_Q2))
 									mean_error = torch.mean(target_error)
 									self.variance_saver.append(mean_error.item())
-									max_error_so_far = max(self.variance_saver)
-									if np.random.rand() > mean_error/max_error_so_far:
+									if mean_error > max_error_so_far:
+										max_error_so_far = torch.clone(mean_error)
+									if np.random.rand() > (mean_error/max_error_so_far).item():
 										self.epsilon *= self.epsilon_decay
 							else:
 								self.epsilon *= self.epsilon_decay
@@ -618,7 +617,7 @@ class TD3(object):
 								self.variance_saver.append(max_error.item())
 								if max_error > max_error_so_far:
 									max_error_so_far = torch.clone(max_error)
-								filter = torch.where(torch.rand_like(target_error) < target_error/max_error, 1, 0)
+								filter = torch.where(torch.rand_like(target_error) < target_error/max_error_so_far, 1, 0)
 								new_target_Q *= filter
 
 
@@ -873,33 +872,6 @@ class TD3(object):
 				hand_moving_loss = F.mse_loss(invariant_action, new_fixed_action)
 				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
 							 + 0.1*hand_moving_loss
-			elif add_transitions_type == 'policy_gradient':
-				if gradient_through_dynamics == True:
-					policy_action = self.beta * self.actor(state, prev_action) + (1 - self.beta) * prev_action
-					imagined_state = transition.forward_model(state, policy_action)
-					imagined_reward = transition.reward_model(state, policy_action)
-					with torch.no_grad():
-						new_action = self.beta * self.actor(imagined_state, policy_action) + (1 - self.beta) * policy_action
-						new_prev_action = policy_action.clone().detach()
-					new_actor_loss = -(imagined_reward + self.discount * self.critic.Q1(imagined_state, new_action,
-																						new_prev_action)).mean()
-				elif gradient_through_new_action == True:
-					with torch.no_grad():
-						policy_action = self.beta * self.actor(state, prev_action) + (1 - self.beta) * prev_action
-						imagined_state = transition.forward_model(state, policy_action)
-					new_action = self.beta * self.actor(imagined_state, policy_action) + (1 - self.beta) * policy_action
-					new_actor_loss = -self.critic.Q1(imagined_state, new_action, policy_action).mean()
-				else:
-					policy_action = self.beta * self.actor(state, prev_action) + (1 - self.beta) * prev_action
-					imagined_state = transition.forward_model(state, policy_action)
-					imagined_reward = transition.reward_model(state, policy_action)
-					new_action = self.beta * self.actor(imagined_state, policy_action) + (1 - self.beta) * policy_action
-					new_actor_loss = -(imagined_reward + self.discount*self.critic.Q1(imagined_state, new_action, policy_action)).mean()
-
-				# Compute actor loss
-				original_actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
-
-				actor_loss = (original_actor_loss+new_actor_loss)/2
 			else:
 				# Compute actor loss
 				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
