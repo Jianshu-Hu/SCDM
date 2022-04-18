@@ -659,6 +659,38 @@ tag_175 = ["1_fixed_noise_filter_with_max_mean_variance_so_far_without_high_init
            "2_fixed_noise_filter_with_max_mean_variance_so_far_without_high_initialization",
            "3_fixed_noise_filter_with_max_mean_variance_so_far_without_high_initialization"]
 
+tag_176 = ["1_scheduled_decaying_according_to_target_Q_difference_with_high_initialization",
+           "2_scheduled_decaying_according_to_target_Q_difference_with_high_initialization",
+           "3_scheduled_decaying_according_to_target_Q_difference_with_high_initialization"]
+
+tag_177 =["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization",
+          "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization",
+          "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization"]
+
+tag_178 =["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization",
+          "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization",
+          "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization"]
+
+tag_179 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_5_initialization",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_5_initialization",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_5_initialization"]
+
+tag_180 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_10_5_initialization",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_10_5_initialization",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_10_5_initialization"]
+
+tag_181 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_15_10_initialization",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_15_10_initialization",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_15_10_initialization"]
+
+tag_182 =["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization_true_reward",
+          "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization_true_reward",
+          "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization_true_reward"]
+
+tag_183 =["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
+          "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
+          "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward"]
+
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -880,9 +912,6 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_debug_value(overarm_prefix, tag=tag_172)
 # plot_debug_value(underarm_prefix, tag=tag_172)
 
-plot_variance(overarm_prefix, tag=tag_168)
-plot_variance(underarm_prefix, tag=tag_168)
-
 plot_variance(overarm_prefix, tag=tag_173)
 plot_variance(underarm_prefix, tag=tag_173)
 
@@ -901,6 +930,7 @@ plot_variance(underarm_prefix, tag=tag_173)
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_151, tag_152], title="noise_policy_action")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,tag_183], title="with_improvement")
 
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
@@ -914,8 +944,10 @@ compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173, tag_175], title="noise_policy_action_with_improvement")
 tag_172_temp = ["1_scheduled_decaying_target_from_current_policy_with_high_initialization",
            "3_scheduled_decaying_target_from_current_policy_with_high_initialization"]
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172_temp, tag_174], title="noise_policy_action_scheduled_decaying")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172_temp, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164, tag_170], title="high_initialization")
+compare(prefix=overarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180], title="small_initialization")
+
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148,tag_150], title='play_with_noise')
@@ -937,10 +969,9 @@ compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164, tag_1
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_133, tag_143, tag_147, tag_149], title="epsilon_greedy")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_145, tag_151, tag_152], title="noise_policy_action")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
-tag_168_temp = ["1_decaying_clipped_gaussian_noise_normalize_with_max_difference_so_far_with_high_initialization",
-           "2_decaying_clipped_gaussian_noise_normalize_with_max_difference_so_far_with_high_initialization"]
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168_temp, tag_169, tag_173,tag_175], title="noise_policy_action_with_improvement")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172, tag_174], title="noise_policy_action_scheduled_decaying")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173,tag_175], title="noise_policy_action_with_improvement")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180,tag_181], title="small_initialization")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_162, tag_163, tag_170], title="high_initialization")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")

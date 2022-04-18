@@ -98,7 +98,7 @@ class TD3(object):
 			nn.init.constant_(self.critic.l3.bias.data, 10)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
 		elif env_name == 'EggCatchUnderarm-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 10)
+			nn.init.constant_(self.critic.l3.bias.data, 15)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
@@ -171,10 +171,7 @@ class TD3(object):
 			state = torch.clone(next_state)
 			next_state = transition.forward_model(state, next_action)
 			action = torch.clone(next_action)
-			if self.env_name == 'PenSpin-v0':
-				reward = transition.reward_model(state, next_action)
-			else:
-				reward = transition.compute_reward(next_state)
+			reward = transition.compute_reward(next_state)
 			return_H += self.discount**(t+1)*reward
 		return return_H, next_state, action
 
@@ -249,12 +246,12 @@ class TD3(object):
 					else:
 						forward_action = 'policy_action'
 						noise_type = 'gaussian'
-					filter_with_variance = False
+					filter_with_variance = True
 					if filter_with_variance:
 						variance_type = 'error'
 						max_var_so_far = torch.zeros(1)
 						max_error_so_far = torch.zeros(1)
-					scheduled_decaying = True
+					scheduled_decaying = False
 					if scheduled_decaying:
 						scheduled_by_better = False
 						scheduled_by_error = True
@@ -302,10 +299,7 @@ class TD3(object):
 						next_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
-					if self.env_name == 'PenSpin-v0':
-						new_reward = transition.reward_model(next_state_H[-1], next_action)
-					else:
-						new_reward = transition.compute_reward(new_next_state)
+					new_reward = transition.compute_reward(new_next_state)
 
 					state_H.append(next_state_H[-1])
 					prev_action_H.append(action_H[-1])
@@ -389,10 +383,7 @@ class TD3(object):
 								new_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 							new_next_state = transition.forward_model(state, new_action)
-							if self.env_name == 'PenSpin-v0':
-								new_reward = transition.reward_model(state, new_action)
-							else:
-								new_reward = transition.compute_reward(new_next_state)
+							new_reward = transition.compute_reward(new_next_state)
 
 							# Select action according to policy and add clipped noise
 							noise = (
@@ -440,10 +431,7 @@ class TD3(object):
 							).clamp(-self.max_action, self.max_action)
 
 							new_next_state = transition.forward_model(state, new_action)
-							if self.env_name == 'PenSpin-v0':
-								new_reward = transition.reward_model(state, new_action)
-							else:
-								new_reward = transition.compute_reward(new_next_state)
+							new_reward = transition.compute_reward(new_next_state)
 
 							# Select action according to policy and add clipped noise
 							noise = (
@@ -479,10 +467,7 @@ class TD3(object):
 
 									# next_state forwarded by current policy
 									next_state_current_policy = transition.forward_model(state, policy_action)
-									if self.env_name == 'PenSpin-v0':
-										reward_current_policy = transition.reward_model(state, policy_action)
-									else:
-										reward_current_policy = transition.compute_reward(next_state_current_policy)
+									reward_current_policy = transition.compute_reward(next_state_current_policy)
 
 									# calculate target Q for the next state
 									noise = (
@@ -510,7 +495,7 @@ class TD3(object):
 									#  decay according to the difference of target Q
 									target_error = torch.abs((new_target_Q1 - new_target_Q2))
 									mean_error = torch.mean(target_error)
-									self.variance_saver.append(mean_error.item())
+									# self.variance_saver.append(mean_error.item())
 									if mean_error > max_error_so_far:
 										max_error_so_far = torch.clone(mean_error)
 									if np.random.rand() > (mean_error/max_error_so_far).item():
@@ -535,10 +520,7 @@ class TD3(object):
 
 							# next_state forwarded by current policy
 							next_state_current_policy = transition.forward_model(state, policy_action)
-							if self.env_name == 'PenSpin-v0':
-								reward_current_policy = transition.reward_model(state, policy_action)
-							else:
-								reward_current_policy = transition.compute_reward(next_state_current_policy)
+							reward_current_policy = transition.compute_reward(next_state_current_policy)
 
 							# calculate target Q for the next state
 							noise = (
@@ -566,10 +548,7 @@ class TD3(object):
 
 						elif filter_with_error:
 							imagined_next_state = transition.forward_model(state, action)
-							if self.env_name == 'PenSpin-v0':
-								imagined_reward = transition.reward_model(state, action)
-							else:
-								imagined_reward = transition.compute_reward(imagined_next_state)
+							imagined_reward = transition.compute_reward(imagined_next_state)
 							if error_type == 'model_error':
 								model_error = torch.mean(F.mse_loss(imagined_next_state, next_state, reduction='none'),
 														 dim=1, keepdim=True)
@@ -599,7 +578,7 @@ class TD3(object):
 							if variance_type == 'mean_variance':
 								target_var = torch.var(torch.cat([new_target_Q1, new_target_Q2], dim=1), axis=1)
 								mean_var = torch.mean(target_var)
-								self.variance_saver.append(mean_var.item())
+								# self.variance_saver.append(mean_var.item())
 								if mean_var > max_var_so_far:
 									max_var_so_far = torch.clone(mean_var)
 								# print(mean_var.item()/max_var)
@@ -614,7 +593,7 @@ class TD3(object):
 								# target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
 								target_error = torch.abs((new_target_Q1 - new_target_Q2))
 								max_error = torch.max(target_error)
-								self.variance_saver.append(max_error.item())
+								# self.variance_saver.append(max_error.item())
 								if max_error > max_error_so_far:
 									max_error_so_far = torch.clone(max_error)
 								filter = torch.where(torch.rand_like(target_error) < target_error/max_error_so_far, 1, 0)
@@ -630,10 +609,7 @@ class TD3(object):
 						for action_ind in range(num_actions):
 							new_action = 2 * (torch.rand(action.size()) - 0.5).to(device)
 							new_next_state = transition.forward_model(state, new_action)
-							if self.env_name == 'PenSpin-v0':
-								new_reward = transition.reward_model(state, new_action)
-							else:
-								new_reward = transition.compute_reward(new_next_state)
+							new_reward = transition.compute_reward(new_next_state)
 
 							# Select action according to policy and add clipped noise
 							noise = (
@@ -659,10 +635,7 @@ class TD3(object):
 						invariant_action_candidate = \
 							self.invariance_definition.throwing_hand_random_samples_generator(action.cpu().data.numpy())
 						new_next_state = transition.forward_model(state, invariant_action_candidate)
-						if self.env_name == 'PenSpin-v0':
-							new_reward = transition.reward_model(state, invarianct_action_candidate)
-						else:
-							new_reward = transition.compute_reward(new_next_state)
+						new_reward = transition.compute_reward(new_next_state)
 
 						# forward two states for H steps and calculate the return
 						return_H_origianl, _, _ = self.forward_with_learned_model(action, next_state, reward, H, transition)
@@ -694,10 +667,7 @@ class TD3(object):
 						new_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 						new_next_state = transition.forward_model(state, new_action)
-						if self.env_name == 'PenSpin-v0':
-							new_reward = transition.reward_model(state, new_action)
-						else:
-							new_reward = transition.compute_reward(new_next_state)
+						new_reward = transition.compute_reward(new_next_state)
 						# forward with policy action for n step
 						new_reward, final_state, final_prev_action = self.forward_with_learned_model(new_action, new_next_state, new_reward, num_step, transition)
 
@@ -829,7 +799,7 @@ class TD3(object):
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
 
 
-		self.critic_loss_saver.append(critic_loss.item())
+		# self.critic_loss_saver.append(critic_loss.item())
 		# Optimize the critic
 		self.critic_optimizer.zero_grad()
 		critic_loss.backward()
@@ -876,7 +846,7 @@ class TD3(object):
 				# Compute actor loss
 				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
 
-			self.actor_loss_saver.append(actor_loss.item())
+			# self.actor_loss_saver.append(actor_loss.item())
 			# Optimize the actor 
 			self.actor_optimizer.zero_grad()
 			actor_loss.backward()
@@ -889,10 +859,11 @@ class TD3(object):
 			for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
 				target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
 		if self.total_it % self.save_freq == 0:
-			np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)
-			np.save(f"./results/{self.file_name_actor}", self.actor_loss_saver)
-			np.save(f"./results/{self.file_name_variance}", self.variance_saver)
-			np.save(f"./results/{self.file_name_debug}", self.debug_value_saver)
+			pass
+			# np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)
+			# np.save(f"./results/{self.file_name_actor}", self.actor_loss_saver)
+			# np.save(f"./results/{self.file_name_variance}", self.variance_saver)
+			# np.save(f"./results/{self.file_name_debug}", self.debug_value_saver)
 
 
 	def save(self, filename):

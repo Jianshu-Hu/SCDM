@@ -4,10 +4,10 @@ cd /bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/
 source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
-#env_name="PenSpin-v0"
+env_name="PenSpin-v0"
 #env_name="TwoEggCatchUnderArm-v0"
 
-env_name="EggCatchUnderarm-v0"
+#env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchUnderarmHard-v0"
 #env_name="EggCatchOverarm-v0"
 #env_name="EggHandOver-v0"
@@ -29,7 +29,7 @@ env_name="EggCatchUnderarm-v0"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=fixed_noise_filter_with_max_mean_variance_so_far_without_high_initialization
+tag=decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization_true_reward
 seed=3
 
 demo_tag=""
