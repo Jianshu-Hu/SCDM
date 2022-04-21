@@ -76,7 +76,7 @@ class TransitionModel():
         elif env_name in env_list3:
             self.reward_type = 'Reacher-v2'
         else:
-            print('Check the index for other environments')
+            raise NotImplementedError('Check the reward function for this environment')
 
     def train(self, replay_buffer):
         self.total_iter += 1

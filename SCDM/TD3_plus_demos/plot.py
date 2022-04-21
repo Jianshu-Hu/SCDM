@@ -709,6 +709,9 @@ tag_186 = ["1_add_bc_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_s
 
 tag_187 = ["1_test", "2_test", '3_test']
 
+tag_188 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far"]
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -942,7 +945,7 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_actor_critic_loss(overarm_prefix,tag_expl,plot_or_save='plot')
 # plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
-compare(prefix=reacher_prefix, tag_list=[tag_187], title="test")
+compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187], title="test")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
