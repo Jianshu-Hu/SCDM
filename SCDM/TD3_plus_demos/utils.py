@@ -120,6 +120,7 @@ class ReplayBuffer(object):
 		env_list2 = ["EggCatchOverarm-v0"]
 		env_list3 = ["EggCatchUnderarmHard-v0"]
 
+		self.invariance_feasible = True
 		if self.env in env_list1:
 			self.y_axis_index = 1
 			self.throwing_threshold = 0.3
@@ -137,10 +138,9 @@ class ReplayBuffer(object):
 			self.throwing_threshold = 0.5
 			self.catching_threshold = 1
 			self.initial_pos = np.array([0.99774, 0.06903, 0.31929])
-		elif self.env=="PenSpin-v0":
-			print("Invariance is not implemented for this env")
 		else:
-			raise NotImplementedError
+			self.invariance_feasible = False
+			print("Invariance is not implemented for this env")
 
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -151,9 +151,7 @@ class ReplayBuffer(object):
 		self.reward[self.ptr] = reward
 		self.prev_action[self.ptr] = prev_action
 
-		if self.env == "PenSpin-v0":
-			pass
-		else:
+		if self.invariance_feasible:
 			# throwing hand2 invariance
 			if np.linalg.norm(state[-20:-17] - self.initial_pos) >= self.throwing_threshold:
 				self.invariance[self.ptr] = 2

@@ -16,11 +16,8 @@ import SCDM.TD3_plus_demos.transition_model as transition_model
 # Runs policy for X episodes and returns average reward
 # Runs critic for X episodes and returns average Q value for some states
 # A fixed seed is used for the eval environment
-def eval_policy(policy, env_name, seed, target_rotation, eval_episodes=10, evaluate_critic_t=50):
-	if env_name == 'PenSpin-v0':
-		eval_env = gym.make(env_name)
-	else:
-		eval_env = gym.make(env_name, target_rotation=target_rotation)
+def eval_policy(policy, env_name, seed, eval_episodes=10, evaluate_critic_t=50):
+	eval_env = gym.make(env_name)
 	eval_env.seed(seed + 100)
 
 	avg_reward = 0.
@@ -97,6 +94,7 @@ if __name__ == "__main__":
 	parser.set_defaults(use_normaliser=False)
 
 	# new paramters
+	parser.add_argument("--without_demo", action='store_true')  # tag for not using demonstration
 	parser.add_argument("--demo_tag", type=str, default="")  #tag for the files of demonstration
 	parser.add_argument("--add_bc_loss", action="store_true")  # add behavior cloning loss to actor training
 	parser.add_argument("--model_start_timesteps", default=10000, type=int)# Time steps of start training transition model
@@ -115,10 +113,6 @@ if __name__ == "__main__":
 	# Noisy: add noise to the true goal of the segment
 	# Random: randomly sample a goal
 
-	parser.add_argument("--target_rotation", type=str, default="xyz")  #set the target rotation
-	# xyz: rotation in xyz
-	# z: rotation in z
-	# ignore: without rotation
 	parser.add_argument("--sparse_reward", action="store_true")  # reward type
 
 	parser.add_argument("--divide_demos_into_N_parts", type=int, default=1) #divide the demos into N parts
@@ -140,44 +134,25 @@ if __name__ == "__main__":
 	if args.save_model and not os.path.exists("./models"):
 		os.makedirs("./models")
 
-	if args.env == "PenSpin-v0":
+	if args.sparse_reward:
+		env_main = gym.make(args.env,
+							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
+		env_demo = gym.make(args.env,
+							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
+		env_reset = gym.make(args.env,
+							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
+	else:
 		env_main = gym.make(args.env)
 		env_demo = gym.make(args.env)
 		env_reset = gym.make(args.env)
-	elif args.sparse_reward:
-		env_main = gym.make(args.env, target_rotation=args.target_rotation,
-							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-		env_demo = gym.make(args.env, target_rotation=args.target_rotation,
-							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-		env_reset = gym.make(args.env, target_rotation=args.target_rotation,
-							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-	else:
-		env_main = gym.make(args.env, target_rotation=args.target_rotation)
-		env_demo = gym.make(args.env, target_rotation=args.target_rotation)
-		env_reset = gym.make(args.env, target_rotation=args.target_rotation)
 
-	# demo_states = []
-	# demo_prev_actions = []
-	# demo_goals = []
-	# files = os.listdir("demonstrations/demonstrations"+"_"+args.env+args.demo_tag)
-	# files = [file for file in files if file.endswith(".pkl")]
-	# for file in files:
-	# 	traj = joblib.load("demonstrations/demonstrations" + "_" + args.env+args.demo_tag + "/" + file)
-	# 	demo_states_traj = []
-	# 	demo_prev_actions_traj = []
-	# 	for k, state in enumerate(traj["sim_states"]):
-	# 		demo_states_traj.append(state)
-	# 		if k == 0:
-	# 			prev_action = np.zeros((env_main.action_space.shape[0],))
-	# 		else:
-	# 			prev_action = traj["actions"][k-1]
-	# 		demo_prev_actions_traj.append(prev_action.copy())
-	# 	demo_states.append(demo_states_traj)
-	# 	demo_prev_actions.append(demo_prev_actions_traj)
-	# 	demo_goals.append(traj["goal"])
-	demo_processor = utils.DemoProcessor(args.env, args.demo_tag, args.divide_demos_into_N_parts)
-	demo_states_throw, demo_prev_actions_throw, demo_states_catch, demo_prev_actions_catch, demo_goals =\
-		demo_processor.process()
+	if not args.without_demo:
+		demo_processor = utils.DemoProcessor(args.env, args.demo_tag, args.divide_demos_into_N_parts)
+		demo_states_throw, demo_prev_actions_throw, demo_states_catch, demo_prev_actions_catch, demo_goals =\
+			demo_processor.process()
+	else:
+		args.pd_init = 0
+		args.pr_init = 0
 	# if not dividing the demos, there will not be a decay for the throwing part.
 	if args.divide_demos_into_N_parts == 1:
 		args.pd_throw_decay = args.pd_decay
@@ -213,15 +188,21 @@ if __name__ == "__main__":
 	# Initialize policy
 	# Target policy smoothing is scaled wrt the action scale
 	policy = TD3.TD3(**kwargs)
-	transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
-					env_main.env.compute_reward)
+	if args.without_demo:
+		# there is not a reward function in the envs which are not defined in dexterous gym
+		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
+						None)
+	else:
+		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
+						env_main.env.compute_reward)
 
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
 		policy.load(f"./models/{policy_file}")
 
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, args.env)
-	demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
+	if not args.without_demo:
+		demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
 
 	invariant_replay_buffer_list = []
 	if args.add_invariance_traj:
@@ -234,7 +215,7 @@ if __name__ == "__main__":
 			invariant_replay_buffer_list.append(invariant_replay_buffer)
 	
 	# Evaluate untrained policy
-	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, target_rotation=args.target_rotation)
+	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)
 	evaluations_policy = [avg_reward]
 	evaluations_critic = [avg_Q]
 
@@ -257,6 +238,7 @@ if __name__ == "__main__":
 	print("add_invariance_traj: ", args.add_invariance_traj)
 	print("add_invariance_regularization: ", args.add_invariance_regularization)
 	print("add_hand_invariance_regularization: ", args.add_hand_invariance_regularization)
+	print("add_artificial_transitions: ", args.add_artificial_transitions)
 	if args.add_invariance_traj or args.add_invariance_regularization or \
 			args.add_hand_invariance_regularization:
 		print("inv_type: ", args.inv_type)
@@ -265,7 +247,6 @@ if __name__ == "__main__":
 		print("reward type: sparse reward")
 	else:
 		print("reward type: dense reward")
-	print("target rotation: ", args.target_rotation)
 
 	for t in range(int(args.max_timesteps)):
 		
@@ -394,14 +375,21 @@ if __name__ == "__main__":
 		if t >= args.model_start_timesteps:
 			transition.train(replay_buffer)
 		if t >= args.start_timesteps:
-			policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
-						 args.batch_size,
-						 args.add_invariance_regularization, args.add_hand_invariance_regularization,
-						 args.add_bc_loss,
-						 args.add_artificial_transitions)
+			if args.without_demo:
+				policy.train(replay_buffer, None, invariant_replay_buffer_list, transition,
+							 args.batch_size,
+							 args.add_invariance_regularization, args.add_hand_invariance_regularization,
+							 args.add_bc_loss,
+							 args.add_artificial_transitions)
+			else:
+				policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
+							 args.batch_size,
+							 args.add_invariance_regularization, args.add_hand_invariance_regularization,
+							 args.add_bc_loss,
+							 args.add_artificial_transitions)
 
 		if (t+1) % args.eval_freq == 0:
-			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, target_rotation=args.target_rotation)
+			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)
 			evaluations_policy.append(avg_reward)
 			evaluations_critic.append(avg_Q)
 			np.save(f"./results/{file_name}", evaluations_policy)

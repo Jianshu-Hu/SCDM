@@ -13,6 +13,8 @@ underarm_prefix_v3 = "TD3_EggCatchUnderarm-v3_"
 
 pen_prefix = "TD3_PenSpin-v0_"
 
+reacher_prefix = "TD3_Reacher-v2_"
+
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
 # tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo"]
@@ -691,6 +693,20 @@ tag_183 =["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50
           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward"]
 
+tag_184 = ["1_decaying_clipped_gaussian_noise_with_50_initialization_true_reward",
+           "2_decaying_clipped_gaussian_noise_with_50_initialization_true_reward",
+           "3_decaying_clipped_gaussian_noise_with_50_initialization_true_reward"]
+
+tag_185 = ["1_decaying_Q_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
+           "2_decaying_Q_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
+           "3_decaying_Q_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward"]
+
+tag_186 = ["1_add_bc_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
+           "2_add_bc_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward",
+           "3_add_bc_loss_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_50_initialization_true_reward"]
+
+tag_187 = ["1_test", "2_test", '3_test']
+
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -912,8 +928,8 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_debug_value(overarm_prefix, tag=tag_172)
 # plot_debug_value(underarm_prefix, tag=tag_172)
 
-plot_variance(overarm_prefix, tag=tag_173)
-plot_variance(underarm_prefix, tag=tag_173)
+# plot_variance(overarm_prefix, tag=tag_173)
+# plot_variance(underarm_prefix, tag=tag_173)
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
@@ -924,13 +940,15 @@ plot_variance(underarm_prefix, tag=tag_173)
 # plot_actor_critic_loss(overarm_prefix,tag_expl,plot_or_save='plot')
 # plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
+compare(prefix=reacher_prefix,tag_list=[tag_187],title="reacher")
+
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_128, tag_131, tag_134, tag_138, tag_143, tag_147], title="add_transitions")
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_151, tag_152], title="noise_policy_action")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,tag_183], title="with_improvement")
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,tag_183,tag_184,tag_185,tag_186], title="with_improvement")
 
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")

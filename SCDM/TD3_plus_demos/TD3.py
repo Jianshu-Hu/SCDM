@@ -92,8 +92,8 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 100)
-			nn.init.constant_(self.critic.l6.bias.data, 100)
+			nn.init.constant_(self.critic.l3.bias.data, 50)
+			nn.init.constant_(self.critic.l6.bias.data, 50)
 		elif env_name == 'EggCatchOverarm-v0':
 			nn.init.constant_(self.critic.l3.bias.data, 10)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
@@ -230,50 +230,64 @@ class TD3(object):
 		# 	print(error)
 		add_hand_invariance_regularization_target = False
 		if add_artificial_transitions:
-			if self.total_it <= 10e6:
-				add_transitions_type = 'ours'
-				if add_transitions_type == 'MVE':
-					forward_action = 'policy_action'
-					H = 1
-				elif add_transitions_type == 'ours':
-					epsilon_greedy = False
-					if epsilon_greedy:
-						if np.random.rand() < self.epsilon:
-							forward_action = 'random'
-						else:
-							forward_action = 'policy_action'
-						self.epsilon *= self.epsilon_decay
-					else:
-						forward_action = 'policy_action'
-						noise_type = 'gaussian'
-					filter_with_variance = True
-					if filter_with_variance:
-						variance_type = 'error'
-						max_var_so_far = torch.zeros(1)
-						max_error_so_far = torch.zeros(1)
-					scheduled_decaying = False
-					if scheduled_decaying:
-						scheduled_by_better = False
-						scheduled_by_error = True
-						max_error_so_far = torch.zeros(1)
-
-					exploration_sampling = False
-					decaying_Q_loss = False
-					H = 20
-					if self.total_it > 3e6:
-						filter_with_higher_target_Q = False
-						filter_with_error = False
-						error_type = 'model_error'
-					else:
-						filter_with_higher_target_Q = False
-						filter_with_error = False
-						error_tyep = None
-
-					if forward_action == 'forward_n_steps':
-						num_step = 1
-			else:
-				add_artificial_transitions = False
-				add_transitions_type = None
+			add_transitions_type = 'ours'
+			forward_action = 'policy_action'
+			noise_type = 'gaussian'
+			decaying_Q_loss = False
+			filter_with_variance = True
+			if filter_with_variance:
+				variance_type = 'error'
+				max_var_so_far = torch.zeros(1)
+				max_error_so_far = torch.zeros(1)
+			scheduled_decaying = False
+			if scheduled_decaying:
+				scheduled_by_better = False
+				scheduled_by_error = True
+				max_error_so_far = torch.zeros(1)
+			# if self.total_it <= 10e6:
+			# 	add_transitions_type = 'ours'
+			# 	if add_transitions_type == 'MVE':
+			# 		forward_action = 'policy_action'
+			# 		H = 1
+			# 	elif add_transitions_type == 'ours':
+			# 		epsilon_greedy = False
+			# 		if epsilon_greedy:
+			# 			if np.random.rand() < self.epsilon:
+			# 				forward_action = 'random'
+			# 			else:
+			# 				forward_action = 'policy_action'
+			# 			self.epsilon *= self.epsilon_decay
+			# 		else:
+			# 			forward_action = 'policy_action'
+			# 			noise_type = 'gaussian'
+			# 		filter_with_variance = True
+			# 		if filter_with_variance:
+			# 			variance_type = 'error'
+			# 			max_var_so_far = torch.zeros(1)
+			# 			max_error_so_far = torch.zeros(1)
+			# 		scheduled_decaying = False
+			# 		if scheduled_decaying:
+			# 			scheduled_by_better = False
+			# 			scheduled_by_error = True
+			# 			max_error_so_far = torch.zeros(1)
+			#
+			# 		exploration_sampling = False
+			# 		decaying_Q_loss = False
+			# 		H = 20
+			# 		if self.total_it > 3e6:
+			# 			filter_with_higher_target_Q = False
+			# 			filter_with_error = False
+			# 			error_type = 'model_error'
+			# 		else:
+			# 			filter_with_higher_target_Q = False
+			# 			filter_with_error = False
+			# 			error_tyep = None
+			#
+			# 		if forward_action == 'forward_n_steps':
+			# 			num_step = 1
+			# else:
+			# 	add_artificial_transitions = False
+			# 	add_transitions_type = None
 		else:
 			add_transitions_type = None
 
@@ -503,78 +517,78 @@ class TD3(object):
 							else:
 								self.epsilon *= self.epsilon_decay
 
-						# filter artificial transitions with target Q
-						if filter_with_higher_target_Q:
-							# filter = torch.where(new_target_Q > target_Q, 1, 0)
-							# new_target_Q *= filter
-
-							# filter according to target Q value
-							noise = (
-									torch.randn_like(action) * self.policy_noise
-							).clamp(-self.noise_clip, self.noise_clip)
-							policy_action = self.actor(state, prev_action) + noise
-							policy_action = self.beta * policy_action + (1 - self.beta) * prev_action
-							policy_action = (
-								policy_action
-							).clamp(-self.max_action, self.max_action)
-
-							# next_state forwarded by current policy
-							next_state_current_policy = transition.forward_model(state, policy_action)
-							reward_current_policy = transition.compute_reward(next_state_current_policy)
-
-							# calculate target Q for the next state
-							noise = (
-									torch.randn_like(action) * self.policy_noise
-							).clamp(-self.noise_clip, self.noise_clip)
-
-							next_action_current_policy = self.actor_target(next_state_current_policy,
-																		   policy_action) + noise
-							next_action_current_policy = self.beta * next_action_current_policy + (
-										1 - self.beta) * policy_action
-							next_action_current_policy = (
-								next_action_current_policy
-							).clamp(-self.max_action, self.max_action)
-
-							target_Q1_current_policy, target_Q2_current_policy = self.critic_target(
-								next_state_current_policy, next_action_current_policy, policy_action)
-
-							target_Q_current_policy = torch.min(target_Q1_current_policy, target_Q2_current_policy)
-							target_Q_current_policy = reward_current_policy + self.discount * target_Q_current_policy
-
-							ratio = torch.sum(new_target_Q > target_Q_current_policy) / batch_size
-							self.debug_value_saver.append(ratio.item())
-							filter = torch.where(new_target_Q > target_Q_current_policy, 1, 0)
-							new_target_Q *= filter
-
-						elif filter_with_error:
-							imagined_next_state = transition.forward_model(state, action)
-							imagined_reward = transition.compute_reward(imagined_next_state)
-							if error_type == 'model_error':
-								model_error = torch.mean(F.mse_loss(imagined_next_state, next_state, reduction='none'),
-														 dim=1, keepdim=True)
-								filter = torch.where(model_error < 0.15, 1, 0)
-							elif error_type == 'target_Q_error':
-								# Select action according to policy and add clipped noise
-								noise = (
-										torch.randn_like(action) * self.policy_noise
-								).clamp(-self.noise_clip, self.noise_clip)
-
-								imagined_next_action = self.actor_target(imagined_next_state, action) + noise
-								imagined_next_action = self.beta * imagined_next_action + (1 - self.beta) * action
-								imagined_next_action = (
-									imagined_next_action
-								).clamp(-self.max_action, self.max_action)
-
-								# Compute the imagined target Q value
-								imagined_target_Q1, imagined_target_Q2 = self.critic_target(imagined_next_state, imagined_next_action,
-																				  action)
-								imagined_target_Q = torch.min(imagined_target_Q1, imagined_target_Q2)
-								imagined_target_Q = imagined_reward + self.discount * imagined_target_Q
-								target_error = torch.abs((imagined_target_Q-target_Q)/target_Q)
-
-								filter = torch.where(target_error < 0.1, 1, 0)
-							new_target_Q *= filter
-						elif filter_with_variance:
+						# # filter artificial transitions with target Q
+						# if filter_with_higher_target_Q:
+						# 	# filter = torch.where(new_target_Q > target_Q, 1, 0)
+						# 	# new_target_Q *= filter
+						#
+						# 	# filter according to target Q value
+						# 	noise = (
+						# 			torch.randn_like(action) * self.policy_noise
+						# 	).clamp(-self.noise_clip, self.noise_clip)
+						# 	policy_action = self.actor(state, prev_action) + noise
+						# 	policy_action = self.beta * policy_action + (1 - self.beta) * prev_action
+						# 	policy_action = (
+						# 		policy_action
+						# 	).clamp(-self.max_action, self.max_action)
+						#
+						# 	# next_state forwarded by current policy
+						# 	next_state_current_policy = transition.forward_model(state, policy_action)
+						# 	reward_current_policy = transition.compute_reward(next_state_current_policy)
+						#
+						# 	# calculate target Q for the next state
+						# 	noise = (
+						# 			torch.randn_like(action) * self.policy_noise
+						# 	).clamp(-self.noise_clip, self.noise_clip)
+						#
+						# 	next_action_current_policy = self.actor_target(next_state_current_policy,
+						# 												   policy_action) + noise
+						# 	next_action_current_policy = self.beta * next_action_current_policy + (
+						# 				1 - self.beta) * policy_action
+						# 	next_action_current_policy = (
+						# 		next_action_current_policy
+						# 	).clamp(-self.max_action, self.max_action)
+						#
+						# 	target_Q1_current_policy, target_Q2_current_policy = self.critic_target(
+						# 		next_state_current_policy, next_action_current_policy, policy_action)
+						#
+						# 	target_Q_current_policy = torch.min(target_Q1_current_policy, target_Q2_current_policy)
+						# 	target_Q_current_policy = reward_current_policy + self.discount * target_Q_current_policy
+						#
+						# 	ratio = torch.sum(new_target_Q > target_Q_current_policy) / batch_size
+						# 	self.debug_value_saver.append(ratio.item())
+						# 	filter = torch.where(new_target_Q > target_Q_current_policy, 1, 0)
+						# 	new_target_Q *= filter
+						#
+						# elif filter_with_error:
+						# 	imagined_next_state = transition.forward_model(state, action)
+						# 	imagined_reward = transition.compute_reward(imagined_next_state)
+						# 	if error_type == 'model_error':
+						# 		model_error = torch.mean(F.mse_loss(imagined_next_state, next_state, reduction='none'),
+						# 								 dim=1, keepdim=True)
+						# 		filter = torch.where(model_error < 0.15, 1, 0)
+						# 	elif error_type == 'target_Q_error':
+						# 		# Select action according to policy and add clipped noise
+						# 		noise = (
+						# 				torch.randn_like(action) * self.policy_noise
+						# 		).clamp(-self.noise_clip, self.noise_clip)
+						#
+						# 		imagined_next_action = self.actor_target(imagined_next_state, action) + noise
+						# 		imagined_next_action = self.beta * imagined_next_action + (1 - self.beta) * action
+						# 		imagined_next_action = (
+						# 			imagined_next_action
+						# 		).clamp(-self.max_action, self.max_action)
+						#
+						# 		# Compute the imagined target Q value
+						# 		imagined_target_Q1, imagined_target_Q2 = self.critic_target(imagined_next_state, imagined_next_action,
+						# 														  action)
+						# 		imagined_target_Q = torch.min(imagined_target_Q1, imagined_target_Q2)
+						# 		imagined_target_Q = imagined_reward + self.discount * imagined_target_Q
+						# 		target_error = torch.abs((imagined_target_Q-target_Q)/target_Q)
+						#
+						# 		filter = torch.where(target_error < 0.1, 1, 0)
+						# 	new_target_Q *= filter
+						if filter_with_variance:
 							if variance_type == 'mean_variance':
 								target_var = torch.var(torch.cat([new_target_Q1, new_target_Q2], dim=1), axis=1)
 								mean_var = torch.mean(target_var)
@@ -707,13 +721,13 @@ class TD3(object):
 						new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
 					else:
 						new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
-					if filter_with_higher_target_Q:
-						new_current_Q1 *= filter
-						new_current_Q2 *= filter
-					elif filter_with_error:
-						new_current_Q1 *= filter
-						new_current_Q2 *= filter
-					elif filter_with_variance:
+					# if filter_with_higher_target_Q:
+					# 	new_current_Q1 *= filter
+					# 	new_current_Q2 *= filter
+					# elif filter_with_error:
+					# 	new_current_Q1 *= filter
+					# 	new_current_Q2 *= filter
+					if filter_with_variance:
 						new_current_Q1 *= filter
 						new_current_Q2 *= filter
 				elif forward_action == 'selecting_action':

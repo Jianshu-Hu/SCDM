@@ -20,7 +20,7 @@ from main import env_statedict_to_state
 # filename = "models/TD3_BlockHandOver-v0_0_BlockHandOver-v0_with_normalizer"
 # env_name = "BlockHandOver-v0"
 
-filename = "models/TD3_PenSpin-v0_0_PenSpin"
+filename = "models/TD3_PenSpin-v0_2_decaying_clipped_gaussian_noise_with_50_initialization_true_reward"
 env_name = "PenSpin-v0"
 
 beta = 0.7
@@ -45,7 +45,7 @@ def compute_reward(state):
 
 
 def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0):
-    state_list = np.zeros([75, 61])
+    # state_list = np.zeros([75, 61])
 
     eval_env = gym.make(env_name)
     eval_env.seed(seed + 100)
@@ -63,7 +63,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
             action = policy.select_action(np.array(state), prev_action)
 
             state_dict, reward, done, _ = eval_env.step(action)
-            state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
+            # state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
             if render:
                 eval_env.render()
                 time.sleep(delay)
@@ -72,9 +72,9 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
             num_steps += 1
             print("num_steps: ", num_steps, "reward: ", reward)
 
-    reward = compute_reward(state_list)
-    print(reward)
-    print(np.sum(reward))
+    # reward = compute_reward(state_list)
+    # print(reward)
+    # print(np.sum(reward))
     avg_reward /= eval_episodes
 
     print("---------------------------------------")
