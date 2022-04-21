@@ -61,17 +61,20 @@ class TransitionModel():
 
         env_list1 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggCatchUnderarmHard-v0']
         env_list2 = ['PenSpin-v0']
-        self.PenSpin_reward = False
+        env_list3 = ['Reacher-v2']
         if env_name in env_list1:
+            self.reward_type =='Egg'
             self.achieved_pose_index = -20
             self.goal_pose_index = -7
         elif env_name in env_list2:
-            self.PenSpin_reward = True
+            self.reward_type = 'PenSpin-v0'
             self.qpos_index = -7
             self.qvel_index = -13
             # These two are parameters in the PenSpin-v0 Environment.
             self.direction = 1
             self.alpha = 1.0
+        elif env_name in env_list3:
+            self.reward_type = 'Reacher-v2'
         else:
             print('Check the index for other environments')
 
@@ -112,11 +115,16 @@ class TransitionModel():
 
 
     # true reward
-    def compute_reward(self, state):
+    def compute_reward(self, prev_state, state, action):
+        prev_state = prev_state.cpu().data.numpy()
         state = state.cpu().data.numpy()
-        if self.PenSpin_reward:
-            obj_qpos = state[:, self.qpos_index:]
-            obj_qvel = state[:, self.qvel_index:self.qvel_index+6]
+        action = action.cpu().data.numpy()
+        # Here the state is normalized while we need the state before normaliser to compute the reward
+        inv_normalize_state = state * self.normaliser.std + self.normaliser.mean
+        inv_normalize_prev_state = prev_state * self.normaliser.std + self.normaliser.mean
+        if self.reward_type == "PenSpin-v0":
+            obj_qpos = inv_normalize_state[:, self.qpos_index:]
+            obj_qvel = inv_normalize_state[:, self.qvel_index:self.qvel_index+6]
 
             rotmat = rotations.quat2mat(obj_qpos[:, -4:])
             bot = (rotmat @ np.array([[0], [0], [-0.1]])).reshape(state.shape[0], 3)
@@ -124,9 +132,11 @@ class TransitionModel():
             reward_1 = -15 * np.abs(bot[:, -1] - top[:, -1])
             reward_2 = self.direction*obj_qvel[:, 3]
             reward = self.alpha*reward_2 + reward_1
+        elif self.reward_type == "Reacher-v2":
+            reward_1 = -np.linalg.norm(inv_normalize_prev_state[:, -3:], axis=1)
+            reward_2 = -np.sum(np.square(action), axis=1)
+            reward = (reward_1 + reward_2).reshape(-1)
         else:
-            # Here the state is normalized while we need the state before normaliser to compute the reward
-            inv_normalize_state = state*self.normaliser.std+self.normaliser.mean
             achieved_goal = inv_normalize_state[:, self.achieved_pose_index:self.achieved_pose_index+7]
             goal = inv_normalize_state[:, self.goal_pose_index:]
             reward = self.embed_compute_reward(achieved_goal, goal, info=None)

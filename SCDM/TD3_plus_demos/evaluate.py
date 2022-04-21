@@ -20,8 +20,11 @@ from main import env_statedict_to_state
 # filename = "models/TD3_BlockHandOver-v0_0_BlockHandOver-v0_with_normalizer"
 # env_name = "BlockHandOver-v0"
 
-filename = "models/TD3_PenSpin-v0_2_decaying_clipped_gaussian_noise_with_50_initialization_true_reward"
-env_name = "PenSpin-v0"
+# filename = "models/TD3_PenSpin-v0_2_decaying_clipped_gaussian_noise_with_50_initialization_true_reward"
+# env_name = "PenSpin-v0"
+
+filename = "models/TD3_Reacher-v2_1_test"
+env_name = "Reacher-v2"
 
 beta = 0.7
 
@@ -30,25 +33,34 @@ steps = 75
 # steps = 1000 #long run, "standard" episode is 250
 
 
-def compute_reward(state):
-    obj_qpos = state[:, -7:]
-    obj_qvel = state[:, -13:-7]
+def compute_reward(prev_state, state, action, env_name):
+    if env_name=='PenSpin-v0':
+        obj_qpos = state[:, -7:]
+        obj_qvel = state[:, -13:-7]
 
-    rotmat = gym.envs.robotics.rotations.quat2mat(obj_qpos[:, -4:])
-    bot = (rotmat @ np.array([[0], [0], [-0.1]])).reshape(state.shape[0], 3)
-    top = (rotmat @ np.array([[0], [0], [0.1]])).reshape(state.shape[0], 3)
-    reward_1 = -15 * np.abs(bot[:, -1]-top[:, -1])
-    reward_2 = obj_qvel[:, 3]
-    reward = reward_2 + reward_1
+        rotmat = gym.envs.robotics.rotations.quat2mat(obj_qpos[:, -4:])
+        bot = (rotmat @ np.array([[0], [0], [-0.1]])).reshape(state.shape[0], 3)
+        top = (rotmat @ np.array([[0], [0], [0.1]])).reshape(state.shape[0], 3)
+        reward_1 = -15 * np.abs(bot[:, -1]-top[:, -1])
+        reward_2 = obj_qvel[:, 3]
+        reward = reward_2 + reward_1
+    elif env_name == 'Reacher-v2':
+        reward_1 = -np.linalg.norm(prev_state[:, -3:], axis=1)
+        reward_2 = -np.sum(np.square(action), axis=1)
+        reward = (reward_1+reward_2).reshape(-1)
     return reward
 
 
 
 def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0):
-    # state_list = np.zeros([75, 61])
-
     eval_env = gym.make(env_name)
     eval_env.seed(seed + 100)
+
+    # test the reward function
+    state = env_statedict_to_state(eval_env.reset(), env_name)
+    prev_state_list = np.zeros([steps, state.shape[0]])
+    state_list = np.zeros([steps, state.shape[0]])
+    action_list = np.zeros([steps, eval_env.action_space.shape[0]])
 
     avg_reward = 0.
     for _ in range(eval_episodes):
@@ -62,8 +74,13 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
             state = env_statedict_to_state(state_dict, env_name)
             action = policy.select_action(np.array(state), prev_action)
 
+            prev_state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
+
             state_dict, reward, done, _ = eval_env.step(action)
-            # state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
+
+            # test the reward function
+            state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
+            action_list[num_steps, :] = action
             if render:
                 eval_env.render()
                 time.sleep(delay)
@@ -72,9 +89,10 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
             num_steps += 1
             print("num_steps: ", num_steps, "reward: ", reward)
 
-    # reward = compute_reward(state_list)
-    # print(reward)
-    # print(np.sum(reward))
+    # test the reward function
+    reward = compute_reward(prev_state_list, state_list, action_list, env_name)
+    print(reward)
+    print(np.sum(reward))
     avg_reward /= eval_episodes
 
     print("---------------------------------------")

@@ -15,6 +15,8 @@ pen_prefix = "TD3_PenSpin-v0_"
 
 reacher_prefix = "TD3_Reacher-v2_"
 
+pusher_prefix = "TD3_Pusher-v2_"
+
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
 # tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo"]
@@ -940,7 +942,8 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_actor_critic_loss(overarm_prefix,tag_expl,plot_or_save='plot')
 # plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
-compare(prefix=reacher_prefix,tag_list=[tag_187],title="reacher")
+compare(prefix=reacher_prefix, tag_list=[tag_187], title="test")
+compare(prefix=pusher_prefix, tag_list=[tag_187], title="test")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
@@ -948,7 +951,7 @@ compare(prefix=reacher_prefix,tag_list=[tag_187],title="reacher")
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_151, tag_152], title="noise_policy_action")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,tag_183,tag_184,tag_185,tag_186], title="with_improvement")
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,tag_183], title="with_improvement")
 
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")

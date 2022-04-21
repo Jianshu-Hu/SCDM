@@ -92,8 +92,8 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 50)
-			nn.init.constant_(self.critic.l6.bias.data, 50)
+			nn.init.constant_(self.critic.l3.bias.data, 100)
+			nn.init.constant_(self.critic.l6.bias.data, 100)
 		elif env_name == 'EggCatchOverarm-v0':
 			nn.init.constant_(self.critic.l3.bias.data, 10)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
@@ -171,7 +171,7 @@ class TD3(object):
 			state = torch.clone(next_state)
 			next_state = transition.forward_model(state, next_action)
 			action = torch.clone(next_action)
-			reward = transition.compute_reward(next_state)
+			reward = transition.compute_reward(state, next_state, action)
 			return_H += self.discount**(t+1)*reward
 		return return_H, next_state, action
 
@@ -226,7 +226,7 @@ class TD3(object):
 
 		# debug reward
 		# if self.total_it % 1000 == 0:
-		# 	error = F.mse_loss(reward, transition.compute_reward(next_state))
+		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
 		# 	print(error)
 		add_hand_invariance_regularization_target = False
 		if add_artificial_transitions:
@@ -313,7 +313,7 @@ class TD3(object):
 						next_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
-					new_reward = transition.compute_reward(new_next_state)
+					new_reward = transition.compute_reward(next_state_H[-1], new_next_state, next_action)
 
 					state_H.append(next_state_H[-1])
 					prev_action_H.append(action_H[-1])
@@ -397,7 +397,7 @@ class TD3(object):
 								new_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
 
 							new_next_state = transition.forward_model(state, new_action)
-							new_reward = transition.compute_reward(new_next_state)
+							new_reward = transition.compute_reward(state, new_next_state, new_action)
 
 							# Select action according to policy and add clipped noise
 							noise = (
@@ -445,7 +445,7 @@ class TD3(object):
 							).clamp(-self.max_action, self.max_action)
 
 							new_next_state = transition.forward_model(state, new_action)
-							new_reward = transition.compute_reward(new_next_state)
+							new_reward = transition.compute_reward(state, new_next_state, new_action)
 
 							# Select action according to policy and add clipped noise
 							noise = (
@@ -481,7 +481,8 @@ class TD3(object):
 
 									# next_state forwarded by current policy
 									next_state_current_policy = transition.forward_model(state, policy_action)
-									reward_current_policy = transition.compute_reward(next_state_current_policy)
+									reward_current_policy = transition.compute_reward(state, next_state_current_policy,
+																					  policy_action)
 
 									# calculate target Q for the next state
 									noise = (
