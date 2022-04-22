@@ -64,6 +64,7 @@ class TransitionModel():
         env_list3 = ['Reacher-v2']
         env_list4 = ['Pusher-v2']
         env_list5 = ['HalfCheetah-v3']
+        env_list6 = ['Walker2d-v3']
         if env_name in env_list1:
             self.reward_type =='Egg'
             self.achieved_pose_index = -20
@@ -83,6 +84,11 @@ class TransitionModel():
             self.reward_type = "HalfCheetah-v3"
             self.forward_reward_weight = 1.0
             self.ctrl_cost_weight = 0.1
+        elif env_name in env_list6:
+            self.forward_reward_weight = 1.0
+            self.ctrl_cost_weight = 0.001
+            self.healthy_reward = 1.0
+            self.reward_type = "Walker2d-v3"
         else:
             raise NotImplementedError('Check the reward function for this environment')
 
@@ -155,6 +161,10 @@ class TransitionModel():
             forward_reward = self.forward_reward_weight * (prev_state[:, 8])
             ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
             reward = (forward_reward + ctrl_cost).reshape(-1)
+        elif self.reward_type == "Walker2d-v3":
+            forward_reward = self.forward_reward_weight * (prev_state[:, 8])
+            ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
+            reward = (forward_reward + self.healthy_reward - ctrl_cost).reshape(-1)
         else:
             achieved_goal = state[:, self.achieved_pose_index:self.achieved_pose_index+7]
             goal = state[:, self.goal_pose_index:]

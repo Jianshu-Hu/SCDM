@@ -100,6 +100,9 @@ class TD3(object):
 		elif env_name == 'EggCatchUnderarm-v0':
 			nn.init.constant_(self.critic.l3.bias.data, 15)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
+		elif env_name == 'HalfCheetah-v3':
+			nn.init.constant_(self.critic.l3.bias.data, 50)
+			nn.init.constant_(self.critic.l6.bias.data, 50)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 

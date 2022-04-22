@@ -6,7 +6,8 @@ conda activate SCDM
 
 #env_name="Reacher-v2"
 #env_name="Pusher-v2"
-env_name="HalfCheetah-v3"
+#env_name="HalfCheetah-v3"
+env_name="Walker2d-v3"
 
 #env_name="PenSpin-v0"
 #env_name="TwoEggCatchUnderArm-v0"
@@ -33,7 +34,7 @@ env_name="HalfCheetah-v3"
 #env_name="PenCatchOverarm-v0"
 
 #tag=random_goal_demo_5
-tag=decaying_clipped_gaussian_noise_filter_with_max_diff_so_far
+tag=test
 seed=3
 
 demo_tag=""
@@ -77,6 +78,9 @@ echo "start running $env_name $tag with seed $seed"
 #python main.py --add_artificial_transitions --eval_freq=250 --max_timesteps=500000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 
 #cheetah
-python main.py --add_artificial_transitions --eval_freq=200 --max_timesteps=200000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+#python main.py --add_artificial_transitions --eval_freq=200 --max_timesteps=200000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+
+#walker
+python main.py --eval_freq=200 --max_timesteps=200000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 
 #| tee $FILE

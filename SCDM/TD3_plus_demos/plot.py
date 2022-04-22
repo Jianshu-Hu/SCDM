@@ -19,6 +19,8 @@ pusher_prefix = "TD3_Pusher-v2_"
 
 cheetah_prefix = "TD3_HalfCheetah-v3_"
 
+walker_prefix = "TD3_Walker2d-v3_"
+
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
 # tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo"]
@@ -715,6 +717,10 @@ tag_188 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far",
            "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far",
            "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far"]
 
+tag_189 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_100_initialization",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_100_initialization",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_100_initialization"]
+
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
     data_list = []
@@ -776,9 +782,13 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
     axs.set_title(prefix+title)
     if prefix == reacher_prefix:
         axs.set_xlabel('timesteps/100')
+        plt.ylim(-12, -3)
     elif prefix == pusher_prefix:
         axs.set_xlabel('timesteps/250')
+        plt.ylim(-60, -20)
     elif prefix == cheetah_prefix:
+        axs.set_xlabel('timesteps/200')
+    elif prefix == walker_prefix:
         axs.set_xlabel('timesteps/200')
     else:
         axs.set_xlabel('timesteps/5000')
@@ -956,7 +966,8 @@ plot_variance(pusher_prefix, tag=tag_188)
 
 compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178], title="test")
+compare(prefix=walker_prefix, tag_list=[tag_187, tag_188], title="test")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
