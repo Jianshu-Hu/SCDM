@@ -608,7 +608,7 @@ class TD3(object):
 								# target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
 								target_error = torch.abs((new_target_Q1 - new_target_Q2))
 								max_error = torch.max(target_error)
-								# self.variance_saver.append(max_error.item())
+								self.variance_saver.append(max_error.item())
 								if max_error > max_error_so_far:
 									max_error_so_far = torch.clone(max_error)
 								filter = torch.where(torch.rand_like(target_error) < target_error/max_error_so_far, 1, 0)
@@ -874,10 +874,10 @@ class TD3(object):
 			for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
 				target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
 		if self.total_it % self.save_freq == 0:
-			pass
+			# pass
 			# np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)
 			# np.save(f"./results/{self.file_name_actor}", self.actor_loss_saver)
-			# np.save(f"./results/{self.file_name_variance}", self.variance_saver)
+			np.save(f"./results/{self.file_name_variance}", self.variance_saver)
 			# np.save(f"./results/{self.file_name_debug}", self.debug_value_saver)
 
 

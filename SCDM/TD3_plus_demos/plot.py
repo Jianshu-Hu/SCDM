@@ -17,6 +17,8 @@ reacher_prefix = "TD3_Reacher-v2_"
 
 pusher_prefix = "TD3_Pusher-v2_"
 
+cheetah_prefix = "TD3_HalfCheetah-v3_"
+
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
 # tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo"]
@@ -774,6 +776,10 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
     axs.set_title(prefix+title)
     if prefix == reacher_prefix:
         axs.set_xlabel('timesteps/100')
+    elif prefix == pusher_prefix:
+        axs.set_xlabel('timesteps/250')
+    elif prefix == cheetah_prefix:
+        axs.set_xlabel('timesteps/200')
     else:
         axs.set_xlabel('timesteps/5000')
     axs.set_ylabel('average rewards')
@@ -936,8 +942,8 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_debug_value(overarm_prefix, tag=tag_172)
 # plot_debug_value(underarm_prefix, tag=tag_172)
 
-# plot_variance(overarm_prefix, tag=tag_173)
-# plot_variance(underarm_prefix, tag=tag_173)
+plot_variance(reacher_prefix, tag=tag_188)
+plot_variance(pusher_prefix, tag=tag_188)
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_98, tag_99], title="policy_freq")
@@ -949,7 +955,8 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
 compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
-compare(prefix=pusher_prefix, tag_list=[tag_187], title="test")
+compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188], title="test")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
