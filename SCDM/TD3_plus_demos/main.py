@@ -48,6 +48,9 @@ def eval_policy(policy, env_name, seed, eval_episodes=10, evaluate_critic_t=50):
 				Q1, Q2 = policy.critic(state_critic, action_critic, prev_action_critic)
 				avg_Q += (Q1.item() + Q2.item()) / 2
 
+			if done:
+				break
+
 	avg_reward /= eval_episodes
 
 	print("---------------------------------------")
