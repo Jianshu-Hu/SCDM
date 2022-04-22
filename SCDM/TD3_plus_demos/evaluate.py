@@ -23,8 +23,8 @@ from main import env_statedict_to_state
 # filename = "models/TD3_PenSpin-v0_2_decaying_clipped_gaussian_noise_with_50_initialization_true_reward"
 # env_name = "PenSpin-v0"
 
-filename = "models/TD3_Reacher-v2_1_test"
-env_name = "Reacher-v2"
+filename = "models/TD3_Pusher-v2_1_test"
+env_name = "Pusher-v2"
 
 beta = 0.7
 
@@ -48,6 +48,13 @@ def compute_reward(prev_state, state, action, env_name):
         reward_1 = -np.linalg.norm(prev_state[:, -3:], axis=1)
         reward_2 = -np.sum(np.square(action), axis=1)
         reward = (reward_1+reward_2).reshape(-1)
+    elif env_name == "Pusher-v2":
+        vec1 = prev_state[:, -6:-3]-prev_state[:, -9:-6]
+        vec2 = prev_state[:, -6:-3]-prev_state[:, -3:]
+        reward_near = -np.linalg.norm(vec1, axis=1)
+        reward_dist = -np.linalg.norm(vec2, axis=1)
+        reward_ctrl = -np.sum(np.square(action), axis=1)
+        reward = (reward_dist + 0.1*reward_ctrl + 0.5*reward_near).reshape(-1)
     return reward
 
 

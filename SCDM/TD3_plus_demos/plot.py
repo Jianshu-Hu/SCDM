@@ -772,7 +772,10 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
         else:
             axs.plot(range(len(mean)), mean, label=tag_list[i][0])
     axs.set_title(prefix+title)
-    axs.set_xlabel('timesteps/5000')
+    if prefix == reacher_prefix:
+        axs.set_xlabel('timesteps/100')
+    else:
+        axs.set_xlabel('timesteps/5000')
     axs.set_ylabel('average rewards')
     axs.legend()
     if plot_or_save=='plot':
@@ -965,11 +968,11 @@ compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,
 # tag_158_temp = ["1_policy_action_with_decaying_variance_gaussian_noise_with_high_initialization",
 #            "3_policy_action_with_decaying_variance_gaussian_noise_with_high_initialization"]
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_158_temp, tag_159], title="noise_policy_action_with_high_initialization")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173, tag_175], title="noise_policy_action_with_improvement")
-tag_172_temp = ["1_scheduled_decaying_target_from_current_policy_with_high_initialization",
-           "3_scheduled_decaying_target_from_current_policy_with_high_initialization"]
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172_temp, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164, tag_170], title="high_initialization")
+# compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173, tag_175], title="noise_policy_action_with_improvement")
+# tag_172_temp = ["1_scheduled_decaying_target_from_current_policy_with_high_initialization",
+#            "3_scheduled_decaying_target_from_current_policy_with_high_initialization"]
+# compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172_temp, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
+# compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164, tag_170], title="high_initialization")
 compare(prefix=overarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180], title="small_initialization")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
@@ -993,10 +996,10 @@ compare(prefix=overarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180], titl
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_133, tag_143, tag_147, tag_149], title="epsilon_greedy")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_145, tag_151, tag_152], title="noise_policy_action")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173,tag_175], title="noise_policy_action_with_improvement")
+# compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173,tag_175], title="noise_policy_action_with_improvement")
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180,tag_181], title="small_initialization")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_162, tag_163, tag_170], title="high_initialization")
+# compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
+# compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_162, tag_163, tag_170], title="high_initialization")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_144, tag_145, tag_146, tag_148, tag_150], title='play_with_noise')

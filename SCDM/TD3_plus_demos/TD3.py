@@ -224,7 +224,7 @@ class TD3(object):
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
-		# debug reward
+		# # debug reward
 		# if self.total_it % 1000 == 0:
 		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
 		# 	print(error)

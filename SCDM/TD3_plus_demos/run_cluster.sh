@@ -67,6 +67,11 @@ demo_tag=""
 #--add_invariance --inv_type="translation" --use_informative_segment
 
 echo "start running $env_name $tag with seed $seed"
-python main.py --seed=$seed --use_normaliser --env=$env_name --without_demo --add_artificial_transitions --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --add_artificial_transitions --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 
+#reacher
+python main.py --eval_freq=100 --max_timesteps=200000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --add_artificial_transitions --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+
+#pusher
+python main.py --eval_freq=250 --max_timesteps=500000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --add_artificial_transitions --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
 #| tee $FILE

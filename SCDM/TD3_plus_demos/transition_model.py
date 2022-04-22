@@ -62,6 +62,7 @@ class TransitionModel():
         env_list1 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggCatchUnderarmHard-v0']
         env_list2 = ['PenSpin-v0']
         env_list3 = ['Reacher-v2']
+        env_list4 = ['Pusher-v2']
         if env_name in env_list1:
             self.reward_type =='Egg'
             self.achieved_pose_index = -20
@@ -75,6 +76,8 @@ class TransitionModel():
             self.alpha = 1.0
         elif env_name in env_list3:
             self.reward_type = 'Reacher-v2'
+        elif env_name in env_list4:
+            self.reward_type = "Pusher-v2"
         else:
             raise NotImplementedError('Check the reward function for this environment')
 
@@ -120,11 +123,11 @@ class TransitionModel():
         state = state.cpu().data.numpy()
         action = action.cpu().data.numpy()
         # Here the state is normalized while we need the state before normaliser to compute the reward
-        inv_normalize_state = state * self.normaliser.std + self.normaliser.mean
-        inv_normalize_prev_state = prev_state * self.normaliser.std + self.normaliser.mean
+        state = state * self.normaliser.std + self.normaliser.mean
+        prev_state = prev_state * self.normaliser.std + self.normaliser.mean
         if self.reward_type == "PenSpin-v0":
-            obj_qpos = inv_normalize_state[:, self.qpos_index:]
-            obj_qvel = inv_normalize_state[:, self.qvel_index:self.qvel_index+6]
+            obj_qpos = state[:, self.qpos_index:]
+            obj_qvel = state[:, self.qvel_index:self.qvel_index+6]
 
             rotmat = rotations.quat2mat(obj_qpos[:, -4:])
             bot = (rotmat @ np.array([[0], [0], [-0.1]])).reshape(state.shape[0], 3)
@@ -133,12 +136,19 @@ class TransitionModel():
             reward_2 = self.direction*obj_qvel[:, 3]
             reward = self.alpha*reward_2 + reward_1
         elif self.reward_type == "Reacher-v2":
-            reward_1 = -np.linalg.norm(inv_normalize_prev_state[:, -3:], axis=1)
+            reward_1 = -np.linalg.norm(prev_state[:, -3:], axis=1)
             reward_2 = -np.sum(np.square(action), axis=1)
             reward = (reward_1 + reward_2).reshape(-1)
+        elif self.reward_type == "Pusher-v2":
+            vec1 = prev_state[:, -6:-3] - prev_state[:, -9:-6]
+            vec2 = prev_state[:, -6:-3] - prev_state[:, -3:]
+            reward_near = -np.linalg.norm(vec1, axis=1)
+            reward_dist = -np.linalg.norm(vec2, axis=1)
+            reward_ctrl = -np.sum(np.square(action), axis=1)
+            reward = (reward_dist + 0.1 * reward_ctrl + 0.5 * reward_near).reshape(-1)
         else:
-            achieved_goal = inv_normalize_state[:, self.achieved_pose_index:self.achieved_pose_index+7]
-            goal = inv_normalize_state[:, self.goal_pose_index:]
+            achieved_goal = state[:, self.achieved_pose_index:self.achieved_pose_index+7]
+            goal = state[:, self.goal_pose_index:]
             reward = self.embed_compute_reward(achieved_goal, goal, info=None)
 
         return torch.FloatTensor(reward.reshape([-1, 1])).to(device)
