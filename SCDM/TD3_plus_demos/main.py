@@ -191,13 +191,13 @@ if __name__ == "__main__":
 	# Initialize policy
 	# Target policy smoothing is scaled wrt the action scale
 	policy = TD3.TD3(**kwargs)
-	if args.without_demo:
-		# there is not a reward function in the envs which are not defined in dexterous gym
-		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
-						None)
-	else:
+	if hasattr(env_main.env, 'compute_reward'):
 		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
 						env_main.env.compute_reward)
+	else:
+		# there is not a reward function in the some envs
+		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
+													  None)
 
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
@@ -339,7 +339,6 @@ if __name__ == "__main__":
 			main_episode_obs = env_statedict_to_state(next_observation_dict, env_name=args.env)
 
 		next_observation = env_statedict_to_state(next_observation_dict, env_name=args.env)
-
 		# replay buffer
 		# replay_buffer.add(observation, action, next_observation, reward, prev_action)
 		if args.add_invariance_traj:
@@ -373,7 +372,8 @@ if __name__ == "__main__":
 			if main_episode_timesteps == env_main._max_episode_steps:
 				main_episode_timesteps = 0
 				prev_action = main_episode_prev_ac = np.zeros((action_dim,))
-				observation = main_episode_obs = env_main.reset()
+				observation_dict = env_main.reset()
+				observation = main_episode_obs = env_statedict_to_state(observation_dict, env_name=args.env)
 
 		if t >= args.model_start_timesteps:
 			transition.train(replay_buffer)

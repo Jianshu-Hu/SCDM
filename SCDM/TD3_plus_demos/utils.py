@@ -12,7 +12,9 @@ def env_statedict_to_state(state_dict, env_name):
 	# two hands with one object
 	env_list2 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggHandOver-v0', 'EggCatchUnderarmHard-v0',
 				 'BlockCatchOverarm-v0', 'BlockCatchUnderarm-v0', 'BlockHandOver-v0',
-				 'PenCatchOverarm-v0', 'PenCatchUnderarm-v0', 'PenHandOver-v0']
+				 'PenCatchOverarm-v0', 'PenCatchUnderarm-v0', 'PenHandOver-v0',
+				 'FetchSlideDense-v1','FetchPickAndPlaceDense-v1', 'FetchPushDense-v1',
+				 'FetchSlideSparse-v1','FetchPickAndPlaceSparse-v1', 'FetchPushSparse-v1']
 	# two hands with two objects
 	env_list3 = ['TwoEggCatchUnderArm-v0']
 	if isinstance(state_dict, dict):
