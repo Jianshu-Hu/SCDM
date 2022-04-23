@@ -21,6 +21,10 @@ cheetah_prefix = "TD3_HalfCheetah-v3_"
 
 walker_prefix = "TD3_Walker2d-v3_"
 
+fetchpick_prefix = "TD3_FetchPickAndPlaceDense-v1_"
+fetchpush_prefix = "TD3_FetchPushDense-v1_"
+fetchslide_prefix = "TD3_FetchSlideDense-v1_"
+
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
 # tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo"]
@@ -972,6 +976,10 @@ compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178], title="test")
 compare(prefix=walker_prefix, tag_list=[tag_187, tag_188], title="test")
+
+compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=fetchslide_prefix, tag_list=[tag_187, tag_188], title="test")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")

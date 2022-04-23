@@ -227,10 +227,10 @@ class TD3(object):
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
-		# debug reward
-		if self.total_it % 1000 == 0:
-			error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
-			print(error)
+		# # debug reward
+		# if self.total_it % 1000 == 0:
+		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
+		# 	print(error)
 		add_hand_invariance_regularization_target = False
 		if add_artificial_transitions:
 			add_transitions_type = 'ours'
@@ -611,7 +611,7 @@ class TD3(object):
 								# target_error = torch.abs((new_target_Q1-new_target_Q2)/max_target_Q)
 								target_error = torch.abs((new_target_Q1 - new_target_Q2))
 								max_error = torch.max(target_error)
-								self.variance_saver.append(max_error.item())
+								# self.variance_saver.append(max_error.item())
 								if max_error > max_error_so_far:
 									max_error_so_far = torch.clone(max_error)
 								filter = torch.where(torch.rand_like(target_error) < target_error/max_error_so_far, 1, 0)

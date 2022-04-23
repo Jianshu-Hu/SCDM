@@ -110,7 +110,7 @@ class TransitionModel():
         predicted_state = self.forward_model.forward(state, action)
         loss = F.mse_loss(predicted_state, next_state)
 
-        self.loss_saver.append(loss.item())
+        # self.loss_saver.append(loss.item())
 
         # Optimize the model
         self.model_optimizer.zero_grad()
@@ -124,7 +124,7 @@ class TransitionModel():
             predicted_reward = self.reward_model.forward(state, action)
             loss_reward = F.mse_loss(predicted_reward, reward)
 
-            self.reward_loss_saver.append(loss_reward.item())
+            # self.reward_loss_saver.append(loss_reward.item())
 
             self.reward_optimizer.zero_grad()
             loss_reward.backward()
