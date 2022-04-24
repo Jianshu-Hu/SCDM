@@ -987,7 +987,7 @@ compare(prefix=fetchslide_prefix, tag_list=[tag_187, tag_188], title="test")
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_151, tag_152], title="noise_policy_action")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178,tag_182,tag_183, tag_190], title="with_improvement")
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178, tag_190,tag_183], title="with_improvement")
 
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")

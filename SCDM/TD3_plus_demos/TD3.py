@@ -92,8 +92,8 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 100)
-			nn.init.constant_(self.critic.l6.bias.data, 100)
+			nn.init.constant_(self.critic.l3.bias.data, 50)
+			nn.init.constant_(self.critic.l6.bias.data, 50)
 		elif env_name == 'EggCatchOverarm-v0':
 			nn.init.constant_(self.critic.l3.bias.data, 10)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
@@ -236,6 +236,7 @@ class TD3(object):
 			add_transitions_type = 'ours'
 			forward_action = 'policy_action'
 			noise_type = 'gaussian'
+			initial_bound = 0.7*self.max_action
 			decaying_Q_loss = False
 			filter_with_variance = True
 			if filter_with_variance:
@@ -426,7 +427,7 @@ class TD3(object):
 								# decaying clip
 								noise = (
 										torch.randn_like(action)
-								).clamp(-self.epsilon*self.max_action, self.epsilon*self.max_action)
+								).clamp(-self.epsilon*initial_bound, self.epsilon*initial_bound)
 
 								# # decaying variance
 								# noise = (
