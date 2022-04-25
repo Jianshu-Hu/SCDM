@@ -729,6 +729,10 @@ tag_190 =["1_rerun_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_w
           "2_rerun_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization_true_reward",
           "3_rerun_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_high_initialization_true_reward"]
 
+tag_191 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initial_bound_07",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initial_bound_07",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initial_bound_07"]
+
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
     data_list = []
@@ -974,11 +978,11 @@ plot_variance(pusher_prefix, tag=tag_188)
 
 compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178], title="test")
+compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191], title="test")
 compare(prefix=walker_prefix, tag_list=[tag_187, tag_188], title="test")
 
 compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
-compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188, tag_191], title="test")
 compare(prefix=fetchslide_prefix, tag_list=[tag_187, tag_188], title="test")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")

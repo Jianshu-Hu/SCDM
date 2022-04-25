@@ -128,6 +128,7 @@ if __name__ == "__main__":
 	print(f"Policy: {args.policy}, Env: {args.env}, Seed: {args.seed}")
 	print("---------------------------------------")
 
+	# print(args)
 
 	if not os.path.exists("./results"):
 		os.makedirs("./results")
