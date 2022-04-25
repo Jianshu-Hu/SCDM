@@ -4,8 +4,6 @@ cd /bigdata/users/jhu/SCDM/SCDM/TD3_plus_demos/
 source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
-#env_name="FetchPickAndPlaceDense-v1"
-
 #env_name="PenSpin-v0"
 
 #env_name="EggCatchUnderarm-v0"

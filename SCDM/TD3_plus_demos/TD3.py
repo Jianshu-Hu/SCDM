@@ -92,8 +92,8 @@ class TD3(object):
 		self.critic = Critic(state_dim, action_dim).to(device)
 		# initialize with a high Q value to encourage exploration
 		if env_name == 'PenSpin-v0':
-			nn.init.constant_(self.critic.l3.bias.data, 100)
-			nn.init.constant_(self.critic.l6.bias.data, 100)
+			nn.init.constant_(self.critic.l3.bias.data, 50)
+			nn.init.constant_(self.critic.l6.bias.data, 50)
 		elif env_name == 'EggCatchOverarm-v0':
 			nn.init.constant_(self.critic.l3.bias.data, 10)
 			nn.init.constant_(self.critic.l6.bias.data, 10)
