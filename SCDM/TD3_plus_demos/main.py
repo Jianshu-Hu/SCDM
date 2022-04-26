@@ -335,7 +335,7 @@ if __name__ == "__main__":
 			next_observation_dict, reward, _, _ = env_reset.step(action)
 		else:
 			main_episode_timesteps += 1
-			next_observation_dict, reward, _, _ = env_main.step(action)
+			next_observation_dict, reward, done, _ = env_main.step(action)
 			main_episode_prev_ac = action.copy()
 			main_episode_obs = env_statedict_to_state(next_observation_dict, env_name=args.env)
 
@@ -370,7 +370,7 @@ if __name__ == "__main__":
 		prev_action = action.copy()
 		observation = next_observation.copy()
 		if segment_type == "full":
-			if main_episode_timesteps == env_main._max_episode_steps:
+			if (main_episode_timesteps == env_main._max_episode_steps) or done:
 				main_episode_timesteps = 0
 				prev_action = main_episode_prev_ac = np.zeros((action_dim,))
 				observation_dict = env_main.reset()

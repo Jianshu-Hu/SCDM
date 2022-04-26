@@ -735,6 +735,11 @@ tag_191 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initia
 
 tag_192 = ["1_model_gradient_from_critic_loss"]
 
+tag_193 = ["1_test_beta_1"]
+tag_194 = ["1_test_new"]
+tag_195 = ["1_test_start_25000"]
+tag_196 = ["1_test_new_beta_1"]
+
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
     data_list = []
@@ -981,7 +986,7 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188,tag_192], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188, tag_192], title="test")
 compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191,tag_192], title="test")
-compare(prefix=walker_prefix, tag_list=[tag_187, tag_188, tag_192], title="test")
+compare(prefix=walker_prefix, tag_list=[tag_187, tag_188, tag_192, tag_193, tag_194, tag_195, tag_196], title="test")
 
 compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188, tag_191], title="test")

@@ -29,7 +29,7 @@ from main import env_statedict_to_state
 # filename = "models/TD3_HalfCheetah-v3_1_test"
 # env_name = "HalfCheetah-v3"
 
-filename = "models/TD3_Walker2d-v3_0_"
+filename = "models/TD3_Walker2d-v3_1_test_new"
 env_name = "Walker2d-v3"
 
 beta = 0.7
@@ -115,6 +115,8 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
             avg_reward += reward
             num_steps += 1
             print("num_steps: ", num_steps, "reward: ", reward)
+            if done:
+                break
 
     # test the reward function
     reward = compute_reward(prev_state_list, state_list, action_list, env_name)
