@@ -204,7 +204,7 @@ class TD3(object):
 
 	def train(self, replay_buffer, demo_replay_buffer, invariance_replay_buffer_list, transition, batch_size=100,
 			  add_invariance_regularization=False, add_hand_invariance_regularization=False, add_bc_loss=False,
-			  add_artificial_transitions=False):
+			  add_artificial_transitions=False,):
 		self.total_it += 1
 
 		# Sample replay buffer
@@ -227,6 +227,31 @@ class TD3(object):
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
+		model_gradient_from_critic_loss = True
+		model_gradient_from_actor_loss = False
+		if model_gradient_from_critic_loss:
+			imagined_next_state = transition.forward_model(state, action)
+
+			noise = (
+					torch.randn_like(action) * self.policy_noise
+			).clamp(-self.noise_clip, self.noise_clip)
+
+			imagined_next_action = self.actor_target(imagined_next_state, action) + noise
+			imagined_next_action = self.beta * imagined_next_action + (1 - self.beta) * action
+			imagined_next_action = (
+				imagined_next_action
+			).clamp(-self.max_action, self.max_action)
+
+			imagined_target_Q1, imagined_target_Q2 = self.critic_target(imagined_next_state, imagined_next_action, action)
+			imagined_target_Q = torch.min(imagined_target_Q1, imagined_target_Q2)
+			imagined_target_Q = reward + self.discount * imagined_target_Q
+			with torch.no_grad():
+				current_Q1, current_Q2 = self.critic(state, action, prev_action)
+			critic_loss = F.mse_loss(current_Q1, imagined_target_Q) + F.mse_loss(current_Q2, imagined_target_Q)
+			# Optimize the model
+			transition.model_optimizer.zero_grad()
+			critic_loss.backward()
+			transition.model_optimizer.step()
 		# # debug reward
 		# if self.total_it % 1000 == 0:
 		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))

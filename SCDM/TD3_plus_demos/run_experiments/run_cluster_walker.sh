@@ -5,7 +5,7 @@ source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 env_name="Walker2d-v3"
-tag=test
+tag=model_gradient_from_critic_loss
 seed=1
 
 demo_tag=""

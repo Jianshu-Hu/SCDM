@@ -6,7 +6,7 @@ conda activate SCDM
 
 env_name="HalfCheetah-v3"
 
-tag=test
+tag=model_gradient_from_critic_loss
 seed=1
 
 demo_tag=""
