@@ -103,6 +103,9 @@ class TD3(object):
 		# elif env_name == 'HalfCheetah-v3':
 		# 	nn.init.constant_(self.critic.l3.bias.data, 50)
 		# 	nn.init.constant_(self.critic.l6.bias.data, 50)
+		# elif env_name == 'Swimmer-v3':
+		# 	nn.init.constant_(self.critic.l3.bias.data, 30)
+		# 	nn.init.constant_(self.critic.l6.bias.data, 30)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -227,7 +230,7 @@ class TD3(object):
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
-		model_gradient_from_critic_loss = True
+		model_gradient_from_critic_loss = False
 		model_gradient_from_actor_loss = False
 		if model_gradient_from_critic_loss:
 			imagined_next_state = transition.forward_model(state, action)
@@ -842,7 +845,7 @@ class TD3(object):
 			# Compute critic loss
 			critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
 
-
+		# print(critic_loss.item())
 		# self.critic_loss_saver.append(critic_loss.item())
 		# Optimize the critic
 		self.critic_optimizer.zero_grad()

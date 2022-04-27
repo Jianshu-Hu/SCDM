@@ -21,6 +21,8 @@ cheetah_prefix = "TD3_HalfCheetah-v3_"
 
 walker_prefix = "TD3_Walker2d-v3_"
 
+swimmer_prefix = "TD3_Swimmer-v3_"
+
 fetchpick_prefix = "TD3_FetchPickAndPlaceDense-v1_"
 fetchpush_prefix = "TD3_FetchPushDense-v1_"
 fetchslide_prefix = "TD3_FetchSlideDense-v1_"
@@ -735,10 +737,16 @@ tag_191 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initia
 
 tag_192 = ["1_model_gradient_from_critic_loss"]
 
-tag_193 = ["1_test_beta_1"]
-tag_194 = ["1_test_new"]
-tag_195 = ["1_test_start_25000"]
-tag_196 = ["1_test_new_beta_1"]
+tag_193 = ["1_long_run", "2_long_run", "3_long_run"]
+
+tag_194 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_long_run",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_long_run",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_long_run"]
+
+tag_195 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_30_initialization",
+           "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_30_initialization",
+           "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_30_initialization"]
+
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -806,7 +814,10 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
         axs.set_xlabel('timesteps/250')
         plt.ylim(-60, -20)
     elif prefix == cheetah_prefix:
-        axs.set_xlabel('timesteps/200')
+        if title == 'long_run':
+            axs.set_xlabel('timesteps/5000')
+        else:
+            axs.set_xlabel('timesteps/200')
     elif prefix == walker_prefix:
         axs.set_xlabel('timesteps/1000')
     else:
@@ -986,7 +997,10 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188,tag_192], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188, tag_192], title="test")
 compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191,tag_192], title="test")
-compare(prefix=walker_prefix, tag_list=[tag_187, tag_188, tag_192, tag_193, tag_194, tag_195, tag_196], title="test")
+compare(prefix=cheetah_prefix, tag_list=[tag_193, tag_194], title="long_run")
+compare(prefix=walker_prefix, tag_list=[tag_187, tag_188, tag_192], title="test")
+compare(prefix=swimmer_prefix, tag_list=[tag_187, tag_188,tag_195], title="test")
+
 
 compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188, tag_191], title="test")

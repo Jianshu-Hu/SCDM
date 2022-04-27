@@ -67,6 +67,7 @@ class TransitionModel():
         env_list6 = ['Walker2d-v3']
         env_list7 = ['FetchSlideDense-v1', 'FetchPickAndPlaceDense-v1', 'FetchPushDense-v1',
                      'FetchSlideSparse-v1', 'FetchPickAndPlaceSparse-v1', 'FetchPushSparse-v1']
+        env_list8 = ['Swimmer-v3']
         if env_name in env_list1:
             self.reward_type =='Egg'
             self.achieved_pose_index = -20
@@ -95,6 +96,10 @@ class TransitionModel():
             self.reward_type = 'Fetch'
             self.achieved_goal_index = 3
             self.goal_index = -3
+        elif env_name in env_list8:
+            self.reward_type = 'Swimmer'
+            self.forward_reward_weight = 1.0
+            self.ctrl_cost_weight = 0.001
         else:
             raise NotImplementedError('Check the reward function for this environment')
 
@@ -175,6 +180,10 @@ class TransitionModel():
             achieved_goal = state[:, self.achieved_goal_index:self.achieved_goal_index+3]
             goal = state[:, self.goal_index:]
             reward = self.embed_compute_reward(achieved_goal, goal, info=None)
+        elif self.reward_type == 'Swimmer':
+            forward_reward = self.forward_reward_weight * (prev_state[:, 3])
+            ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
+            reward = (forward_reward + ctrl_cost).reshape(-1)
         else:
             achieved_goal = state[:, self.achieved_pose_index:self.achieved_pose_index+7]
             goal = state[:, self.goal_pose_index:]
