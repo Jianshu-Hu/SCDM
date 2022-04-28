@@ -211,7 +211,7 @@ class TD3(object):
 		self.total_it += 1
 
 		# Sample replay buffer
-		state, action, next_state, reward, prev_action, all_invariance, ind = replay_buffer.sample(batch_size)
+		state, action, next_state, reward, prev_action, done, all_invariance, ind = replay_buffer.sample(batch_size)
 
 		if add_hand_invariance_regularization:
 			invariance = (all_invariance!=0)
@@ -415,7 +415,7 @@ class TD3(object):
 					target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
 
 				target_Q = torch.min(target_Q1, target_Q2)
-				target_Q = reward + self.discount * target_Q
+				target_Q = reward + self.discount * (1-done) * target_Q
 
 				if add_transitions_type == 'ours':
 					if (forward_action == 'random') or (forward_action == 'policy_action'):
@@ -858,7 +858,7 @@ class TD3(object):
 		if self.total_it % self.policy_freq == 0:
 			if add_bc_loss:
 				# sample from demonstrations
-				demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, _, _ = \
+				demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, _, _, _ = \
 					demo_replay_buffer.sample(int(batch_size/10))
 				demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
 				# demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)

@@ -330,9 +330,9 @@ if __name__ == "__main__":
 		total_timesteps += 1
 
 		if segment_type == "pd":
-			next_observation_dict, reward, _, _ = env_demo.step(action)
+			next_observation_dict, reward, done, _ = env_demo.step(action)
 		elif segment_type == "pr":
-			next_observation_dict, reward, _, _ = env_reset.step(action)
+			next_observation_dict, reward, done, _ = env_reset.step(action)
 		else:
 			main_episode_timesteps += 1
 			next_observation_dict, reward, done, _ = env_main.step(action)
@@ -341,18 +341,19 @@ if __name__ == "__main__":
 
 		next_observation = env_statedict_to_state(next_observation_dict, env_name=args.env)
 		# replay buffer
-		# replay_buffer.add(observation, action, next_observation, reward, prev_action)
+		# replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
 		if args.add_invariance_traj:
-			replay_buffer.add(observation, action, next_observation, reward, prev_action)
-			invariant_replay_buffer.add(observation, action, next_observation, reward, prev_action)
+			replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
+			invariant_replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
 			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
 				invariant_replay_buffer.create_invariant_trajectory(inv_type=args.inv_type,
 					use_informative=args.use_informative_segment, policy=policy)
 				replay_buffer.add_from_other_replay_buffer(invariant_replay_buffer.state,
 									invariant_replay_buffer.action, invariant_replay_buffer.next_state,
-									invariant_replay_buffer.reward, invariant_replay_buffer.prev_action)
+									invariant_replay_buffer.reward, invariant_replay_buffer.prev_action,
+														   invariant_replay_buffer.done)
 		else:
-			replay_buffer.add(observation, action, next_observation, reward, prev_action)
+			replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
 
 		if args.add_invariance_regularization:
 			for i in range(args.N_artificial_sample):

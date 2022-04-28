@@ -117,6 +117,8 @@ class ReplayBuffer(object):
 		self.next_state = np.zeros((max_size, state_dim))
 		self.reward = np.zeros((max_size, 1))
 
+		self.done = np.zeros((max_size, 1))
+
 		self.invariance = np.zeros((max_size, 1)).astype(int)
 		env_list1 = ["EggCatchUnderarm-v0"]
 		env_list2 = ["EggCatchOverarm-v0"]
@@ -146,12 +148,13 @@ class ReplayBuffer(object):
 
 		self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-	def add(self, state, action, next_state, reward, prev_action):
+	def add(self, state, action, next_state, reward, prev_action, done=False):
 		self.state[self.ptr] = state
 		self.action[self.ptr] = action
 		self.next_state[self.ptr] = next_state
 		self.reward[self.ptr] = reward
 		self.prev_action[self.ptr] = prev_action
+		self.done[self.ptr] = done
 
 		if self.invariance_feasible:
 			# throwing hand2 invariance
@@ -164,9 +167,9 @@ class ReplayBuffer(object):
 		self.ptr = (self.ptr + 1) % self.max_size
 		self.size = min(self.size + 1, self.max_size)
 
-	def add_from_other_replay_buffer(self, state_N, action_N, next_state_N, reward_N, prev_action_N):
+	def add_from_other_replay_buffer(self, state_N, action_N, next_state_N, reward_N, prev_action_N, done_N):
 		for i in range(state_N.shape[0]):
-			self.add(state_N[i], action_N[i], next_state_N[i], reward_N[i], prev_action_N[i])
+			self.add(state_N[i], action_N[i], next_state_N[i], reward_N[i], prev_action_N[i], done_N)
 
 	def sample(self, batch_size):
 		ind = np.random.randint(0, self.size, size=batch_size)
@@ -177,6 +180,7 @@ class ReplayBuffer(object):
 			torch.FloatTensor(self.next_state[ind]).to(self.device),
 			torch.FloatTensor(self.reward[ind]).to(self.device),
 			torch.FloatTensor(self.prev_action[ind]).to(self.device),
+			torch.FloatTensor(self.done[ind]).to(self.device),
 			self.invariance[ind].reshape(-1),
 			ind
 		)

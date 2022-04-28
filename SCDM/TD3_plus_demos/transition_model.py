@@ -107,7 +107,7 @@ class TransitionModel():
         self.total_iter += 1
 
         # Sample replay buffer
-        state, action, next_state, reward, prev_action, all_invariance, ind = replay_buffer.sample(self.batch_size)
+        state, action, next_state, reward, prev_action, _, _, _ = replay_buffer.sample(self.batch_size)
 
         state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
         next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
