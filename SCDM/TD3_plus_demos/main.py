@@ -84,7 +84,6 @@ if __name__ == "__main__":
 	parser.add_argument("--save_model", action="store_true")        # Save model and optimizer parameters
 	parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
 
-	#my parameters
 	parser.add_argument("--beta", type=float, default=0.7)          # action coupling parameter
 	parser.add_argument("--pd_init", type=float, default=0.7)       # initial probability of loading to demo for each segment
 	parser.add_argument("--pr_init", type=float, default=0.2)       # initial probability of sampling segment from reset
@@ -102,24 +101,11 @@ if __name__ == "__main__":
 	parser.add_argument("--add_bc_loss", action="store_true")  # add behavior cloning loss to actor training
 	parser.add_argument("--model_start_timesteps", default=10000, type=int)# Time steps of start training transition model
 
-	parser.add_argument("--add_invariance_traj", action="store_true")   # add invariant segment to the replay buffer
-	parser.add_argument("--add_invariance_regularization", action="store_true")  # add regularization term to the loss of critic
-	parser.add_argument("--add_hand_invariance_regularization",
-						action="store_true")  # add regularization term to the loss of critic
-	parser.add_argument("--add_artificial_transitions",
-						action="store_true")  # add artificial transitions during the training
-	parser.add_argument("--N_artificial_sample", type=int, default=1) #number of artificial samples generated
-	parser.add_argument("--inv_type", type=str, default='translation')  # use translation or rotation
-	parser.add_argument("--use_informative_segment", action="store_true") # use informative segment instead of restricted segment
+	parser.add_argument("--add_artificial_transitions", action="store_true")  # add artificial transitions during the training
 	parser.add_argument("--demo_goal_type", type=str, default='Random') # set the goal of the segment from the demonstration
 	# True: the true goal of the segment
 	# Noisy: add noise to the true goal of the segment
 	# Random: randomly sample a goal
-
-	parser.add_argument("--sparse_reward", action="store_true")  # reward type
-
-	parser.add_argument("--divide_demos_into_N_parts", type=int, default=1) #divide the demos into N parts
-	parser.add_argument("--pd_throw_decay", type=float, default=0.99999)    # after each segment scale probability down by this amount
 
 	args = parser.parse_args()
 
@@ -127,8 +113,6 @@ if __name__ == "__main__":
 	print("---------------------------------------")
 	print(f"Policy: {args.policy}, Env: {args.env}, Seed: {args.seed}")
 	print("---------------------------------------")
-
-	# print(args)
 
 	if not os.path.exists("./results"):
 		os.makedirs("./results")
@@ -138,28 +122,16 @@ if __name__ == "__main__":
 	if args.save_model and not os.path.exists("./models"):
 		os.makedirs("./models")
 
-	if args.sparse_reward:
-		env_main = gym.make(args.env,
-							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-		env_demo = gym.make(args.env,
-							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-		env_reset = gym.make(args.env,
-							reward_type="sparse", distance_threshold=0.2, rotation_threshold=0.2)
-	else:
-		env_main = gym.make(args.env)
-		env_demo = gym.make(args.env)
-		env_reset = gym.make(args.env)
+	env_main = gym.make(args.env)
+	env_demo = gym.make(args.env)
+	env_reset = gym.make(args.env)
 
-	if not args.without_demo:
-		demo_processor = utils.DemoProcessor(args.env, args.demo_tag, args.divide_demos_into_N_parts)
-		demo_states_throw, demo_prev_actions_throw, demo_states_catch, demo_prev_actions_catch, demo_goals =\
-			demo_processor.process()
-	else:
+	if args.without_demo:
 		args.pd_init = 0
 		args.pr_init = 0
-	# if not dividing the demos, there will not be a decay for the throwing part.
-	if args.divide_demos_into_N_parts == 1:
-		args.pd_throw_decay = args.pd_decay
+	else:
+		demo_processor = utils.DemoProcessor(args.env, args.demo_tag)
+		demo_states, demo_prev_actions, demo_goals = demo_processor.process()
 
 	# Set seeds
 	np.random.seed(args.seed)
@@ -208,15 +180,6 @@ if __name__ == "__main__":
 	if not args.without_demo:
 		demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
 
-	invariant_replay_buffer_list = []
-	if args.add_invariance_traj:
-		invariant_replay_buffer = utils.InvariantReplayBuffer(state_dim, action_dim, env_name=args.env,
-															  max_size=args.segment_len)
-	elif args.add_invariance_regularization:
-		for i in range(args.N_artificial_sample):
-			invariant_replay_buffer = utils.InvariantReplayBuffer(state_dim, action_dim, env_name=args.env,
-																  max_size=replay_buffer.max_size)
-			invariant_replay_buffer_list.append(invariant_replay_buffer)
 	
 	# Evaluate untrained policy
 	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)
@@ -227,10 +190,9 @@ if __name__ == "__main__":
 	segment_timestep = 0
 	main_episode_timesteps = 0
 	main_episode_prev_ac = np.zeros((action_dim,))
-	main_episode_obs = env_main.reset()
+	main_episode_obs = env_statedict_to_state(env_main.reset(), env_name=args.env)
 
 	pd_prob = args.pd_init
-	pd_throw_prob = args.pd_init
 	pr_prob = args.pr_init
 
 	print("-----start iteration with parameters-----")
@@ -239,53 +201,29 @@ if __name__ == "__main__":
 	print("env_name: ", args.env)
 	print("demo_goal_type: ", args.demo_goal_type)
 	print("add_behavior_cloning_loss: ", args.add_bc_loss)
-	print("add_invariance_traj: ", args.add_invariance_traj)
-	print("add_invariance_regularization: ", args.add_invariance_regularization)
-	print("add_hand_invariance_regularization: ", args.add_hand_invariance_regularization)
 	print("add_artificial_transitions: ", args.add_artificial_transitions)
-	if args.add_invariance_traj or args.add_invariance_regularization or \
-			args.add_hand_invariance_regularization:
-		print("inv_type: ", args.inv_type)
-		print("use_informative_segment: ", args.use_informative_segment)
-	if args.sparse_reward:
-		print("reward type: sparse reward")
-	else:
-		print("reward type: dense reward")
+	print("without_demo: ", args.without_demo)
 
 	for t in range(int(args.max_timesteps)):
 		
 		if segment_timestep % args.segment_len == 0:
 			segment_timestep = 0
 			if t > 0:
-				if args.pd_throw_decay > args.pd_decay:
-					raise ValueError("The pd_throw should decay faster than pd")
 				pd_prob *= args.pd_decay
-				pd_throw_prob *= args.pd_throw_decay
 				pr_prob *= args.pr_decay
 			rn = np.random.rand()
 			if rn < pd_prob:
 				segment_type = "pd"
-				if rn < pd_throw_prob:
-					demo_type = "throw"
-				else:
-					demo_type = "catch"
 			elif rn < pd_prob + pr_prob:
 				segment_type = "pr"
 			else:
 				segment_type = "full"
 			if segment_type == "pd":
-				if demo_type == "throw":
-					traj_ind = np.random.randint(0, len(demo_states_throw))
-					state_ind = np.random.randint(0, len(demo_states_throw[traj_ind]))
-					env_demo.reset()
-					env_demo.env.sim.set_state(demo_states_throw[traj_ind][state_ind])
-					prev_action = demo_prev_actions_throw[traj_ind][state_ind]
-				else:
-					traj_ind = np.random.randint(0, len(demo_states_catch))
-					state_ind = np.random.randint(0, len(demo_states_catch[traj_ind]))
-					env_demo.reset()
-					env_demo.env.sim.set_state(demo_states_catch[traj_ind][state_ind])
-					prev_action = demo_prev_actions_catch[traj_ind][state_ind]
+				traj_ind = np.random.randint(0, len(demo_states))
+				state_ind = np.random.randint(0, len(demo_states[traj_ind]))
+				env_demo.reset()
+				env_demo.env.sim.set_state(demo_states[traj_ind][state_ind])
+				prev_action = demo_prev_actions[traj_ind][state_ind]
 				if args.env == 'PenSpin-v0':
 					env_demo.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
 					env_demo.env.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
@@ -315,8 +253,7 @@ if __name__ == "__main__":
 				prev_action = np.zeros((action_dim,))
 			else:
 				prev_action = main_episode_prev_ac
-				observation_dict = main_episode_obs
-				observation = env_statedict_to_state(observation_dict, env_name=args.env)
+				observation = main_episode_obs
 		if t < args.start_timesteps:
 			action = (
 				policy.beta*env_main.action_space.sample() + (1-policy.beta)*prev_action
@@ -340,25 +277,9 @@ if __name__ == "__main__":
 			main_episode_obs = env_statedict_to_state(next_observation_dict, env_name=args.env)
 
 		next_observation = env_statedict_to_state(next_observation_dict, env_name=args.env)
-		# replay buffer
-		# replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
-		if args.add_invariance_traj:
-			replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
-			invariant_replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
-			if (segment_timestep % args.segment_len == 0) and (segment_timestep > 0):
-				invariant_replay_buffer.create_invariant_trajectory(inv_type=args.inv_type,
-					use_informative=args.use_informative_segment, policy=policy)
-				replay_buffer.add_from_other_replay_buffer(invariant_replay_buffer.state,
-									invariant_replay_buffer.action, invariant_replay_buffer.next_state,
-									invariant_replay_buffer.reward, invariant_replay_buffer.prev_action,
-														   invariant_replay_buffer.done)
-		else:
-			replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
 
-		if args.add_invariance_regularization:
-			for i in range(args.N_artificial_sample):
-				invariant_replay_buffer_list[i].add_inv_sample(observation, action, next_observation, reward,
-															   prev_action, args.inv_type)
+		# replay buffer
+		replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
 
 		if args.use_normaliser:
 			policy.normaliser.update(observation)
@@ -368,6 +289,8 @@ if __name__ == "__main__":
 			transition.normaliser.update(observation)
 			if t % args.update_normaliser_every == 0:
 				transition.normaliser.recompute_stats()
+
+		# set the prev_action and obs
 		prev_action = action.copy()
 		observation = next_observation.copy()
 		if segment_type == "full":
@@ -381,16 +304,10 @@ if __name__ == "__main__":
 			transition.train(replay_buffer)
 		if t >= args.start_timesteps:
 			if args.without_demo:
-				policy.train(replay_buffer, None, invariant_replay_buffer_list, transition,
-							 args.batch_size,
-							 args.add_invariance_regularization, args.add_hand_invariance_regularization,
-							 args.add_bc_loss,
+				policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
 							 args.add_artificial_transitions)
 			else:
-				policy.train(replay_buffer, demo_replay_buffer, invariant_replay_buffer_list, transition,
-							 args.batch_size,
-							 args.add_invariance_regularization, args.add_hand_invariance_regularization,
-							 args.add_bc_loss,
+				policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
 							 args.add_artificial_transitions)
 
 		if (t+1) % args.eval_freq == 0:

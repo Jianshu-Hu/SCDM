@@ -69,7 +69,7 @@ class TransitionModel():
                      'FetchSlideSparse-v1', 'FetchPickAndPlaceSparse-v1', 'FetchPushSparse-v1']
         env_list8 = ['Swimmer-v3']
         if env_name in env_list1:
-            self.reward_type =='Egg'
+            self.reward_type ='Egg'
             self.achieved_pose_index = -20
             self.goal_pose_index = -7
         elif env_name in env_list2:
@@ -91,6 +91,8 @@ class TransitionModel():
             self.forward_reward_weight = 1.0
             self.ctrl_cost_weight = 0.001
             self.healthy_reward = 1.0
+            self.health_z_range = np.array([0.8, 2])
+            self.health_angle_range = np.array([-1.0, 1.0])
             self.reward_type = "Walker2d-v3"
         elif env_name in env_list7:
             self.reward_type = 'Fetch'
@@ -107,7 +109,7 @@ class TransitionModel():
         self.total_iter += 1
 
         # Sample replay buffer
-        state, action, next_state, reward, prev_action, _, _, _ = replay_buffer.sample(self.batch_size)
+        state, action, next_state, reward, prev_action, _, = replay_buffer.sample(self.batch_size)
 
         state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
         next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
@@ -191,4 +193,19 @@ class TransitionModel():
 
         return torch.FloatTensor(reward.reshape([-1, 1])).to(device)
 
+    def not_healthy(self, state):
+        # for some envs, the agent might die and the epsiode will end
+
+        state = state.cpu().data.numpy()
+        # Here the state is normalized while we need the state before normaliser to compute the reward
+        state = state * self.normaliser.std + self.normaliser.mean
+
+        done = np.zeros(state.shape[0])
+
+        if self.reward_type == "Walker2d-v3":
+            health_z = np.logical_and(self.health_z_range[0] < state[:, 0], state[:, 0] < self.health_z_range[1])
+            health_angle = np.logical_and(self.health_angle_range[0] < state[:, 1], state[:, 1] < self.health_angle_range[1])
+            done = 1-np.logical_and(health_z, health_angle)
+
+        return torch.FloatTensor(done.reshape([-1, 1])).to(device)
 
