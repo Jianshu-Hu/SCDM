@@ -168,7 +168,9 @@ class TD3(object):
 		# 	error = F.mse_loss(done, transition.not_healthy(next_state))
 		# 	print("done_error: ", error)
 
-		if add_artificial_transitions_type is not None:
+		if add_artificial_transitions_type == "None":
+			add_artificial_transitions = False
+		else:
 			add_artificial_transitions = True
 			if add_artificial_transitions_type == 'MVE':
 				H = prediction_horizon
@@ -177,8 +179,7 @@ class TD3(object):
 				noise_type = 'gaussian'
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
-		else:
-			add_artificial_transitions = False
+
 
 		with torch.no_grad():
 			if add_artificial_transitions_type == 'MVE':
@@ -338,7 +339,7 @@ class TD3(object):
 					critic_loss_list.append(F.mse_loss(current_Q1_H[timestep], target_Q_H[-timestep-1]) +\
 							F.mse_loss(current_Q2_H[timestep], target_Q_H[-timestep-1]))
 				critic_loss = sum(critic_loss_list)/(H+1)
-			elif add_artifcial_transitions_type == 'ours':
+			elif add_artificial_transitions_type == 'ours':
 				critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
 						F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q)
 		else:

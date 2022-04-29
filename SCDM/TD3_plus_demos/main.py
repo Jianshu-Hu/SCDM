@@ -103,9 +103,9 @@ if __name__ == "__main__":
 
 	parser.add_argument("--add_artificial_transitions_type", type=str, default='None')  # add artificial transitions during the training
 	# None: without artificial transitions
-	# Ours: Using decaying noisy actions
+	# ours: Using decaying noisy actions
 	# MVE: Using Model-based Value Expansion
-	parse.add_argument("--prediction_horizon", type=int, default=1)  #the prediction horizon for MVE
+	parser.add_argument("--prediction_horizon", type=int, default=1)  #the prediction horizon for MVE
 	parser.add_argument("--demo_goal_type", type=str, default='Random') # set the goal of the segment from the demonstration
 	# True: the true goal of the segment
 	# Noisy: add noise to the true goal of the segment
