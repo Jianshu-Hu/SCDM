@@ -148,26 +148,9 @@ class TD3(object):
 			mean_ac += noise
 		return self.beta*mean_ac + (1-self.beta)*prev_action.cpu().data.numpy().flatten()
 
-	# def forward_with_learned_model(self, action, next_state, reward, H, transition):
-	# 	return_H = torch.clone(reward)
-	# 	for t in range(H):
-	# 		# Select action according to policy
-	#
-	# 		next_action = self.beta * self.actor(next_state, action) + (1 - self.beta) * action
-	# 		next_action = (
-	# 			next_action
-	# 		).clamp(-self.max_action, self.max_action)
-	#
-	# 		state = torch.clone(next_state)
-	# 		next_state = transition.forward_model(state, next_action)
-	# 		action = torch.clone(next_action)
-	# 		reward = transition.compute_reward(state, next_state, action)
-	# 		return_H += self.discount**(t+1)*reward
-	# 	return return_H, next_state, action
-
 
 	def train(self, replay_buffer, demo_replay_buffer, transition, batch_size=100, add_bc_loss=False,
-			  add_artificial_transitions=False):
+			  add_artificial_transitions_type=None):
 		self.total_it += 1
 
 		# Sample replay buffer
@@ -185,40 +168,38 @@ class TD3(object):
 		# 	error = F.mse_loss(done, transition.not_healthy(next_state))
 		# 	print(error)
 
-		if add_artificial_transitions:
-			# ours, MVE
-			add_transitions_type = 'ours'
-			# gaussian, uniform, fixed
-			noise_type = 'gaussian'
-			initial_bound = self.max_action
-
-			max_error_so_far = torch.zeros(1)
+		if add_artificial_transitions_type is not None:
+			add_artificial_transitions = True
+			if add_artificial_transitions_type == 'MVE':
+				H = 3
+			elif add_artificial_transitions_type == 'ours':
+				# gaussian, uniform, fixed
+				noise_type = 'gaussian'
+				initial_bound = self.max_action
+				max_error_so_far = torch.zeros(1)
 		else:
-			add_transitions_type = None
+			add_artificial_transitions = False
 
 		with torch.no_grad():
-			if add_transitions_type == 'MVE':
+			if add_artificial_transitions_type == 'MVE':
 				state_H = [state]
 				action_H = [action]
 				next_state_H = [next_state]
 				reward_H = [reward]
 				prev_action_H = [prev_action]
+				done_H = [done]
 				target_Q_H = []
 
 				for timestep in range(H):
-					if forward_action == 'policy_action':
-						# Select action according to policy
-						next_action = self.beta * self.actor(next_state_H[-1], action_H[-1]) + \
-									(1 - self.beta) * action_H[-1]
-						next_action = (
-							next_action
-						).clamp(-self.max_action, self.max_action)
-					elif forward_action == 'random':
-						# random action
-						next_action = 2 * self.max_action * (torch.rand(action.size()) - 0.5).to(device)
+					# Select action according to policy
+					next_action = self.beta * self.actor(next_state_H[-1], action_H[-1]) + \
+								(1 - self.beta) * action_H[-1]
+					next_action = (
+						next_action
+					).clamp(-self.max_action, self.max_action)
 
 					new_next_state = transition.forward_model(next_state_H[-1], next_action)
-					new_reward = transition.compute_reward(new_next_state, next_action)
+					new_reward = transition.compute_reward(next_state_H[-1], new_next_state, next_action)
 					new_done = transition.not_healthy(new_next_state)
 
 					state_H.append(next_state_H[-1])
@@ -226,7 +207,9 @@ class TD3(object):
 					action_H.append(next_action)
 					next_state_H.append(new_next_state)
 					reward_H.append(new_reward)
+					done_H.append(new_done)
 
+				# calculate the target Q at t=H
 				noise = (
 						torch.randn_like(action) * self.policy_noise
 				).clamp(-self.noise_clip, self.noise_clip)
@@ -239,31 +222,28 @@ class TD3(object):
 
 				Q1_H, Q2_H = self.critic_target(next_state_H[-1], next_action, action_H[-1])
 				Q_H = torch.min(Q1_H, Q2_H)
-				target_Q = reward_H[-1] + self.discount*Q_H
+				target_Q = reward_H[-1] + self.discount*(1-done_H[-1])*Q_H
 				target_Q_H.append(target_Q)
+
+				# calculting the target Q backward
 				for timestep in range(H):
 					# if timestep == H-1:
 					# 	# for the real transition use the 1-step return instead of using N-step return
-					# 	if forward_action == 'random':
-					# 		# Select action according to policy and add clipped noise
-					# 		noise = (
-					# 				torch.randn_like(action) * self.policy_noise
-					# 		).clamp(-self.noise_clip, self.noise_clip)
-					#
-					# 		next_action = self.actor_target(next_state, action) + noise
-					# 		next_action = self.beta * next_action + (1 - self.beta) * action
-					# 		next_action = (
-					# 			next_action
-					# 		).clamp(-self.max_action, self.max_action)
-					# 		target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
-					# 	elif forward_action == 'policy_action':
-					# 		target_Q1, target_Q2 = self.critic_target(next_state_H[0], action_H[1], action_H[0])
+					# 	target_Q1, target_Q2 = self.critic_target(next_state_H[0], action_H[1], action_H[0])
 					# 	target_Q = torch.min(target_Q1, target_Q2)
-					# 	target_Q = reward_H[0]+self.discount*target_Q
+					# 	target_Q = reward_H[0]+self.discount*(1-done)*target_Q
 					# else:
-					# 	target_Q = reward_H[-timestep-2]+self.discount*target_Q_H[-1]
-					target_Q = reward_H[-timestep - 2] + self.discount * target_Q_H[-1]
+					# 	target_Q = reward_H[-timestep-2]+self.discount*(1-done_H[-timestep-2)target_Q_H[-1]
+					target_Q = reward_H[-timestep - 2] + self.discount * (1-done_H[-timestep-2]) * target_Q_H[-1]
 					target_Q_H.append(target_Q)
+				# remove the segment from t+1 to H when the episode ends at t before H
+				filter_last = torch.ones_like(done)
+				filter_last_H = [torch.ones_like(done)]
+				for timestep in range(H):
+					filter_last *= (1-done_H[timestep])
+					target_Q_H[-timestep-2] *= filter_last
+					filter_last_H.append(filter_last)
+
 			else:
 				# Select action according to policy and add clipped noise
 				noise = (
@@ -282,7 +262,7 @@ class TD3(object):
 				target_Q = torch.min(target_Q1, target_Q2)
 				target_Q = reward + self.discount * (1-done) * target_Q
 
-				if add_transitions_type == 'ours':
+				if add_artificial_transitions_type == 'ours':
 					# noisy policy action
 					if noise_type == 'gaussian':
 						# decaying clip
@@ -335,27 +315,30 @@ class TD3(object):
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
 		if add_artificial_transitions:
-			if add_transitions_type == 'MVE':
+			if add_artificial_transitions_type == 'MVE':
 				current_Q1_H = []
 				current_Q2_H = []
 				for timestep in range(H+1):
 					current_Q1, current_Q2 = self.critic(state_H[timestep], action_H[timestep], prev_action_H[timestep])
+					current_Q1 *= filter_last_H[timestep]
+					current_Q2 *= filter_last_H[timestep]
 					current_Q1_H.append(current_Q1)
 					current_Q2_H.append(current_Q2)
-			elif add_transitions_type == 'ours':
+
+			elif add_artificial_transitions_type == 'ours':
 					new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
 					new_current_Q1 *= filter
 					new_current_Q2 *= filter
 
 		# calculate critic loss
 		if add_artificial_transitions:
-			if add_transitions_type == 'MVE':
+			if add_artificial_transitions_type == 'MVE':
 				critic_loss_list = []
 				for timestep in range(H+1):
 					critic_loss_list.append(F.mse_loss(current_Q1_H[timestep], target_Q_H[-timestep-1]) +\
 							F.mse_loss(current_Q2_H[timestep], target_Q_H[-timestep-1]))
 				critic_loss = sum(critic_loss_list)/(H+1)
-			elif add_transitions_type == 'ours':
+			elif add_artifcial_transitions_type == 'ours':
 				critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
 						F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q)
 		else:

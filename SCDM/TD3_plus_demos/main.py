@@ -101,7 +101,10 @@ if __name__ == "__main__":
 	parser.add_argument("--add_bc_loss", action="store_true")  # add behavior cloning loss to actor training
 	parser.add_argument("--model_start_timesteps", default=10000, type=int)# Time steps of start training transition model
 
-	parser.add_argument("--add_artificial_transitions", action="store_true")  # add artificial transitions during the training
+	parser.add_argument("--add_artificial_transitions_type", type=str, default='None')  # add artificial transitions during the training
+	# None: without artificial transitions
+	# Ours: Using decaying noisy actions
+	# MVE: Using Model-based Value Expansion
 	parser.add_argument("--demo_goal_type", type=str, default='Random') # set the goal of the segment from the demonstration
 	# True: the true goal of the segment
 	# Noisy: add noise to the true goal of the segment
@@ -201,7 +204,7 @@ if __name__ == "__main__":
 	print("env_name: ", args.env)
 	print("demo_goal_type: ", args.demo_goal_type)
 	print("add_behavior_cloning_loss: ", args.add_bc_loss)
-	print("add_artificial_transitions: ", args.add_artificial_transitions)
+	print("add_artificial_transitions: ", args.add_artificial_transitions_type)
 	print("without_demo: ", args.without_demo)
 
 	for t in range(int(args.max_timesteps)):
@@ -305,10 +308,10 @@ if __name__ == "__main__":
 		if t >= args.start_timesteps:
 			if args.without_demo:
 				policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
-							 args.add_artificial_transitions)
+							 args.add_artificial_transitions_type)
 			else:
 				policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
-							 args.add_artificial_transitions)
+							 args.add_artificial_transitions_type)
 
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)

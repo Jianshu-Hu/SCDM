@@ -735,8 +735,6 @@ tag_191 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initia
            "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initial_bound_07",
            "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_initial_bound_07"]
 
-tag_192 = ["1_model_gradient_from_critic_loss"]
-
 tag_193 = ["1_long_run", "2_long_run", "3_long_run"]
 
 tag_194 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_long_run",
@@ -819,7 +817,7 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
         else:
             axs.set_xlabel('timesteps/200')
     elif prefix == walker_prefix:
-        axs.set_xlabel('timesteps/1000')
+        axs.set_xlabel('timesteps/5000')
     else:
         axs.set_xlabel('timesteps/5000')
     axs.set_ylabel('average rewards')
@@ -994,11 +992,11 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_actor_critic_loss(overarm_prefix,tag_expl,plot_or_save='plot')
 # plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
-compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188,tag_192], title="test")
-compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188, tag_192], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191,tag_192], title="test")
+compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191], title="test")
 compare(prefix=cheetah_prefix, tag_list=[tag_193, tag_194], title="long_run")
-compare(prefix=walker_prefix, tag_list=[tag_187, tag_188, tag_192], title="test")
+compare(prefix=walker_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=swimmer_prefix, tag_list=[tag_187, tag_188,tag_195], title="test")
 
 
