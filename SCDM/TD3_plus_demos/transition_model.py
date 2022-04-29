@@ -63,11 +63,10 @@ class TransitionModel():
         env_list2 = ['PenSpin-v0']
         env_list3 = ['Reacher-v2']
         env_list4 = ['Pusher-v2']
-        env_list5 = ['HalfCheetah-v3']
-        env_list6 = ['Walker2d-v3']
-        env_list7 = ['FetchSlideDense-v1', 'FetchPickAndPlaceDense-v1', 'FetchPushDense-v1',
+        env_list5 = ['HalfCheetah-v3', 'Walker2d-v3', 'Swimmer-v3', 'Hopper-v3']
+        env_list6 = ['FetchSlideDense-v1', 'FetchPickAndPlaceDense-v1', 'FetchPushDense-v1',
                      'FetchSlideSparse-v1', 'FetchPickAndPlaceSparse-v1', 'FetchPushSparse-v1']
-        env_list8 = ['Swimmer-v3']
+        self.env_name = env_name
         if env_name in env_list1:
             self.reward_type ='Egg'
             self.achieved_pose_index = -20
@@ -84,24 +83,38 @@ class TransitionModel():
         elif env_name in env_list4:
             self.reward_type = "Pusher-v2"
         elif env_name in env_list5:
-            self.reward_type = "HalfCheetah-v3"
-            self.forward_reward_weight = 1.0
-            self.ctrl_cost_weight = 0.1
+            self.reward_type = "Mujoco_robot"
+            if env_name == 'HalfCheetah-v3':
+                self.forward_reward_weight = 1.0
+                self.ctrl_cost_weight = 0.1
+                self.healthy_reward = 0
+                self.x_vel_index = 8
+            elif env_name == 'Walker2d-v3':
+                self.forward_reward_weight = 1.0
+                self.ctrl_cost_weight = 0.001
+                self.healthy_reward = 1.0
+                self.x_vel_index = 8
+
+                self.health_z_range = np.array([0.8, 2])
+                self.health_angle_range = np.array([-1.0, 1.0])
+            elif env_name =='Swimmer-v3':
+                self.forward_reward_weight = 1.0
+                self.ctrl_cost_weight = 0.001
+                self.healthy_reward = 0
+                self.x_vel_index = 3
+            elif env_name =='Hopper-v3':
+                self.forward_reward_weight = 1.0
+                self.ctrl_cost_weight = 0.001
+                self.healthy_reward = 1.0
+                self.x_vel_index = 5
+
+                self.health_z_range = np.array([0.7, np.inf])
+                self.health_angle_range = np.array([-0.2, 0.2])
+                self.health_state_range = np.array([-100.0, 100.0])
         elif env_name in env_list6:
-            self.forward_reward_weight = 1.0
-            self.ctrl_cost_weight = 0.001
-            self.healthy_reward = 1.0
-            self.health_z_range = np.array([0.8, 2])
-            self.health_angle_range = np.array([-1.0, 1.0])
-            self.reward_type = "Walker2d-v3"
-        elif env_name in env_list7:
-            self.reward_type = 'Fetch'
-            self.achieved_goal_index = 3
-            self.goal_index = -3
-        elif env_name in env_list8:
-            self.reward_type = 'Swimmer'
-            self.forward_reward_weight = 1.0
-            self.ctrl_cost_weight = 0.001
+                self.reward_type = 'Fetch'
+                self.achieved_goal_index = 3
+                self.goal_index = -3
         else:
             raise NotImplementedError('Check the reward function for this environment')
 
@@ -170,22 +183,14 @@ class TransitionModel():
             reward_dist = -np.linalg.norm(vec2, axis=1)
             reward_ctrl = -np.sum(np.square(action), axis=1)
             reward = (reward_dist + 0.1 * reward_ctrl + 0.5 * reward_near).reshape(-1)
-        elif self.reward_type == "HalfCheetah-v3":
-            forward_reward = self.forward_reward_weight * (prev_state[:, 8])
-            ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
-            reward = (forward_reward + ctrl_cost).reshape(-1)
-        elif self.reward_type == "Walker2d-v3":
-            forward_reward = self.forward_reward_weight * (prev_state[:, 8])
+        elif self.reward_type == "Mujoco_robot":
+            forward_reward = self.forward_reward_weight * (prev_state[:, self.x_vel_index])
             ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
             reward = (forward_reward + self.healthy_reward - ctrl_cost).reshape(-1)
         elif self.reward_type == "Fetch":
             achieved_goal = state[:, self.achieved_goal_index:self.achieved_goal_index+3]
             goal = state[:, self.goal_index:]
             reward = self.embed_compute_reward(achieved_goal, goal, info=None)
-        elif self.reward_type == 'Swimmer':
-            forward_reward = self.forward_reward_weight * (prev_state[:, 3])
-            ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
-            reward = (forward_reward + ctrl_cost).reshape(-1)
         else:
             achieved_goal = state[:, self.achieved_pose_index:self.achieved_pose_index+7]
             goal = state[:, self.goal_pose_index:]
@@ -202,10 +207,14 @@ class TransitionModel():
 
         done = np.zeros(state.shape[0])
 
-        if self.reward_type == "Walker2d-v3":
+        if self.env_name == "Walker2d-v3":
             health_z = np.logical_and(self.health_z_range[0] < state[:, 0], state[:, 0] < self.health_z_range[1])
             health_angle = np.logical_and(self.health_angle_range[0] < state[:, 1], state[:, 1] < self.health_angle_range[1])
             done = 1-np.logical_and(health_z, health_angle)
-
+        elif self.env_name == 'Hopper-v3':
+            health_z = np.logical_and(self.health_z_range[0] < state[:, 0], state[:, 0] < self.health_z_range[1])
+            health_angle = np.logical_and(self.health_angle_range[0] < state[:, 1], state[:, 1] < self.health_angle_range[1])
+            health_state = np.all(np.logical_and(self.health_state_range[0] < state[:, 1:], state[:, 1:] < self.health_state_range[1]), axis=1)
+            done = 1 - np.logical_and(np.logical_and(health_z, health_angle), health_state)
         return torch.FloatTensor(done.reshape([-1, 1])).to(device)
 

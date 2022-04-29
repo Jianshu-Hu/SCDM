@@ -162,11 +162,11 @@ class TD3(object):
 		# # debug reward
 		# if self.total_it % 1000 == 0:
 		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
-		# 	print(error)
+		# 	print("reward_error: ", error)
 		# # debug done
 		# if self.total_it % 1000 == 0:
 		# 	error = F.mse_loss(done, transition.not_healthy(next_state))
-		# 	print(error)
+		# 	print("done_error: ", error)
 
 		if add_artificial_transitions_type is not None:
 			add_artificial_transitions = True
