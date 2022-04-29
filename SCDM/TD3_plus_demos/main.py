@@ -105,6 +105,7 @@ if __name__ == "__main__":
 	# None: without artificial transitions
 	# Ours: Using decaying noisy actions
 	# MVE: Using Model-based Value Expansion
+	parse.add_argument("--prediction_horizon", type=int, default=1)  #the prediction horizon for MVE
 	parser.add_argument("--demo_goal_type", type=str, default='Random') # set the goal of the segment from the demonstration
 	# True: the true goal of the segment
 	# Noisy: add noise to the true goal of the segment
@@ -308,10 +309,10 @@ if __name__ == "__main__":
 		if t >= args.start_timesteps:
 			if args.without_demo:
 				policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
-							 args.add_artificial_transitions_type)
+							 args.add_artificial_transitions_type, args.prediction_horizon)
 			else:
 				policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
-							 args.add_artificial_transitions_type)
+							 args.add_artificial_transitions_type, args.prediction_horizon)
 
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)

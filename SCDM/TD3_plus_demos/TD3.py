@@ -150,7 +150,7 @@ class TD3(object):
 
 
 	def train(self, replay_buffer, demo_replay_buffer, transition, batch_size=100, add_bc_loss=False,
-			  add_artificial_transitions_type=None):
+			  add_artificial_transitions_type=None, prediction_horizon=1):
 		self.total_it += 1
 
 		# Sample replay buffer
@@ -171,7 +171,7 @@ class TD3(object):
 		if add_artificial_transitions_type is not None:
 			add_artificial_transitions = True
 			if add_artificial_transitions_type == 'MVE':
-				H = 3
+				H = prediction_horizon
 			elif add_artificial_transitions_type == 'ours':
 				# gaussian, uniform, fixed
 				noise_type = 'gaussian'
