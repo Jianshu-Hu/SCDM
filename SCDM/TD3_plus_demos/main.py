@@ -162,7 +162,8 @@ if __name__ == "__main__":
 		"policy_noise": args.policy_noise * max_action,
 		"noise_clip": args.noise_clip * max_action,
 		"policy_freq": args.policy_freq,
-		"beta": args.beta
+		"beta": args.beta,
+		"add_artificial_transitions_type":args.add_artificial_transitions_type
 	}
 
 	# Initialize policy

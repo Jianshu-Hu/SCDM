@@ -23,9 +23,12 @@ walker_prefix = "TD3_Walker2d-v3_"
 
 swimmer_prefix = "TD3_Swimmer-v3_"
 
+hopper_prefix = "TD3_Hopper-v3_"
+
 fetchpick_prefix = "TD3_FetchPickAndPlaceDense-v1_"
 fetchpush_prefix = "TD3_FetchPushDense-v1_"
 fetchslide_prefix = "TD3_FetchSlideDense-v1_"
+
 
 # overarm and underarm
 tag_1 = ["1_random_goal_demo", "2_random_goal_demo", "3_random_goal_demo", "4_random_goal_demo", "5_random_goal_demo"]
@@ -745,6 +748,22 @@ tag_195 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_3
            "2_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_30_initialization",
            "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_30_initialization"]
 
+tag_196 = ["1_our_method", "2_our_method", "3_our_method"]
+
+tag_197 = ["1_MVE_H_3", "2_MVE_H_3", "3_MVE_H_3"]
+
+tag_198 = ["1_our_method_30_initialization", "2_our_method_30_initialization", "3_our_method_30_initialization"]
+
+tag_199 = ["1_MVE_H_10", "2_MVE_H_10", "3_MVE_H_10"]
+
+tag_200 = ["1_TD3", "2_TD3", "3_TD3"]
+
+tag_201 = ["1_our_method_50_initialization", "2_our_method_50_initialization", "3_our_method_50_initialization"]
+
+tag_202 = ["1_our_method_20_initialization", "2_our_method_20_initialization", "3_our_method_20_initialization"]
+
+tag_203 = ["1_MVE_H_1", "2_MVE_H_1", "3_MVE_H_1"]
+
 
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
@@ -994,10 +1013,11 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 
 compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_193, tag_194], title="long_run")
-compare(prefix=walker_prefix, tag_list=[tag_187, tag_188], title="test")
-compare(prefix=swimmer_prefix, tag_list=[tag_187, tag_188,tag_195], title="test")
+# compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191], title="test")
+compare(prefix=cheetah_prefix, tag_list=[tag_193, tag_194, tag_199, tag_201, tag_200,tag_203], title="long_run")
+compare(prefix=walker_prefix, tag_list=[tag_201,tag_200,tag_203], title="test")
+compare(prefix=swimmer_prefix, tag_list=[tag_200, tag_202,tag_203], title="test")
+compare(prefix=hopper_prefix,tag_list=[tag_200,tag_196,tag_201],title="test")
 
 
 compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
