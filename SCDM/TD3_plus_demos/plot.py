@@ -1011,10 +1011,10 @@ def plot_debug_value(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
 # plot_actor_critic_loss(overarm_prefix,tag_expl,plot_or_save='plot')
 # plot_transition_model_loss(prefix=pen_prefix, tag=tag_132)
 
-compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188], title="test")
+compare(prefix=reacher_prefix, tag_list=[tag_187, tag_188,tag_200], title="test")
 compare(prefix=pusher_prefix, tag_list=[tag_187, tag_188], title="test")
 # compare(prefix=cheetah_prefix, tag_list=[tag_187, tag_188, tag_189, tag_178, tag_191], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_193, tag_194, tag_199, tag_201, tag_200,tag_203], title="long_run")
+compare(prefix=cheetah_prefix, tag_list=[tag_193, tag_194,tag_196, tag_199, tag_201, tag_200,tag_203], title="long_run")
 compare(prefix=walker_prefix, tag_list=[tag_201,tag_200,tag_203], title="test")
 compare(prefix=swimmer_prefix, tag_list=[tag_200, tag_202,tag_203], title="test")
 compare(prefix=hopper_prefix,tag_list=[tag_200,tag_196,tag_201],title="test")
