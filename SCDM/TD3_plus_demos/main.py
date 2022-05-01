@@ -278,6 +278,9 @@ if __name__ == "__main__":
 		else:
 			main_episode_timesteps += 1
 			next_observation_dict, reward, done, _ = env_main.step(action)
+			# for robotics task keeps running, don't set the target Q value to zero for last time step
+			if main_episode_timesteps == env_main._max_episode_steps:
+				done = False
 			main_episode_prev_ac = action.copy()
 			main_episode_obs = env_statedict_to_state(next_observation_dict, env_name=args.env)
 
