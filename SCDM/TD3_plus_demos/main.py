@@ -68,7 +68,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=10, evaluate_critic_t=50):
 if __name__ == "__main__":
 	
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG or OurDDPG)
+	parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG)
 	parser.add_argument("--env", default="PenSpin-v0")              # OpenAI gym environment name
 	parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds
 	parser.add_argument("--start_timesteps", default=25000, type=int)# Time steps initial random policy is used
@@ -152,6 +152,7 @@ if __name__ == "__main__":
 	max_action = float(env_main.action_space.high[0])
 
 	kwargs = {
+		"policy_type": args.policy,
 		"state_dim": state_dim,
 		"action_dim": action_dim,
 		"max_action": max_action,

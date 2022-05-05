@@ -6,7 +6,7 @@ conda activate SCDM
 
 env_name="Pusher-v2"
 
-tag=MVE_H_1
+tag=our_method
 seed=3
 
 demo_tag=""
@@ -16,4 +16,4 @@ demo_tag=""
 echo "start running $env_name $tag with seed $seed"
 
 #pusher
-python main.py --add_artificial_transitions_type='MVE' --prediction_horizon=1 --eval_freq=500 --max_timesteps=500000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --policy="DDPG" --add_artificial_transitions_type='ours' --prediction_horizon=1 --eval_freq=500 --max_timesteps=500000 --model_start_timesteps=5000 --start_timesteps=10000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model

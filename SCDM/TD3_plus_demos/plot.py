@@ -14,16 +14,22 @@ underarm_prefix_v3 = "TD3_EggCatchUnderarm-v3_"
 pen_prefix = "TD3_PenSpin-v0_"
 
 reacher_prefix = "TD3_Reacher-v2_"
+reacher_prefix2 = "DDPG_Reacher-v2_"
 
 pusher_prefix = "TD3_Pusher-v2_"
+pusher_prefix2 = "DDPG_Pusher-v2_"
 
 cheetah_prefix = "TD3_HalfCheetah-v3_"
+cheetah_prefix2 = "DDPG_HalfCheetah-v3_"
 
 walker_prefix = "TD3_Walker2d-v3_"
+walker_prefix2 = "DDPG_Walker2d-v3_"
 
 swimmer_prefix = "TD3_Swimmer-v3_"
+swimmer_prefix2 = "DDPG_Swimmer-v3_"
 
 hopper_prefix = "TD3_Hopper-v3_"
+hopper_prefix2 = "DDPG_Hopper-v3_"
 
 fetchpick_prefix = "TD3_FetchPickAndPlaceDense-v1_"
 fetchpush_prefix = "TD3_FetchPushDense-v1_"
@@ -793,7 +799,7 @@ def average_over_experiments(prefix, tag):
 
 
 def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
-    plt.rcParams['figure.figsize'] = (10, 6)
+    plt.rcParams['figure.figsize'] = (10, 8)
     fig, axs = plt.subplots(1, 1)
     for i in range(len(tag_list)):
         mean, std = average_over_experiments(prefix, tag_list[i])
@@ -1004,14 +1010,31 @@ tag_199 = ["1_our_method_50_initialization", "2_our_method_50_initialization", "
 
 tag_200 = ["1_MVE_H_1", "2_MVE_H_1", "3_MVE_H_1"]
 
-compare(prefix=reacher_prefix, tag_list=[tag_196, tag_197, tag_200], title="test")
-compare(prefix=pusher_prefix, tag_list=[tag_196, tag_197, tag_200], title="test")
-compare(prefix=cheetah_prefix, tag_list=[tag_196, tag_199, tag_200], title="long_run")
-# compare(prefix=cheetah_prefix, tag_list=[tag_196, tag_197, tag_199, tag_200], title="long_run")
-compare(prefix=walker_prefix, tag_list=[tag_196, tag_199, tag_200], title="test")
-compare(prefix=swimmer_prefix, tag_list=[tag_196, tag_198, tag_200], title="test")
-compare(prefix=hopper_prefix,tag_list=[tag_196, tag_199, tag_200],title="test")
+tag_201 = ["1_DDPG", "2_DDPG", '3_DDPG']
 
+tag_202 = ["1_MVE_H_3", "2_MVE_H_3", "3_MVE_H_3"]
+
+compare(prefix=reacher_prefix, tag_list=[tag_196, tag_197, tag_200], title="TD3")
+compare(prefix=reacher_prefix2, tag_list=[tag_201, tag_197], title="DDPG")
+
+compare(prefix=pusher_prefix, tag_list=[tag_196, tag_197, tag_200], title="TD3")
+compare(prefix=pusher_prefix2, tag_list=[tag_201, tag_197], title="DDPG")
+
+compare(prefix=cheetah_prefix, tag_list=[tag_196, tag_199, tag_200], title="TD3")
+compare(prefix=cheetah_prefix2, tag_list=[tag_201, tag_199, tag_202], title="DDPG")
+
+compare(prefix=walker_prefix, tag_list=[tag_196, tag_199, tag_200], title="TD3")
+compare(prefix=walker_prefix2, tag_list=[tag_201, tag_199, tag_202], title="DDPG")
+
+compare(prefix=swimmer_prefix, tag_list=[tag_196, tag_198, tag_200], title="TD3")
+compare(prefix=swimmer_prefix2, tag_list=[tag_201, tag_198], title="DDPG")
+
+compare(prefix=hopper_prefix,tag_list=[tag_196, tag_199, tag_200],title="TD3")
+compare(prefix=hopper_prefix2,tag_list=[tag_201, tag_199],title="DDPG")
+
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_183,tag_200], title="test")
+compare(prefix=overarm_prefix, tag_list=[tag_196, tag_168, tag_200], title="test")
+compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_200], title="test")
 
 compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188, tag_191], title="test")
@@ -1021,9 +1044,9 @@ compare(prefix=fetchslide_prefix, tag_list=[tag_187, tag_188], title="test")
 # compare(prefix=underarm_prefix, tag_list=[tag_1, tag_79, tag_106], title="policy_freq_3")
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_128, tag_131, tag_134, tag_138, tag_143, tag_147], title="add_transitions")
 # compare(prefix=pen_prefix,tag_list=[tag_132, tag_151, tag_152], title="noise_policy_action")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178, tag_190,tag_183], title="with_improvement")
+# compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
+# compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_165, tag_167, tag_171], title="high_initialization")
+# compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178, tag_190,tag_183], title="with_improvement")
 
 #compare(prefix=overarm_prefix, tag_list=[tag_79, tag_76, tag_77, tag_81, tag_97, tag_105, tag_112], title="add_transitions")
 #compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_114, tag_118, tag_119, tag_120, tag_121, tag_123], title="with_normaliser")
@@ -1039,7 +1062,7 @@ compare(prefix=pen_prefix, tag_list=[tag_132, tag_156, tag_177, tag_178, tag_190
 #            "3_scheduled_decaying_target_from_current_policy_with_high_initialization"]
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172_temp, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_156, tag_163, tag_164, tag_170], title="high_initialization")
-compare(prefix=overarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180], title="small_initialization")
+# compare(prefix=overarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180], title="small_initialization")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")
 # compare(prefix=overarm_prefix, tag_list=[tag_2, tag_139, tag_140, tag_141, tag_142], title="model_in_policy_gradient")
@@ -1063,7 +1086,7 @@ compare(prefix=overarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180], titl
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_145, tag_151, tag_152], title="noise_policy_action")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_158, tag_159], title="noise_policy_action_with_high_initialization")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_160, tag_166, tag_168, tag_169, tag_173,tag_175], title="noise_policy_action_with_improvement")
-compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180,tag_181], title="small_initialization")
+# compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_179, tag_180,tag_181], title="small_initialization")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_161, tag_172, tag_174, tag_176], title="noise_policy_action_scheduled_decaying")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_156, tag_162, tag_163, tag_170], title="high_initialization")
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_128, tag_130, tag_135], title="selecting_action")

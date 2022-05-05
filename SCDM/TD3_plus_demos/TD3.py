@@ -72,6 +72,7 @@ class Critic(nn.Module):
 class TD3(object):
 	def __init__(
 		self,
+		policy_type,
 		state_dim,
 		action_dim,
 		max_action,
@@ -125,6 +126,10 @@ class TD3(object):
 		self.policy_freq = policy_freq
 		self.beta = beta
 		self.state_dim = state_dim
+
+		self.policy_type = policy_type
+		if policy_type == 'DDPG':
+			self.policy_freq = 1
 
 		self.normaliser = Normaliser(state_dim, default_clip_range=5.0)
 
@@ -219,19 +224,29 @@ class TD3(object):
 					done_H.append(new_done)
 
 				# calculate the target Q at t=H
-				noise = (
-						torch.randn_like(action) * self.policy_noise
-				).clamp(-self.noise_clip, self.noise_clip)
+				if self.policy_type == 'DDPG':
+					next_action = self.actor_target(next_state_H[-1], action_H[-1])
+					next_action = self.beta * next_action + (1 - self.beta) * action_H[-1]
+					next_action = (
+						next_action
+					).clamp(-self.max_action, self.max_action)
 
-				next_action = self.actor_target(next_state_H[-1], action_H[-1]) + noise
-				next_action = self.beta * next_action + (1 - self.beta) * action_H[-1]
-				next_action = (
-					next_action
-				).clamp(-self.max_action, self.max_action)
+					Q1_H, Q2_H = self.critic_target(next_state_H[-1], next_action, action_H[-1])
+					target_Q = reward_H[-1] + self.discount * (1 - done_H[-1]) * Q1_H
+				else:
+					noise = (
+							torch.randn_like(action) * self.policy_noise
+					).clamp(-self.noise_clip, self.noise_clip)
 
-				Q1_H, Q2_H = self.critic_target(next_state_H[-1], next_action, action_H[-1])
-				Q_H = torch.min(Q1_H, Q2_H)
-				target_Q = reward_H[-1] + self.discount*(1-done_H[-1])*Q_H
+					next_action = self.actor_target(next_state_H[-1], action_H[-1]) + noise
+					next_action = self.beta * next_action + (1 - self.beta) * action_H[-1]
+					next_action = (
+						next_action
+					).clamp(-self.max_action, self.max_action)
+
+					Q1_H, Q2_H = self.critic_target(next_state_H[-1], next_action, action_H[-1])
+					Q_H = torch.min(Q1_H, Q2_H)
+					target_Q = reward_H[-1] + self.discount*(1-done_H[-1])*Q_H
 				target_Q_H.append(target_Q)
 
 				# calculting the target Q backward
@@ -254,22 +269,31 @@ class TD3(object):
 					filter_last_H.append(filter_last)
 
 			else:
-				# Select action according to policy and add clipped noise
-				noise = (
-						torch.randn_like(action) * self.policy_noise
-				).clamp(-self.noise_clip, self.noise_clip)
+				if self.policy_type == 'DDPG':
+					next_action = self.actor_target(next_state, action)
+					next_action = self.beta * next_action + (1 - self.beta) * action
+					next_action = (
+						next_action
+					).clamp(-self.max_action, self.max_action)
+					target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
+					target_Q = reward + self.discount * (1-done) * target_Q1
+				else:
+					# Select action according to policy and add clipped noise
+					noise = (
+							torch.randn_like(action) * self.policy_noise
+					).clamp(-self.noise_clip, self.noise_clip)
 
-				next_action = self.actor_target(next_state, action) + noise
+					next_action = self.actor_target(next_state, action) + noise
 
-				next_action = self.beta * next_action + (1 - self.beta) * action
-				next_action = (
-					next_action
-				).clamp(-self.max_action, self.max_action)
+					next_action = self.beta * next_action + (1 - self.beta) * action
+					next_action = (
+						next_action
+					).clamp(-self.max_action, self.max_action)
 
-				target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
+					target_Q1, target_Q2 = self.critic_target(next_state, next_action, action)
 
-				target_Q = torch.min(target_Q1, target_Q2)
-				target_Q = reward + self.discount * (1-done) * target_Q
+					target_Q = torch.min(target_Q1, target_Q2)
+					target_Q = reward + self.discount * (1-done) * target_Q
 
 				if add_artificial_transitions_type == 'ours':
 					# noisy policy action
@@ -296,20 +320,32 @@ class TD3(object):
 					new_done = transition.not_healthy(new_next_state)
 
 					# calculate the new a' for new next state
-					noise = (
-							torch.randn_like(action) * self.policy_noise
-					).clamp(-self.noise_clip, self.noise_clip)
 
-					new_next_action = self.actor_target(new_next_state, new_action) + noise
-					new_next_action = self.beta * new_next_action + (1 - self.beta) * new_action
-					new_next_action = new_next_action.clamp(-self.max_action, self.max_action)
+					if self.policy_type == 'DDPG':
+						new_next_action = self.actor_target(new_next_state, new_action)
+						new_next_action = self.beta * new_next_action + (1 - self.beta) * new_action
+						new_next_action = new_next_action.clamp(-self.max_action, self.max_action)
 
-					# Compute the target Q value
-					new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action,
-																	  new_action)
+						# Compute the target Q value
+						new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action,
+																		  new_action)
 
-					new_target_Q = torch.min(new_target_Q1, new_target_Q2)
-					new_target_Q = new_reward + self.discount * (1-new_done) * new_target_Q
+						new_target_Q = new_reward + self.discount * (1 - new_done) * new_target_Q1
+					else:
+						noise = (
+								torch.randn_like(action) * self.policy_noise
+						).clamp(-self.noise_clip, self.noise_clip)
+
+						new_next_action = self.actor_target(new_next_state, new_action) + noise
+						new_next_action = self.beta * new_next_action + (1 - self.beta) * new_action
+						new_next_action = new_next_action.clamp(-self.max_action, self.max_action)
+
+						# Compute the target Q value
+						new_target_Q1, new_target_Q2 = self.critic_target(new_next_state, new_next_action,
+																		  new_action)
+
+						new_target_Q = torch.min(new_target_Q1, new_target_Q2)
+						new_target_Q = new_reward + self.discount * (1-new_done) * new_target_Q
 
 					# filter with the error in two target Qs
 					target_error = torch.abs((new_target_Q1 - new_target_Q2))
