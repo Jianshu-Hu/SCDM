@@ -1022,6 +1022,9 @@ tag_205 = ["1_our_method_50_initialization_larger_networks_start_training_5e4",
 tag_206 = ["1_our_method_20_initialization_larger_networks_start_training_5e4",
            "2_our_method_20_initialization_larger_networks_start_training_5e4",
            "3_our_method_20_initialization_larger_networks_start_training_5e4"]
+tag_207 = ["1_our_method_10_initialization_larger_networks_start_training_5e4",
+           "2_our_method_10_initialization_larger_networks_start_training_5e4",
+           "3_our_method_10_initialization_larger_networks_start_training_5e4"]
 
 compare(prefix=reacher_prefix, tag_list=[tag_196, tag_197, tag_200], title="TD3")
 compare(prefix=reacher_prefix2, tag_list=[tag_201, tag_197], title="DDPG")
@@ -1042,13 +1045,13 @@ compare(prefix=hopper_prefix,tag_list=[tag_196, tag_199, tag_200],title="TD3")
 compare(prefix=hopper_prefix2,tag_list=[tag_201, tag_199,tag_204,tag_205],title="DDPG")
 
 compare(prefix=pen_prefix, tag_list=[tag_132, tag_183,tag_200], title="TD3")
-compare(prefix=pen_prefix2, tag_list=[tag_201], title="DDPG")
+compare(prefix=pen_prefix2, tag_list=[tag_201, tag_205], title="DDPG")
 
 compare(prefix=overarm_prefix, tag_list=[tag_196, tag_168, tag_200], title="TD3")
-compare(prefix=overarm_prefix2, tag_list=[tag_201], title="DDPG")
+compare(prefix=overarm_prefix2, tag_list=[tag_201, tag_207], title="DDPG")
 
 compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_200], title="TD3")
-compare(prefix=underarm_prefix2, tag_list=[tag_201], title="DDPG")
+compare(prefix=underarm_prefix2, tag_list=[tag_201, tag_207], title="DDPG")
 
 compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")
 compare(prefix=fetchpush_prefix, tag_list=[tag_187, tag_188, tag_191], title="test")

@@ -310,7 +310,8 @@ if __name__ == "__main__":
 				observation = main_episode_obs = env_statedict_to_state(observation_dict, env_name=args.env)
 
 		if t >= args.model_start_timesteps:
-			transition.train(replay_buffer)
+			if args.add_artificial_transitions_type != 'None':
+				transition.train(replay_buffer)
 		if t >= args.start_timesteps:
 			if args.without_demo:
 				policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
