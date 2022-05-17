@@ -105,6 +105,7 @@ if __name__ == "__main__":
 	# None: without artificial transitions
 	# ours: Using decaying noisy actions
 	# MVE: Using Model-based Value Expansion
+	# MA: Only use the filter with fixed action noise
 	parser.add_argument("--prediction_horizon", type=int, default=1)  #the prediction horizon for MVE
 	parser.add_argument("--demo_goal_type", type=str, default='Random') # set the goal of the segment from the demonstration
 	# True: the true goal of the segment

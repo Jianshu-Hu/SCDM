@@ -192,6 +192,10 @@ class TD3(object):
 				noise_type = 'gaussian'
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
+			elif add_artificial_transitions_type == 'MA':
+				noise_type = 'fixed'
+				initial_bound = self.max_action
+				max_error_so_far = torch.zeros(1)
 
 
 		with torch.no_grad():
@@ -295,7 +299,7 @@ class TD3(object):
 					target_Q = torch.min(target_Q1, target_Q2)
 					target_Q = reward + self.discount * (1-done) * target_Q
 
-				if add_artificial_transitions_type == 'ours':
+				if add_artificial_transitions_type == 'ours' or add_artificial_transitions_type == 'MA':
 					# noisy policy action
 					if noise_type == 'gaussian':
 						# decaying clip
@@ -370,7 +374,7 @@ class TD3(object):
 					current_Q1_H.append(current_Q1)
 					current_Q2_H.append(current_Q2)
 
-			elif add_artificial_transitions_type == 'ours':
+			elif add_artificial_transitions_type == 'ours' or add_artificial_transitions_type == 'MA':
 					new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
 					new_current_Q1 *= filter
 					new_current_Q2 *= filter
@@ -383,7 +387,7 @@ class TD3(object):
 					critic_loss_list.append(F.mse_loss(current_Q1_H[timestep], target_Q_H[-timestep-1]) +\
 							F.mse_loss(current_Q2_H[timestep], target_Q_H[-timestep-1]))
 				critic_loss = sum(critic_loss_list)/(H+1)
-			elif add_artificial_transitions_type == 'ours':
+			elif add_artificial_transitions_type == 'ours' or add_artificial_transitions_type == 'MA':
 				critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q) +\
 						F.mse_loss(new_current_Q1, new_target_Q) + F.mse_loss(new_current_Q2, new_target_Q)
 		else:

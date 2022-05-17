@@ -5,7 +5,7 @@ source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 env_name="Swimmer-v3"
-tag=our_method_20_initialization_one_more_layer_start_training_25e3
+tag=our_method_20_initialization_one_more_layer
 seed=3
 
 demo_tag=""

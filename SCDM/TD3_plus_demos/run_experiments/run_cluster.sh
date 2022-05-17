@@ -9,7 +9,7 @@ conda activate SCDM
 #env_name="EggCatchUnderarm-v0"
 env_name="EggCatchOverarm-v0"
 
-tag=our_method_10_initialization_one_more_layer_start_training_25e3
+tag=our_method_10_initialization_one_more_layer
 seed=3
 
 demo_tag=""
