@@ -5,8 +5,8 @@ import numpy as np
 import time
 from main import env_statedict_to_state
 
-# filename = "models/TD3_EggCatchOverarm-v0_0_random_goal_demo_2"
-# env_name = "EggCatchOverarm-v0"
+filename = "models/TD3_EggCatchOverarm-v0_1_our_method_10_initialization_one_more_layer"
+env_name = "EggCatchOverarm-v0"
 #
 # filename = "models/TD3_EggCatchOverarm-v0_1_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions"
 # env_name = "EggCatchOverarm-v0"
@@ -29,8 +29,8 @@ from main import env_statedict_to_state
 # filename = "models/TD3_HalfCheetah-v3_1_test"
 # env_name = "HalfCheetah-v3"
 
-filename = "models/TD3_Walker2d-v3_1_test_new"
-env_name = "Walker2d-v3"
+# filename = "models/TD3_Walker2d-v3_1_test_new"
+# env_name = "Walker2d-v3"
 
 beta = 0.7
 
@@ -119,9 +119,9 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
                 break
 
     # test the reward function
-    reward = compute_reward(prev_state_list, state_list, action_list, env_name)
-    print(reward)
-    print(np.sum(reward))
+    # reward = compute_reward(prev_state_list, state_list, action_list, env_name)
+    # print(reward)
+    # print(np.sum(reward))
     avg_reward /= eval_episodes
 
     print("---------------------------------------")
@@ -130,6 +130,7 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
     return avg_reward
 
 kwargs = {
+    "policy_type": TD3,
     "env_name": env_name,
     "state_dim": env_statedict_to_state(env.env._get_obs(), env_name).shape[0],
     "action_dim": env.action_space.shape[0],

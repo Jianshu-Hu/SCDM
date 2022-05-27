@@ -752,6 +752,7 @@ tag_195 = ["1_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_3
            "3_decaying_clipped_gaussian_noise_filter_with_max_diff_so_far_with_30_initialization"]
 
 
+
 def plot_all_fig(prefix=underarm_prefix, tag=tag_2, plot_or_save='save'):
     fig, axs = plt.subplots(2, 1)
     data_list = []
@@ -810,7 +811,7 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
             axs.plot(range(len(mean)), mean, label=label_list[i])
         else:
             axs.plot(range(len(mean)), mean, label=tag_list[i][0])
-    axs.set_title(prefix+title)
+    # axs.set_title(prefix+title)
     if prefix == reacher_prefix:
         axs.set_xlabel('timesteps/100')
         plt.ylim(-12, -3)
@@ -818,10 +819,7 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save'):
         axs.set_xlabel('timesteps/500')
         plt.ylim(-60, -20)
     elif prefix == cheetah_prefix:
-        if title == 'long_run':
-            axs.set_xlabel('timesteps/5000')
-        else:
-            axs.set_xlabel('timesteps/200')
+        axs.set_xlabel('timesteps/5000')
     elif prefix == walker_prefix:
         axs.set_xlabel('timesteps/5000')
     else:
@@ -1038,6 +1036,14 @@ tag_210 = ["1_MVE_H_3_decreased_larger_networks_start_training_25e3",
            "2_MVE_H_3_decreased_larger_networks_start_training_25e3",
            "3_MVE_H_3_decreased_larger_networks_start_training_25e3"]
 
+tag_212 = ["1_MATD3_one_more_layer",
+           "2_MATD3_one_more_layer",
+           "3_MATD3_one_more_layer"]
+
+tag_213 = ["1_our_method_one_more_layer",
+           "2_our_method_one_more_layer",
+           "3_our_method_one_more_layer"]
+
 tag_214 = ["1_MVE_H_3_one_more_layer",
            "2_MVE_H_3_one_more_layer",
            "3_MVE_H_3_one_more_layer"]
@@ -1066,34 +1072,191 @@ tag_220 = ["10_MVE_H_3_one_more_layer_different_seeds",
            "11_MVE_H_3_one_more_layer_different_seeds",
            "12_MVE_H_3_one_more_layer_different_seeds"]
 
-compare(prefix=reacher_prefix, tag_list=[tag_196, tag_197, tag_200, tag_202], title="TD3")
+tag_221 = ["1_our_method_50_initialization_one_more_layer",
+           "3_our_method_50_initialization_one_more_layer",
+           "4_our_method_50_initialization_one_more_layer",
+           "5_our_method_50_initialization_one_more_layer",
+           "6_our_method_50_initialization_one_more_layer"]
+
+tag_222 = ["1_our_method_30_initialization_one_more_layer",
+           "2_our_method_30_initialization_one_more_layer",
+           "3_our_method_30_initialization_one_more_layer"]
+
+tag_223 = ["1_our_method_-10_initialization_one_more_layer",
+           "2_our_method_-10_initialization_one_more_layer",
+           "3_our_method_-10_initialization_one_more_layer"]
+
+tag_224 = ["1_our_method_-2_initialization_one_more_layer",
+           "2_our_method_-2_initialization_one_more_layer",
+           "3_our_method_-2_initialization_one_more_layer",
+           "4_our_method_-2_initialization_one_more_layer",
+           "5_our_method_-2_initialization_one_more_layer"]
+
+tag_225 = ["1_our_method_10_initialization_one_more_layer",
+           "2_our_method_10_initialization_one_more_layer",
+           "3_our_method_10_initialization_one_more_layer"]
+
+tag_226 = ["1_our_method_-5_initialization_one_more_layer",
+           "2_our_method_-5_initialization_one_more_layer",
+           "3_our_method_-5_initialization_one_more_layer",
+           "4_our_method_-5_initialization_one_more_layer",
+           "5_our_method_-5_initialization_one_more_layer"]
+
+
+tag_227 = ["1_our_method_-30_initialization_one_more_layer",
+           "2_our_method_-30_initialization_one_more_layer",
+           "3_our_method_-30_initialization_one_more_layer"]
+
+tag_228 = ["1_our_method_100_initialization_one_more_layer",
+           "2_our_method_100_initialization_one_more_layer",
+           "3_our_method_100_initialization_one_more_layer"]
+
+
+tag_229 = ["1_our_method_10_initialization_one_more_layer_without_filter",
+           "2_our_method_10_initialization_one_more_layer_without_filter",
+           "3_our_method_10_initialization_one_more_layer_without_filter"]
+
+tag_230 = ["1_our_method_150_initialization_one_more_layer",
+           "2_our_method_150_initialization_one_more_layer",
+           "3_our_method_150_initialization_one_more_layer"]
+tag_231 = ["1_our_method_40_initialization_one_more_layer",
+           "2_our_method_40_initialization_one_more_layer",
+           "3_our_method_40_initialization_one_more_layer"]
+
+tag_232 = ["1_our_method_scheduled_bias",
+           "2_our_method_scheduled_bias",
+           "3_our_method_scheduled_bias"]
+
+tag_233 = ["1_TD3_scheduled_bias",
+           "2_TD3_scheduled_bias",
+           "3_TD3_scheduled_bias"]
+
+tag_234 = ["1_our_method_scheduled_bias_decay_09",
+         "2_our_method_scheduled_bias_decay_09",
+         "3_our_method_scheduled_bias_decay_09"]
+
+tag_235 =["1_TD3_with_wrapper", "2_TD3_with_wrapper", "3_TD3_with_wrapper"]
+tag_236 =["1_our_method_with_wrapper", "2_our_method_with_wrapper", "3_our_method_with_wrapper"]
+
+
+
+tag_1 = ["1_TD3", "2_TD3", "3_TD3", "4_TD3", "5_TD3"]
+
+tag_2 = ["1_MVE_H_3_one_more_layer",
+           "2_MVE_H_3_one_more_layer",
+           "3_MVE_H_3_one_more_layer",
+           "4_MVE_H_3_one_more_layer",
+           "5_MVE_H_3_one_more_layer"]
+
+tag_3 = ["1_MATD3_one_more_layer",
+         "2_MATD3_one_more_layer",
+         "3_MATD3_one_more_layer",
+         "4_MATD3_one_more_layer",
+         "5_MATD3_one_more_layer"]
+
+tag_4 = ["1_our_method_without_initialization",
+         "2_our_method_without_initialization",
+         "3_our_method_without_initialization"]
+
+tag_5 = ["1_our_method_10_initialization_one_more_layer_without_filter",
+           "2_our_method_10_initialization_one_more_layer_without_filter",
+           "3_our_method_10_initialization_one_more_layer_without_filter"]
+
+
+tag_cheetah = ["1_our_method_50_initialization_one_more_layer",
+           "3_our_method_50_initialization_one_more_layer",
+           "4_our_method_50_initialization_one_more_layer",
+           "5_our_method_50_initialization_one_more_layer",
+           "6_our_method_50_initialization_one_more_layer"]
+
+tag_reacher = ["1_our_method_one_more_layer",
+               "2_our_method_one_more_layer",
+               "3_our_method_one_more_layer",
+               "4_our_method_one_more_layer",
+               "5_our_method_one_more_layer"]
+
+tag_pusher = ["1_our_method_-10_initialization_one_more_layer",
+              "2_our_method_-10_initialization_one_more_layer",
+              "3_our_method_-10_initialization_one_more_layer",
+              "4_our_method_-10_initialization_one_more_layer",
+              "5_our_method_-10_initialization_one_more_layer"]
+
+tag_hopper = ["1_our_method_50_initialization_one_more_layer",
+              "2_our_method_50_initialization_one_more_layer",
+              "3_our_method_50_initialization_one_more_layer",
+              "4_our_method_50_initialization_one_more_layer",
+              "5_our_method_50_initialization_one_more_layer"]
+
+
+tag_swimmer = ["1_our_method_30_initialization_one_more_layer",
+               "2_our_method_30_initialization_one_more_layer",
+               "3_our_method_30_initialization_one_more_layer",
+               "4_our_method_30_initialization_one_more_layer",
+               "5_our_method_30_initialization_one_more_layer"]
+
+tag_walker = ["1_our_method_100_initialization_one_more_layer",
+              "2_our_method_100_initialization_one_more_layer",
+              "3_our_method_100_initialization_one_more_layer",
+              "4_our_method_100_initialization_one_more_layer",
+              "5_our_method_100_initialization_one_more_layer"]
+
+# tune parameter
+# compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_2, tag_3, tag_cheetah], title="TD3")
+# compare(prefix=reacher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_reacher, tag_226, tag_224], title="TD3")
+# compare(prefix=pusher_prefix, tag_list=[tag_1, tag_213, tag_2, tag_3, tag_pusher, tag_227], title="TD3")
+# compare(prefix=hopper_prefix,tag_list=[tag_1, tag_hopper, tag_2, tag_3, tag_222, tag_228], title="TD3")
+# compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_218, tag_2, tag_3, tag_225, tag_swimmer, tag_217, tag_231], title="TD3")
+# compare(prefix=walker_prefix, tag_list=[tag_1, tag_217, tag_2, tag_3, tag_222, tag_walker, tag_230], title="TD3")
+
+# compare(prefix=pen_prefix, tag_list=[tag_132, tag_200, tag_202, tag_217, tag_212, tag_222, tag_228], title="TD3")
+# compare(prefix=overarm_prefix, tag_list=[tag_196, tag_200, tag_202, tag_216, tag_212, tag_229, tag_4, tag_214], title="TD3")
+# compare(prefix=underarm_prefix, tag_list=[tag_196, tag_200, tag_202, tag_216, tag_212, tag_229, tag_4, tag_214], title="TD3")
+
+# final version
+compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_2, tag_3, tag_cheetah, tag_232, tag_234], title="TD3")
+compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+
+compare(prefix=reacher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_reacher, tag_232, tag_234], title="TD3")
+compare(prefix=reacher_prefix, tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+
+compare(prefix=pusher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_pusher, tag_232, tag_234], title="TD3")
+
+compare(prefix=hopper_prefix,tag_list=[tag_1, tag_2, tag_3, tag_hopper, tag_232, tag_234], title="TD3")
+compare(prefix=hopper_prefix,tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+
+compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_2, tag_3, tag_swimmer, tag_232, tag_234], title="TD3")
+compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+
+compare(prefix=walker_prefix, tag_list=[tag_1, tag_2, tag_3, tag_walker, tag_232, tag_234], title="TD3")
+
+compare(prefix=pen_prefix, tag_list=[tag_132, tag_200, tag_202, tag_212, tag_217], title="TD3")
+compare(prefix=overarm_prefix, tag_list=[tag_196, tag_200, tag_214, tag_212, tag_216], title="TD3")
+compare(prefix=underarm_prefix, tag_list=[tag_196, tag_200, tag_214, tag_212, tag_216], title="TD3")
+
+# ablation study
+compare(prefix=overarm_prefix, tag_list=[tag_196, tag_212, tag_4, tag_5, tag_216], title="ablation")
+compare(prefix=underarm_prefix, tag_list=[tag_196, tag_212, tag_4, tag_5, tag_216], title="ablation")
+
+
 # compare(prefix=reacher_prefix2, tag_list=[tag_201, tag_197], title="DDPG")
 
-compare(prefix=pusher_prefix, tag_list=[tag_196, tag_197, tag_200, tag_202], title="TD3")
 # compare(prefix=pusher_prefix2, tag_list=[tag_201, tag_197], title="DDPG")
 
-compare(prefix=cheetah_prefix, tag_list=[tag_196, tag_199, tag_200, tag_202, tag_217, tag_214], title="TD3")
 # compare(prefix=cheetah_prefix2, tag_list=[tag_201, tag_199, tag_202, tag_203, tag_204, tag_205], title="DDPG")
 
-compare(prefix=walker_prefix, tag_list=[tag_196, tag_199, tag_200, tag_202, tag_217, tag_214, tag_215, tag_219, tag_220], title="TD3")
 # compare(prefix=walker_prefix2, tag_list=[tag_201, tag_199, tag_202, tag_203, tag_204, tag_205], title="DDPG")
 
-compare(prefix=swimmer_prefix, tag_list=[tag_196, tag_198, tag_200, tag_202, tag_218, tag_214], title="TD3")
 # compare(prefix=swimmer_prefix2, tag_list=[tag_201, tag_198, tag_203, tag_204, tag_206], title="DDPG")
 
-compare(prefix=hopper_prefix,tag_list=[tag_196, tag_199, tag_200,tag_202, tag_217, tag_214],title="TD3")
 # compare(prefix=hopper_prefix2,tag_list=[tag_201, tag_199,tag_204,tag_205],title="DDPG")
 
 # compare(prefix=pen_prefix, tag_list=[tag_132, tag_183,tag_200,tag_205,tag_208,tag_212], title="TD3")
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_183, tag_200, tag_202, tag_217], title="TD3")
 # compare(prefix=pen_prefix2, tag_list=[tag_201, tag_205], title="DDPG")
 
 # compare(prefix=overarm_prefix, tag_list=[tag_196, tag_168, tag_200, tag_207, tag_209, tag_211], title="TD3")
-compare(prefix=overarm_prefix, tag_list=[tag_196, tag_168, tag_200, tag_202, tag_216], title="TD3")
 # compare(prefix=overarm_prefix2, tag_list=[tag_201, tag_207], title="DDPG")
 
 # compare(prefix=underarm_prefix, tag_list=[tag_2, tag_168, tag_200, tag_207, tag_204, tag_209, tag_210, tag_211], title="TD3")
-compare(prefix=underarm_prefix, tag_list=[tag_196, tag_168, tag_200, tag_202, tag_216], title="TD3")
 # compare(prefix=underarm_prefix2, tag_list=[tag_201, tag_207], title="DDPG")
 
 # compare(prefix=fetchpick_prefix, tag_list=[tag_187, tag_188], title="test")

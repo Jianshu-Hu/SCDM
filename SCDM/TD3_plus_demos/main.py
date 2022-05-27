@@ -13,11 +13,16 @@ import SCDM.TD3_plus_demos.TD3 as TD3
 from SCDM.TD3_plus_demos.utils import env_statedict_to_state
 import SCDM.TD3_plus_demos.transition_model as transition_model
 
+import SCDM.TD3_plus_demos.wrapper as wrapper
+
 # Runs policy for X episodes and returns average reward
 # Runs critic for X episodes and returns average Q value for some states
 # A fixed seed is used for the eval environment
-def eval_policy(policy, env_name, seed, eval_episodes=10, evaluate_critic_t=50):
-	eval_env = gym.make(env_name)
+def eval_policy(policy, env_name, seed, use_wrapper=False, eval_episodes=10, evaluate_critic_t=1):
+	if use_wrapper:
+		eval_env = wrapper.BasicWrapper(gym.make(env_name))
+	else:
+		eval_env = gym.make(env_name)
 	eval_env.seed(seed + 100)
 
 	avg_reward = 0.
@@ -62,6 +67,9 @@ def eval_policy(policy, env_name, seed, eval_episodes=10, evaluate_critic_t=50):
 	print("---------------------------------------")
 	print(f"Evaluation of Q over {eval_episodes} episodes: {avg_Q:.3f}")
 	print("---------------------------------------")
+
+	print('bias in last layer of critic 1: ', policy.critic.l3.bias.data.item())
+	print('bias in last layer of critic 2: ', policy.critic.l6.bias.data.item())
 	return avg_reward, avg_Q
 
 
@@ -112,6 +120,9 @@ if __name__ == "__main__":
 	# Noisy: add noise to the true goal of the segment
 	# Random: randomly sample a goal
 
+	# use wrapper to change the environment
+	parser.add_argument("--use_wrapper", action='store_true')  # tag for using the wrapper
+
 	args = parser.parse_args()
 
 	file_name = f"{args.policy}_{args.env}_{args.seed}_{args.expt_tag}"
@@ -127,9 +138,15 @@ if __name__ == "__main__":
 	if args.save_model and not os.path.exists("./models"):
 		os.makedirs("./models")
 
-	env_main = gym.make(args.env)
-	env_demo = gym.make(args.env)
-	env_reset = gym.make(args.env)
+	if args.use_wrapper:
+		env_main = wrapper.BasicWrapper(gym.make(args.env))
+		env_demo = wrapper.BasicWrapper(gym.make(args.env))
+		env_reset = wrapper.BasicWrapper(gym.make(args.env))
+	else:
+		env_main = gym.make(args.env)
+		env_demo = gym.make(args.env)
+		env_reset = gym.make(args.env)
+
 
 	if args.without_demo:
 		args.pd_init = 0
@@ -147,10 +164,14 @@ if __name__ == "__main__":
 	env_reset.seed(args.seed+2)
 	env_reset.action_space.np_random.seed(args.seed+2)
 	torch.manual_seed(args.seed)
-	
-	state_dim = env_statedict_to_state(env_main.env._get_obs(), args.env).shape[0]
+
+	if args.use_wrapper:
+		state_dim = env_statedict_to_state(env_main._get_obs(), args.env).shape[0]
+	else:
+		state_dim = env_statedict_to_state(env_main.env._get_obs(), args.env).shape[0]
 	action_dim = env_main.action_space.shape[0]
 	max_action = float(env_main.action_space.high[0])
+
 
 	kwargs = {
 		"policy_type": args.policy,
@@ -179,6 +200,10 @@ if __name__ == "__main__":
 		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
 													  None)
 
+	if args.add_artificial_transitions_type == 'ours':
+		scale = 1
+		scale_decay = 0.9
+
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
 		policy.load(f"./models/{policy_file}")
@@ -189,7 +214,7 @@ if __name__ == "__main__":
 
 	
 	# Evaluate untrained policy
-	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)
+	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
 	evaluations_policy = [avg_reward]
 	evaluations_critic = [avg_Q]
 
@@ -290,7 +315,6 @@ if __name__ == "__main__":
 
 		# replay buffer
 		replay_buffer.add(observation, action, next_observation, reward, prev_action, done)
-
 		if args.use_normaliser:
 			policy.normaliser.update(observation)
 			if t % args.update_normaliser_every == 0:
@@ -310,6 +334,7 @@ if __name__ == "__main__":
 				observation_dict = env_main.reset()
 				observation = main_episode_obs = env_statedict_to_state(observation_dict, env_name=args.env)
 
+
 		if t >= args.model_start_timesteps:
 			if args.add_artificial_transitions_type != 'None':
 				transition.train(replay_buffer)
@@ -322,7 +347,18 @@ if __name__ == "__main__":
 							 args.add_artificial_transitions_type, args.prediction_horizon)
 
 		if (t+1) % args.eval_freq == 0:
-			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed)
+			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
+			if args.add_artificial_transitions_type == 'ours':
+				# if t < args.model_start_timesteps:
+				# 	b1 = avg_reward
+				# 	b2 = avg_reward
+				# else:
+				b1 = avg_Q*scale + policy.critic.l3.bias.data.item() * (1-scale)
+				b2 = avg_Q*scale + policy.critic.l6.bias.data.item() * (1-scale)
+				torch.nn.init.constant_(policy.critic.l3.bias.data, b1)
+				torch.nn.init.constant_(policy.critic.l6.bias.data, b2)
+				scale *= scale_decay
+
 			evaluations_policy.append(avg_reward)
 			evaluations_critic.append(avg_Q)
 			np.save(f"./results/{file_name}", evaluations_policy)

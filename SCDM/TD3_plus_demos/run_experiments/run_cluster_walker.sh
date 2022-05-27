@@ -5,8 +5,8 @@ source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 env_name="Walker2d-v3"
-tag=MVE_H_3_one_more_layer_different_seeds
-seed=12
+tag=our_method_scheduled_bias_decay_09
+seed=3
 
 demo_tag=""
 
@@ -15,4 +15,4 @@ demo_tag=""
 echo "start running $env_name $tag with seed $seed"
 
 #walker
-python main.py --policy="TD3" --add_artificial_transitions_type="MVE" --prediction_horizon=3 --eval_freq=5000 --max_timesteps=3000000 --model_start_timesteps=5000 --start_timesteps=25000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --policy="TD3" --add_artificial_transitions_type="ours" --prediction_horizon=3 --eval_freq=5000 --max_timesteps=3000000 --model_start_timesteps=5000 --start_timesteps=25000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model

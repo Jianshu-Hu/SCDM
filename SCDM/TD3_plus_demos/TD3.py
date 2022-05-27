@@ -92,29 +92,35 @@ class TD3(object):
 		self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=3e-4)
 
 		self.critic = Critic(state_dim, action_dim).to(device)
-		if add_artificial_transitions_type == 'ours':
+		# if add_artificial_transitions_type == 'ours':
 			# initialize with a high Q value to encourage exploration
-			if env_name == 'PenSpin-v0':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
-			elif env_name == 'EggCatchOverarm-v0':
-				nn.init.constant_(self.critic.l3.bias.data, 10)
-				nn.init.constant_(self.critic.l6.bias.data, 10)
-			elif env_name == 'EggCatchUnderarm-v0':
-				nn.init.constant_(self.critic.l3.bias.data, 10)
-				nn.init.constant_(self.critic.l6.bias.data, 10)
-			elif env_name == 'Walker2d-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
-			elif env_name == 'HalfCheetah-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
-			elif env_name == 'Swimmer-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 20)
-				nn.init.constant_(self.critic.l6.bias.data, 20)
-			elif env_name == 'Hopper-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
+			# if env_name == 'PenSpin-v0':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 50)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 50)
+			# elif env_name == 'EggCatchOverarm-v0':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 10)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 10)
+			# elif env_name == 'EggCatchUnderarm-v0':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 10)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 10)
+			# elif env_name == 'Walker2d-v3':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 100)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 100)
+			# elif env_name == 'HalfCheetah-v3':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 50)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 50)
+			# elif env_name == 'Swimmer-v3':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 30)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 30)
+			# elif env_name == 'Hopper-v3':
+			# 	nn.init.constant_(self.critic.l3.bias.data, 50)
+			# 	nn.init.constant_(self.critic.l6.bias.data, 50)
+			# elif env_name == 'Pusher-v2':
+			# 	nn.init.constant_(self.critic.l3.bias.data, -10)
+			# 	nn.init.constant_(self.critic.l6.bias.data, -10)
+			# elif env_name == 'Reacher-v2':
+			# 	nn.init.constant_(self.critic.l3.bias.data, -2)
+			# 	nn.init.constant_(self.critic.l6.bias.data, -2)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -192,10 +198,12 @@ class TD3(object):
 				noise_type = 'gaussian'
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
+				use_the_filter = True
 			elif add_artificial_transitions_type == 'MA':
 				noise_type = 'fixed'
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
+				use_the_filter = True
 
 
 		with torch.no_grad():
@@ -359,7 +367,8 @@ class TD3(object):
 					if max_error > max_error_so_far:
 						max_error_so_far = torch.clone(max_error)
 					filter = torch.where(torch.rand_like(target_error) < target_error/max_error_so_far, 1, 0)
-					new_target_Q *= filter
+					if use_the_filter:
+						new_target_Q *= filter
 
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
@@ -376,8 +385,9 @@ class TD3(object):
 
 			elif add_artificial_transitions_type == 'ours' or add_artificial_transitions_type == 'MA':
 					new_current_Q1, new_current_Q2 = self.critic(state, new_action, prev_action)
-					new_current_Q1 *= filter
-					new_current_Q2 *= filter
+					if use_the_filter:
+						new_current_Q1 *= filter
+						new_current_Q2 *= filter
 
 		# calculate critic loss
 		if add_artificial_transitions:
