@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from SCDM.TD3_plus_demos.normaliser import Normaliser
-import SCDM.TD3_plus_demos.invariance as invariance
+import math
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -92,35 +92,38 @@ class TD3(object):
 		self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=3e-4)
 
 		self.critic = Critic(state_dim, action_dim).to(device)
-		# if add_artificial_transitions_type == 'ours':
+		if add_artificial_transitions_type == 'ours':
 			# initialize with a high Q value to encourage exploration
-			# if env_name == 'PenSpin-v0':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 50)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 50)
-			# elif env_name == 'EggCatchOverarm-v0':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 10)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 10)
-			# elif env_name == 'EggCatchUnderarm-v0':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 10)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 10)
-			# elif env_name == 'Walker2d-v3':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 100)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 100)
-			# elif env_name == 'HalfCheetah-v3':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 50)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 50)
-			# elif env_name == 'Swimmer-v3':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 30)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 30)
-			# elif env_name == 'Hopper-v3':
-			# 	nn.init.constant_(self.critic.l3.bias.data, 50)
-			# 	nn.init.constant_(self.critic.l6.bias.data, 50)
-			# elif env_name == 'Pusher-v2':
-			# 	nn.init.constant_(self.critic.l3.bias.data, -10)
-			# 	nn.init.constant_(self.critic.l6.bias.data, -10)
-			# elif env_name == 'Reacher-v2':
-			# 	nn.init.constant_(self.critic.l3.bias.data, -2)
-			# 	nn.init.constant_(self.critic.l6.bias.data, -2)
+			if env_name == 'PenSpin-v0':
+				nn.init.constant_(self.critic.l3.bias.data, 50)
+				nn.init.constant_(self.critic.l6.bias.data, 50)
+			elif env_name == 'EggCatchOverarm-v0':
+				nn.init.constant_(self.critic.l3.bias.data, 10)
+				nn.init.constant_(self.critic.l6.bias.data, 10)
+			elif env_name == 'EggCatchUnderarm-v0':
+				nn.init.constant_(self.critic.l3.bias.data, 10)
+				nn.init.constant_(self.critic.l6.bias.data, 10)
+			elif env_name == 'Walker2d-v3':
+				nn.init.constant_(self.critic.l3.bias.data, 100)
+				nn.init.constant_(self.critic.l6.bias.data, 100)
+			elif env_name == 'HalfCheetah-v3':
+				nn.init.constant_(self.critic.l3.bias.data, 50)
+				nn.init.constant_(self.critic.l6.bias.data, 50)
+			elif env_name == 'Swimmer-v3':
+				nn.init.constant_(self.critic.l3.bias.data, 30)
+				nn.init.constant_(self.critic.l6.bias.data, 30)
+			elif env_name == 'Hopper-v3':
+				nn.init.constant_(self.critic.l3.bias.data, 50)
+				nn.init.constant_(self.critic.l6.bias.data, 50)
+			elif env_name == 'Ant-v3':
+				nn.init.constant_(self.critic.l3.bias.data, 100)
+				nn.init.constant_(self.critic.l6.bias.data, 100)
+			elif env_name == 'Pusher-v2':
+				nn.init.constant_(self.critic.l3.bias.data, -10)
+				nn.init.constant_(self.critic.l6.bias.data, -10)
+			elif env_name == 'Reacher-v2':
+				nn.init.constant_(self.critic.l3.bias.data, -2)
+				nn.init.constant_(self.critic.l6.bias.data, -2)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -153,6 +156,7 @@ class TD3(object):
 
 		self.epsilon = 1
 		self.epsilon_decay = 0.9999996
+		# self.epsilon_decay = 0.9999995
 
 		self.noise_variance = 5
 		self.noise_variance_decay = 0.9999995
@@ -178,14 +182,14 @@ class TD3(object):
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
-		# # debug reward
-		# if self.total_it % 1000 == 0:
-		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
-		# 	print("reward_error: ", error)
-		# # debug done
-		# if self.total_it % 1000 == 0:
-		# 	error = F.mse_loss(done, transition.not_healthy(next_state))
-		# 	print("done_error: ", error)
+		# debug reward
+		if self.total_it % 1000 == 0:
+			error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
+			print("reward_error: ", error)
+		# debug done
+		if self.total_it % 1000 == 0:
+			error = F.mse_loss(done, transition.not_healthy(next_state))
+			print("done_error: ", error)
 
 		if add_artificial_transitions_type == "None":
 			add_artificial_transitions = False
@@ -328,6 +332,9 @@ class TD3(object):
 
 					# forward with the action using the dynamic model
 					new_next_state = transition.forward_model(state, new_action)
+
+					# add a bonus on choosing action far away from policy action
+					# bonus = torch.linalg.norm(noise, dim=1, keepdim=True)/math.sqrt(noise.shape[1])
 					new_reward = transition.compute_reward(state, new_next_state, new_action)
 					new_done = transition.not_healthy(new_next_state)
 

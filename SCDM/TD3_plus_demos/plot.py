@@ -28,6 +28,8 @@ swimmer_prefix2 = "DDPG_Swimmer-v3_"
 hopper_prefix = "TD3_Hopper-v3_"
 hopper_prefix2 = "DDPG_Hopper-v3_"
 
+ant_prefix = "TD3_Ant-v3_"
+
 fetchpick_prefix = "TD3_FetchPickAndPlaceDense-v1_"
 fetchpush_prefix = "TD3_FetchPushDense-v1_"
 fetchslide_prefix = "TD3_FetchSlideDense-v1_"
@@ -872,22 +874,32 @@ def plot_actor_critic_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save
         plt.savefig('saved_fig/' + prefix + tag[0] + '_actor_critic_loss')
 
 
-def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_or_save='save'):
-    fig, axs = plt.subplots(2, 1)
-    for i in range(len(tag)):
-        loss = np.load('results/'+prefix + tag[i] + "_transition_model_loss.npy")
-        axs[0].plot(range(len(loss)), loss, label=tag[i]+"_transition_model_loss")
-        axs[0].set_xlabel('timesteps')
-        axs[0].set_ylabel('model loss')
-        axs[0].legend()
+def plot_transition_model_loss(prefix=overarm_prefix, tag=tag_59, plot_reward=False, plot_or_save='save'):
+    if plot_reward:
+        fig, axs = plt.subplots(2, 1)
+        for i in range(len(tag)):
+            loss = np.load('results/'+prefix + tag[i] + "_transition_model_loss.npy")
+            axs[0].plot(range(len(loss)), loss, label=tag[i]+"_transition_model_loss")
+            axs[0].set_xlabel('timesteps')
+            axs[0].set_ylabel('model loss')
+            axs[0].legend()
 
-        loss = np.load('results/'+prefix + tag[i] + "_reward_model_loss.npy")
-        axs[1].plot(range(len(loss)), loss, label=tag[i]+"_reward_model_loss")
-        axs[1].set_xlabel('timesteps')
-        axs[1].set_ylabel('model loss')
-        axs[1].legend()
+            loss = np.load('results/'+prefix + tag[i] + "_reward_model_loss.npy")
+            axs[1].plot(range(len(loss)), loss, label=tag[i]+"_reward_model_loss")
+            axs[1].set_xlabel('timesteps')
+            axs[1].set_ylabel('model loss')
+            axs[1].legend()
 
-        axs[0].set_title(prefix + tag[0])
+            axs[0].set_title(prefix + tag[0])
+    else:
+        fig, axs = plt.subplots(1, 1)
+        for i in range(len(tag)):
+            loss = np.load('results/'+prefix + tag[i] + "_transition_model_loss.npy")
+            axs.plot(range(len(loss)), loss, label=tag[i]+"_transition_model_loss")
+            axs.set_xlabel('timesteps')
+            axs.set_ylabel('model loss')
+            axs.legend()
+            axs.set_title(prefix + tag[0])
     if plot_or_save == 'plot':
         plt.show()
     else:
@@ -1138,6 +1150,56 @@ tag_234 = ["1_our_method_scheduled_bias_decay_09",
 tag_235 =["1_TD3_with_wrapper", "2_TD3_with_wrapper", "3_TD3_with_wrapper"]
 tag_236 =["1_our_method_with_wrapper", "2_our_method_with_wrapper", "3_our_method_with_wrapper"]
 
+tag_237 = ["1_TD3_with_wrapper_H_20","2_TD3_with_wrapper_H_20","3_TD3_with_wrapper_H_20"]
+tag_238 = ["1_our_method_with_wrapper_H_20","2_our_method_with_wrapper_H_20","3_our_method_with_wrapper_H_20"]
+tag_239 = ["1_our_method_with_wrapper_H_20_without_initialization",
+           "2_our_method_with_wrapper_H_20_without_initialization",
+           "3_our_method_with_wrapper_H_20_without_initialization"]
+
+tag_240 = ["1_our_method_with_wrapper_H_100_without_initialization",
+           "2_our_method_with_wrapper_H_100_without_initialization",
+           "3_our_method_with_wrapper_H_100_without_initialization"]
+
+tag_241 = ["1_TD3_with_wrapper_H_100",
+           "2_TD3_with_wrapper_H_100",
+           "3_TD3_with_wrapper_H_100"]
+
+tag_242 = ["1_our_method_bonus_in_artificial_transition",
+           "2_our_method_bonus_in_artificial_transition",
+           "3_our_method_bonus_in_artificial_transition"]
+
+tag_243 = ["1_our_method_max_return",
+           "2_our_method_max_return",
+           "3_our_method_max_return"]
+
+tag_244 = ["1_our_method_with_wrapper_H_100",
+           "2_our_method_with_wrapper_H_100",
+           "3_our_method_with_wrapper_H_100"]
+
+tag_245 = ["1_TD3_with_wrapper_H_200",
+           "2_TD3_with_wrapper_H_200",
+           "3_TD3_with_wrapper_H_200"]
+
+tag_246 = ["1_our_method_with_wrapper_H_200",
+           "2_our_method_with_wrapper_H_200",
+           "3_our_method_with_wrapper_H_200"]
+
+tag_247 = ["1_TD3_with_demos",
+           "2_TD3_with_demos",
+           "3_TD3_with_demos"]
+tag_248 = ["1_our_method_with_demos",
+           "2_our_method_with_demos",
+           "3_our_method_with_demos"]
+
+
+tag_249 = ["1_TD3_policy_freq_3",
+           "2_TD3_policy_freq_3",
+           "3_TD3_policy_freq_3"]
+
+tag_250 = ["1_our_method_decay_faster",
+           "2_our_method_decay_faster",
+           "3_our_method_decay_faster"]
+
 
 
 tag_1 = ["1_TD3", "2_TD3", "3_TD3", "4_TD3", "5_TD3"]
@@ -1156,11 +1218,43 @@ tag_3 = ["1_MATD3_one_more_layer",
 
 tag_4 = ["1_our_method_without_initialization",
          "2_our_method_without_initialization",
-         "3_our_method_without_initialization"]
+         "3_our_method_without_initialization",
+         "4_our_method_without_initialization",
+         "5_our_method_without_initialization"]
 
+tag_5_unfinished = ["1_our_method_10_initialization_one_more_layer_without_filter",
+         "2_our_method_10_initialization_one_more_layer_without_filter",
+         "3_our_method_10_initialization_one_more_layer_without_filter"]
 tag_5 = ["1_our_method_10_initialization_one_more_layer_without_filter",
-           "2_our_method_10_initialization_one_more_layer_without_filter",
-           "3_our_method_10_initialization_one_more_layer_without_filter"]
+         "2_our_method_10_initialization_one_more_layer_without_filter",
+         "3_our_method_10_initialization_one_more_layer_without_filter",
+         "4_our_method_10_initialization_one_more_layer_without_filter",
+         "5_our_method_10_initialization_one_more_layer_without_filter"]
+
+tag_6 = ["1_our_method_without_decaying_noise",
+         "2_our_method_without_decaying_noise",
+         "3_our_method_without_decaying_noise",
+         "4_our_method_without_decaying_noise",
+         "5_our_method_without_decaying_noise"]
+
+tag_7 = ["1_with_normaliser",
+        "2_with_normaliser",
+        "3_with_normaliser",
+        "4_TD3",
+        "5_TD3"]
+
+tag_8 = ["1_our_method",
+         "2_our_method",
+         "3_our_method",
+         "4_our_method",
+         "5_our_method"]
+
+tag_pen = ["1_our_method_50_initialization_one_more_layer",
+           "2_our_method_50_initialization_one_more_layer",
+           "3_our_method_50_initialization_one_more_layer",
+           "4_our_method_50_initialization_one_more_layer",
+           "5_our_method_50_initialization_one_more_layer"
+           ]
 
 
 tag_cheetah = ["1_our_method_50_initialization_one_more_layer",
@@ -1212,30 +1306,43 @@ tag_walker = ["1_our_method_100_initialization_one_more_layer",
 # compare(prefix=overarm_prefix, tag_list=[tag_196, tag_200, tag_202, tag_216, tag_212, tag_229, tag_4, tag_214], title="TD3")
 # compare(prefix=underarm_prefix, tag_list=[tag_196, tag_200, tag_202, tag_216, tag_212, tag_229, tag_4, tag_214], title="TD3")
 
+# plot_transition_model_loss(prefix=hopper_prefix, tag=tag_243)
+# plot_transition_model_loss(prefix=reacher_prefix, tag=tag_243)
+# plot_transition_model_loss(prefix=pusher_prefix, tag=tag_243)
+# plot_transition_model_loss(prefix=swimmer_prefix, tag=tag_243)
+# plot_transition_model_loss(prefix=walker_prefix, tag=tag_243)
 # final version
-compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_2, tag_3, tag_cheetah, tag_232, tag_234], title="TD3")
+compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_2, tag_3, tag_cheetah, tag_243, tag_249, tag_250, tag_8], title="TD3")
 compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_235, tag_236], title="wrapper")
 
-compare(prefix=reacher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_reacher, tag_232, tag_234], title="TD3")
-compare(prefix=reacher_prefix, tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+compare(prefix=reacher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_reacher, tag_243, tag_249], title="TD3")
+compare(prefix=reacher_prefix, tag_list=[tag_1, tag_235, tag_236,tag_237,tag_238,tag_239,tag_240,tag_241], title="wrapper")
 
-compare(prefix=pusher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_pusher, tag_232, tag_234], title="TD3")
+compare(prefix=pusher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_pusher,tag_243,tag_249], title="TD3")
 
-compare(prefix=hopper_prefix,tag_list=[tag_1, tag_2, tag_3, tag_hopper, tag_232, tag_234], title="TD3")
-compare(prefix=hopper_prefix,tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+compare(prefix=hopper_prefix, tag_list=[tag_1, tag_2, tag_3, tag_hopper, tag_243,tag_249,tag_250,tag_8], title="TD3")
+compare(prefix=hopper_prefix, tag_list=[tag_1, tag_247, tag_248], title="with_demos")
+compare(prefix=hopper_prefix, tag_list=[tag_1, tag_235, tag_236, tag_241, tag_244,tag_245,tag_246], title="wrapper")
 
-compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_2, tag_3, tag_swimmer, tag_232, tag_234], title="TD3")
-compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_235, tag_236], title="wrapper")
+compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_2, tag_3, tag_swimmer,tag_243,tag_249,tag_250,tag_8], title="TD3")
+compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_235, tag_236, tag_241,tag_244], title="wrapper")
 
-compare(prefix=walker_prefix, tag_list=[tag_1, tag_2, tag_3, tag_walker, tag_232, tag_234], title="TD3")
+compare(prefix=walker_prefix, tag_list=[tag_1, tag_2, tag_3, tag_walker,tag_243,tag_249,tag_250,tag_8], title="TD3")
+compare(prefix=walker_prefix, tag_list=[tag_1, tag_247, tag_248], title="with_demos")
 
-compare(prefix=pen_prefix, tag_list=[tag_132, tag_200, tag_202, tag_212, tag_217], title="TD3")
-compare(prefix=overarm_prefix, tag_list=[tag_196, tag_200, tag_214, tag_212, tag_216], title="TD3")
-compare(prefix=underarm_prefix, tag_list=[tag_196, tag_200, tag_214, tag_212, tag_216], title="TD3")
+compare(prefix=ant_prefix, tag_list=[tag_1, tag_8], title="TD3")
+
+
+# compare(prefix=pen_prefix, tag_list=[tag_132, tag_214, tag_212, tag_217], title="TD3")
+compare(prefix=pen_prefix, tag_list=[tag_7, tag_214, tag_3, tag_pen], title="TD3")
+# compare(prefix=overarm_prefix, tag_list=[tag_196, tag_214, tag_212, tag_216], title="TD3")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_214, tag_3, tag_216], title="TD3")
+# compare(prefix=underarm_prefix, tag_list=[tag_196, tag_214, tag_212, tag_216], title="TD3")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_214, tag_3, tag_216], title="TD3")
 
 # ablation study
-compare(prefix=overarm_prefix, tag_list=[tag_196, tag_212, tag_4, tag_5, tag_216], title="ablation")
-compare(prefix=underarm_prefix, tag_list=[tag_196, tag_212, tag_4, tag_5, tag_216], title="ablation")
+compare(prefix=overarm_prefix, tag_list=[tag_1, tag_3, tag_4, tag_5, tag_6, tag_216], title="ablation")
+compare(prefix=underarm_prefix, tag_list=[tag_1, tag_3, tag_4, tag_5_unfinished, tag_6, tag_216], title="ablation")
 
 
 # compare(prefix=reacher_prefix2, tag_list=[tag_201, tag_197], title="DDPG")

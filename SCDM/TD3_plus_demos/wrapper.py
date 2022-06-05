@@ -17,17 +17,23 @@ class BasicWrapper(gym.Wrapper):
 
         self._max_episode_steps = self.env._max_episode_steps
 
-        self.status_indicator = np.random.rand(1)
+        self.status_indicator = np.array([0])
+        self.timestep = 0
+        self.horizon_to_switch = 200
 
 
     def step(self, action):
         action_dim = int(self.action_space.shape[0]/2)
-        if self.status_indicator < 0.5:
+        if self.status_indicator[0] == 0:
             next_state, reward, done, info = self.env.step(action[:action_dim])
         else:
             next_state, reward, done, info = self.env.step(action[action_dim:])
-        self.status_indicator = np.random.rand(1)
+        self.timestep += 1
+        if self.timestep == self.horizon_to_switch:
+            self.timestep = 0
+            self.status_indicator = 1-self.status_indicator
         next_state = self._get_obs()
+        # print(self.status_indicator)
         return next_state, reward, done, info
 
 
@@ -38,7 +44,8 @@ class BasicWrapper(gym.Wrapper):
 
     def reset(self):
         obs = self.env.reset()
-        self.status_indicator = np.random.rand(1)
+        self.status_indicator = np.array([0])
+        self.timestep = 0
         new_obs = np.concatenate((obs, self.status_indicator))
         return new_obs
 

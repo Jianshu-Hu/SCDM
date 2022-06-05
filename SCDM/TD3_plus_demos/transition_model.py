@@ -53,6 +53,7 @@ class TransitionModel():
         self.loss_saver = []
         self.reward_loss_saver = []
         self.save_freq = 10000
+        self.save_data = False
         self.total_iter = 0
 
         self.file_name_loss = file_name + "_transition_model_loss"
@@ -65,7 +66,7 @@ class TransitionModel():
         env_list2 = ['PenSpin-v0']
         env_list3 = ['Reacher-v2']
         env_list4 = ['Pusher-v2']
-        env_list5 = ['HalfCheetah-v3', 'Walker2d-v3', 'Swimmer-v3', 'Hopper-v3']
+        env_list5 = ['HalfCheetah-v3', 'Walker2d-v3', 'Swimmer-v3', 'Hopper-v3','Ant-v3']
         env_list6 = ['FetchSlideDense-v1', 'FetchPickAndPlaceDense-v1', 'FetchPushDense-v1',
                      'FetchSlideSparse-v1', 'FetchPickAndPlaceSparse-v1', 'FetchPushSparse-v1']
         self.env_name = env_name
@@ -113,6 +114,16 @@ class TransitionModel():
                 self.health_z_range = np.array([0.7, np.inf])
                 self.health_angle_range = np.array([-0.2, 0.2])
                 self.health_state_range = np.array([-100.0, 100.0])
+            elif env_name == 'Ant-v3':
+                self.forward_reward_weight = 1.0
+                self.ctrl_cost_weight = 0.5
+                self.contact_cost_weight = 0.0005
+                self.healthy_reward = 1.0
+                self.x_vel_index = 13
+                self.contact_index = 27
+
+                self.health_angle_range = np.array([0.2, 1])
+                self.contact_force_range = np.array([-1, 1])
         elif env_name in env_list6:
                 self.reward_type = 'Fetch'
                 self.achieved_goal_index = 3
@@ -132,7 +143,8 @@ class TransitionModel():
         predicted_state = self.forward_model.forward(state, action)
         loss = F.mse_loss(predicted_state, next_state)
 
-        # self.loss_saver.append(loss.item())
+        if self.save_data:
+            self.loss_saver.append(loss.item())
 
         # Optimize the model
         self.model_optimizer.zero_grad()
@@ -146,7 +158,8 @@ class TransitionModel():
             predicted_reward = self.reward_model.forward(state, action)
             loss_reward = F.mse_loss(predicted_reward, reward)
 
-            # self.reward_loss_saver.append(loss_reward.item())
+            if self.save_data:
+                self.reward_loss_saver.append(loss_reward.item())
 
             self.reward_optimizer.zero_grad()
             loss_reward.backward()
@@ -186,9 +199,17 @@ class TransitionModel():
             reward_ctrl = -np.sum(np.square(action), axis=1)
             reward = (reward_dist + 0.1 * reward_ctrl + 0.5 * reward_near).reshape(-1)
         elif self.reward_type == "Mujoco_robot":
-            forward_reward = self.forward_reward_weight * (prev_state[:, self.x_vel_index])
-            ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
-            reward = (forward_reward + self.healthy_reward - ctrl_cost).reshape(-1)
+            if self.env_name == 'Ant-v3':
+                forward_reward = self.forward_reward_weight * (prev_state[:, self.x_vel_index])
+                ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
+                contact_cost = -self.contact_cost_weight * np.sum(np.square(
+                    np.clip(state[:, self.contact_index:], self. contact_force_range[0], self.contact_force_range[1])
+                    ), axis=1)
+                reward = (forward_reward + self.healthy_reward + ctrl_cost+contact_cost).reshape(-1)
+            else:
+                forward_reward = self.forward_reward_weight * (prev_state[:, self.x_vel_index])
+                ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
+                reward = (forward_reward + self.healthy_reward + ctrl_cost).reshape(-1)
         elif self.reward_type == "Fetch":
             achieved_goal = state[:, self.achieved_goal_index:self.achieved_goal_index+3]
             goal = state[:, self.goal_index:]
@@ -218,5 +239,9 @@ class TransitionModel():
             health_angle = np.logical_and(self.health_angle_range[0] < state[:, 1], state[:, 1] < self.health_angle_range[1])
             health_state = np.all(np.logical_and(self.health_state_range[0] < state[:, 1:], state[:, 1:] < self.health_state_range[1]), axis=1)
             done = 1 - np.logical_and(np.logical_and(health_z, health_angle), health_state)
+        elif self.env_name == 'Ant-v3':
+            health_angle = np.logical_and(self.health_angle_range[0] <= state[:, 0], state[:, 0] <= self.health_angle_range[1])
+            finite = np.all(np.isfinite(state), axis=1)
+            done = 1-np.logical_and(finite, health_angle)
         return torch.FloatTensor(done.reshape([-1, 1])).to(device)
 

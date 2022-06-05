@@ -202,7 +202,9 @@ if __name__ == "__main__":
 
 	if args.add_artificial_transitions_type == 'ours':
 		scale = 1
-		scale_decay = 0.9
+		scale_decay = 0.95
+	episode_reward = []
+	max_discounted_return = -10000
 
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
@@ -259,6 +261,8 @@ if __name__ == "__main__":
 				if args.env == 'PenSpin-v0':
 					env_demo.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
 					env_demo.env.goal = np.array([10000, 10000, 10000, 0, 0, 0, 0])
+				if args.env == 'Reacher-v2' or 'Hopper-v3' or 'Walker2d-v3':
+					pass
 				else:
 					# set the goal of the segment from the demonstrations
 					if args.demo_goal_type == "True":
@@ -328,11 +332,22 @@ if __name__ == "__main__":
 		prev_action = action.copy()
 		observation = next_observation.copy()
 		if segment_type == "full":
+			episode_reward.append(reward)
 			if (main_episode_timesteps == env_main._max_episode_steps) or done:
 				main_episode_timesteps = 0
 				prev_action = main_episode_prev_ac = np.zeros((action_dim,))
 				observation_dict = env_main.reset()
 				observation = main_episode_obs = env_statedict_to_state(observation_dict, env_name=args.env)
+
+				# discount_factor = args.discount**np.arange(len(episode_reward))
+				# discounted_return = np.sum(discount_factor*np.array(episode_reward))
+
+				# if discounted_return > max_discounted_return:
+				# 	max_discounted_return = discounted_return
+				if max(episode_reward) > max_discounted_return:
+					max_discounted_return = max(episode_reward)
+				episode_reward = []
+
 
 
 		if t >= args.model_start_timesteps:
@@ -346,23 +361,51 @@ if __name__ == "__main__":
 				policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
 							 args.add_artificial_transitions_type, args.prediction_horizon)
 
+		if (t + 1) % args.eval_freq == 0:
+			print("max episode reward so far: ", max_discounted_return)
+		# set the bias
+		# if args.add_artificial_transitions_type == 'ours':
+		# 	if (t + 1) % args.eval_freq == 0:
+		# 		print("max episode return so far: ", max_discounted_return)
+			# if total_timesteps == args.start_timesteps:
+			# 	print("max episode return so far: ", max_discounted_return)
+				# b1 = max_discounted_return+10
+				# b2 = max_discounted_return+10
+				# torch.nn.init.constant_(policy.critic.l3.bias.data, b1)
+				# torch.nn.init.constant_(policy.critic.l6.bias.data, b2)
+
+				# avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
+				# b1 = avg_Q * scale + policy.critic.l3.bias.data.item() * (1 - scale)
+				# b2 = avg_Q * scale + policy.critic.l6.bias.data.item() * (1 - scale)
+				# torch.nn.init.constant_(policy.critic.l3.bias.data, b1)
+				# torch.nn.init.constant_(policy.critic.l6.bias.data, b2)
+				# scale *= scale_decay
+
+				# halfcheetah 30000 48.15
+				# hooper 30000 76.76
+				# pusher 15000 -19.03
+				# reacher 10000 -1.67
+				# swimmer 30000 19.24
+				# walker 30000 59.79
+				# PenSpin 30000 -27.72
+
+
+				# uniform random policy max return
+				# halfcheetah 1
+				# hopper 76
+				# pusher -40
+				# reacher -12
+				# swimmer 7.5
+				# walker 25.8
+
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
-			if args.add_artificial_transitions_type == 'ours':
-				# if t < args.model_start_timesteps:
-				# 	b1 = avg_reward
-				# 	b2 = avg_reward
-				# else:
-				b1 = avg_Q*scale + policy.critic.l3.bias.data.item() * (1-scale)
-				b2 = avg_Q*scale + policy.critic.l6.bias.data.item() * (1-scale)
-				torch.nn.init.constant_(policy.critic.l3.bias.data, b1)
-				torch.nn.init.constant_(policy.critic.l6.bias.data, b2)
-				scale *= scale_decay
 
 			evaluations_policy.append(avg_reward)
 			evaluations_critic.append(avg_Q)
 			np.save(f"./results/{file_name}", evaluations_policy)
 			np.save(f"./results_critic/{file_name}", evaluations_critic)
+
 			if args.save_model: policy.save(f"./models/{file_name}")
 			print("Evaluation after %d steps - average reward: %f" % (total_timesteps, evaluations_policy[-1]))
 			print("Evaluation after %d steps - average Q: %f" % (total_timesteps, evaluations_critic[-1]))

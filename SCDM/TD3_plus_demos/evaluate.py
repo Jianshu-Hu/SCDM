@@ -4,9 +4,10 @@ import gym
 import numpy as np
 import time
 from main import env_statedict_to_state
+import joblib
 
-filename = "models/TD3_EggCatchOverarm-v0_1_our_method_10_initialization_one_more_layer"
-env_name = "EggCatchOverarm-v0"
+filename = "models/TD3_Walker2d-v3_1_TD3"
+env_name = "Walker2d-v3"
 #
 # filename = "models/TD3_EggCatchOverarm-v0_1_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions"
 # env_name = "EggCatchOverarm-v0"
@@ -35,7 +36,7 @@ env_name = "EggCatchOverarm-v0"
 beta = 0.7
 
 env = gym.make(env_name)
-steps = 75
+steps = 500
 # steps = 1000 #long run, "standard" episode is 250
 
 
@@ -129,6 +130,39 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
     print("---------------------------------------")
     return avg_reward
 
+
+def generate_demo(policy, env_name, seed, num_demos=5,tag="traj"):
+    env = gym.make(env_name)
+    for n in range(num_demos):
+        env.seed(seed + n)
+        state_dict = env.reset()
+
+        demo = {
+            "sim_states": [], "actions": [], "rewards": [], "success": [],
+            "goal": None,
+            "best_rewards_it": []
+        }
+        num_steps = 0
+        prev_action = np.zeros((env.action_space.shape[0],))
+        while num_steps < steps:
+            state = env_statedict_to_state(state_dict, env_name)
+            action = policy.select_action(np.array(state), prev_action)
+
+            demo["sim_states"].append(env.sim.get_state())
+            demo["actions"].append(action)
+
+            state_dict, reward, done, _ = env.step(action)
+
+            demo["rewards"].append(reward)
+
+            prev_action = action.copy()
+            num_steps += 1
+            print("num_steps: ", num_steps, "reward: ", reward)
+            if done:
+                break
+
+        joblib.dump((demo), "demonstrations/"+"demonstrations_" + env_name + '/' + env_name + "_" + tag + "_" + str(n) + ".pkl")
+
 kwargs = {
     "policy_type": TD3,
     "env_name": env_name,
@@ -142,6 +176,6 @@ kwargs = {
 policy = TD3.TD3(**kwargs)
 policy.load(filename)
 
-eval_policy(policy, env_name, seed=1, eval_episodes=1, render=False, delay=0.03)
-
+# eval_policy(policy, env_name, seed=1, eval_episodes=1, render=False, delay=0.03)
+generate_demo(policy, env_name, seed=1, num_demos=10,tag="traj")
 

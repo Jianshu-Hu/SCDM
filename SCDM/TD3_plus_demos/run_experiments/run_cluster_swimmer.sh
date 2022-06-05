@@ -5,8 +5,8 @@ source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 env_name="Swimmer-v3"
-tag=TD3_with_wrapper
-seed=3
+tag=our_method
+seed=5
 
 demo_tag=""
 
@@ -15,4 +15,4 @@ demo_tag=""
 echo "start running $env_name $tag with seed $seed"
 
 #swimmer
-python main.py --use_wrapper --policy="TD3" --add_artificial_transitions_type="None" --prediction_horizon=3 --max_timesteps=3000000 --model_start_timesteps=5000 --start_timesteps=25000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --add_artificial_transitions_type="ours" --prediction_horizon=3 --max_timesteps=3000000 --model_start_timesteps=5000 --start_timesteps=25000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
