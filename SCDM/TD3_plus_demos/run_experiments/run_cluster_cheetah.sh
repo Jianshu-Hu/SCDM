@@ -6,7 +6,7 @@ conda activate SCDM
 
 env_name="HalfCheetah-v3"
 
-tag=our_method
+tag=our_method_uniform_noise
 seed=5
 
 demo_tag=""

@@ -5,7 +5,7 @@ source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 env_name="Walker2d-v3"
-tag=our_method
+tag=our_method_uniform_noise
 seed=5
 
 demo_tag=""

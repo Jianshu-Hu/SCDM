@@ -6,8 +6,8 @@ import time
 from main import env_statedict_to_state
 import joblib
 
-filename = "models/TD3_Walker2d-v3_1_TD3"
-env_name = "Walker2d-v3"
+filename = "models/TD3_HalfCheetah-v3_1_TD3"
+env_name = "HalfCheetah-v3"
 #
 # filename = "models/TD3_EggCatchOverarm-v0_1_random_goal_demo_demo_divided_into_two_part_add_policy_penalty_all_actions"
 # env_name = "EggCatchOverarm-v0"
@@ -104,11 +104,12 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
 
             prev_state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
 
-            state_dict, reward, done, _ = eval_env.step(action)
+            state_dict, reward, done, info = eval_env.step(action)
 
             # test the reward function
             state_list[num_steps, :] = env_statedict_to_state(state_dict, env_name)
             action_list[num_steps, :] = action
+
             if render:
                 eval_env.render()
                 time.sleep(delay)
@@ -120,9 +121,9 @@ def eval_policy(policy, env_name, seed, eval_episodes=1, render=True, delay=0.0)
                 break
 
     # test the reward function
-    # reward = compute_reward(prev_state_list, state_list, action_list, env_name)
+    reward = compute_reward(prev_state_list, state_list, action_list, env_name)
     # print(reward)
-    # print(np.sum(reward))
+    print(np.sum(reward))
     avg_reward /= eval_episodes
 
     print("---------------------------------------")
@@ -176,6 +177,6 @@ kwargs = {
 policy = TD3.TD3(**kwargs)
 policy.load(filename)
 
-# eval_policy(policy, env_name, seed=1, eval_episodes=1, render=False, delay=0.03)
-generate_demo(policy, env_name, seed=1, num_demos=10,tag="traj")
+eval_policy(policy, env_name, seed=1, eval_episodes=1, render=False, delay=0.03)
+# generate_demo(policy, env_name, seed=1, num_demos=10,tag="traj")
 

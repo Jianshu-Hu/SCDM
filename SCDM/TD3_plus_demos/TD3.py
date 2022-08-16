@@ -92,38 +92,38 @@ class TD3(object):
 		self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=3e-4)
 
 		self.critic = Critic(state_dim, action_dim).to(device)
-		if add_artificial_transitions_type == 'ours':
-			# initialize with a high Q value to encourage exploration
-			if env_name == 'PenSpin-v0':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
-			elif env_name == 'EggCatchOverarm-v0':
-				nn.init.constant_(self.critic.l3.bias.data, 10)
-				nn.init.constant_(self.critic.l6.bias.data, 10)
-			elif env_name == 'EggCatchUnderarm-v0':
-				nn.init.constant_(self.critic.l3.bias.data, 10)
-				nn.init.constant_(self.critic.l6.bias.data, 10)
-			elif env_name == 'Walker2d-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 100)
-				nn.init.constant_(self.critic.l6.bias.data, 100)
-			elif env_name == 'HalfCheetah-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
-			elif env_name == 'Swimmer-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 30)
-				nn.init.constant_(self.critic.l6.bias.data, 30)
-			elif env_name == 'Hopper-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 50)
-				nn.init.constant_(self.critic.l6.bias.data, 50)
-			elif env_name == 'Ant-v3':
-				nn.init.constant_(self.critic.l3.bias.data, 100)
-				nn.init.constant_(self.critic.l6.bias.data, 100)
-			elif env_name == 'Pusher-v2':
-				nn.init.constant_(self.critic.l3.bias.data, -10)
-				nn.init.constant_(self.critic.l6.bias.data, -10)
-			elif env_name == 'Reacher-v2':
-				nn.init.constant_(self.critic.l3.bias.data, -2)
-				nn.init.constant_(self.critic.l6.bias.data, -2)
+		# if add_artificial_transitions_type == 'ours':
+		# 	# initialize with a high Q value to encourage exploration
+		# 	if env_name == 'PenSpin-v0':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 50)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 50)
+		# 	elif env_name == 'EggCatchOverarm-v0':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 10)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 10)
+		# 	elif env_name == 'EggCatchUnderarm-v0':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 10)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 10)
+		# 	elif env_name == 'Walker2d-v3':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 100)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 100)
+		# 	elif env_name == 'HalfCheetah-v3':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 50)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 50)
+		# 	elif env_name == 'Swimmer-v3':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 30)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 30)
+		# 	elif env_name == 'Hopper-v3':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 50)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 50)
+		# 	elif env_name == 'Ant-v3':
+		# 		nn.init.constant_(self.critic.l3.bias.data, 100)
+		# 		nn.init.constant_(self.critic.l6.bias.data, 100)
+		# 	elif env_name == 'Pusher-v2':
+		# 		nn.init.constant_(self.critic.l3.bias.data, -10)
+		# 		nn.init.constant_(self.critic.l6.bias.data, -10)
+		# 	elif env_name == 'Reacher-v2':
+		# 		nn.init.constant_(self.critic.l3.bias.data, -2)
+		# 		nn.init.constant_(self.critic.l6.bias.data, -2)
 		self.critic_target = copy.deepcopy(self.critic)
 		self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3e-4)
 
@@ -173,8 +173,9 @@ class TD3(object):
 
 
 	def train(self, replay_buffer, demo_replay_buffer, transition, batch_size=100, add_bc_loss=False,
-			  add_artificial_transitions_type=None, prediction_horizon=1):
-		self.total_it += 1
+			  add_artificial_transitions_type=None, prediction_horizon=1, only_train_critic=False):
+		if not only_train_critic:
+			self.total_it += 1
 
 		# Sample replay buffer
 		state, action, next_state, reward, prev_action, done, = replay_buffer.sample(batch_size)
@@ -182,14 +183,14 @@ class TD3(object):
 		state = torch.FloatTensor(self.normaliser.normalize(state.cpu().data.numpy())).to(device)
 		next_state = torch.FloatTensor(self.normaliser.normalize(next_state.cpu().data.numpy())).to(device)
 
-		# debug reward
-		if self.total_it % 1000 == 0:
-			error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
-			print("reward_error: ", error)
-		# debug done
-		if self.total_it % 1000 == 0:
-			error = F.mse_loss(done, transition.not_healthy(next_state))
-			print("done_error: ", error)
+		# # debug reward
+		# if self.total_it % 1000 == 0:
+		# 	error = F.mse_loss(reward, transition.compute_reward(state, next_state, action))
+		# 	print("reward_error: ", error)
+		# # debug done
+		# if self.total_it % 1000 == 0:
+		# 	error = F.mse_loss(done, transition.not_healthy(next_state))
+		# 	print("done_error: ", error)
 
 		if add_artificial_transitions_type == "None":
 			add_artificial_transitions = False
@@ -203,11 +204,13 @@ class TD3(object):
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
 				use_the_filter = True
+				use_the_filter_of_higher_target_Q = True
 			elif add_artificial_transitions_type == 'MA':
 				noise_type = 'fixed'
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
 				use_the_filter = True
+				use_the_filter_of_higher_target_Q = False
 
 
 		with torch.no_grad():
@@ -374,8 +377,13 @@ class TD3(object):
 					if max_error > max_error_so_far:
 						max_error_so_far = torch.clone(max_error)
 					filter = torch.where(torch.rand_like(target_error) < target_error/max_error_so_far, 1, 0)
+
+					# filter with target Q value
+					filter2 = torch.where(new_target_Q > target_Q, 1, 0)
 					if use_the_filter:
 						new_target_Q *= filter
+					if use_the_filter_of_higher_target_Q:
+						new_target_Q *= filter2
 
 		# Get current Q estimates
 		current_Q1, current_Q2 = self.critic(state, action, prev_action)
@@ -395,6 +403,9 @@ class TD3(object):
 					if use_the_filter:
 						new_current_Q1 *= filter
 						new_current_Q2 *= filter
+					if use_the_filter_of_higher_target_Q:
+						new_current_Q1 *= filter2
+						new_current_Q2 *= filter2
 
 		# calculate critic loss
 		if add_artificial_transitions:
@@ -418,49 +429,50 @@ class TD3(object):
 		critic_loss.backward()
 		self.critic_optimizer.step()
 
-		# Delayed policy updates
-		if self.total_it % self.policy_freq == 0:
-			if add_bc_loss:
-				# sample from demonstrations
-				demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, _ = \
-					demo_replay_buffer.sample(int(batch_size/10))
-				demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
-				# demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
-				policy_action = self.beta*self.actor(demo_state, demo_prev_action) + (1-self.beta)*demo_prev_action
-				Q_filter=True
-				if Q_filter:
-					# behavior cloing loss
-					behavior_cloning_loss = torch.mean(F.mse_loss(policy_action, demo_action, reduction='none'), dim=1)
-					# Q-filter
-					policy_Q1, policy_Q2 = self.critic(demo_state, policy_action, demo_prev_action)
-					demo_Q1, demo_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
-					filter = torch.where(demo_Q1+demo_Q2 > policy_Q1+policy_Q2, 1, 0)
-					filtered_bc_loss = torch.mean(behavior_cloning_loss*filter)
-					# Compute actor losse
-					actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
-						+ filtered_bc_loss
+		if not only_train_critic:
+			# Delayed policy updates
+			if self.total_it % self.policy_freq == 0:
+				if add_bc_loss:
+					# sample from demonstrations
+					demo_state, demo_action, demo_next_state, demo_reward, demo_prev_action, _ = \
+						demo_replay_buffer.sample(int(batch_size/10))
+					demo_state = torch.FloatTensor(self.normaliser.normalize(demo_state.cpu().data.numpy())).to(device)
+					# demo_next_state = torch.FloatTensor(self.normaliser.normalize(demo_next_state.cpu().data.numpy())).to(device)
+					policy_action = self.beta*self.actor(demo_state, demo_prev_action) + (1-self.beta)*demo_prev_action
+					Q_filter=True
+					if Q_filter:
+						# behavior cloing loss
+						behavior_cloning_loss = torch.mean(F.mse_loss(policy_action, demo_action, reduction='none'), dim=1)
+						# Q-filter
+						policy_Q1, policy_Q2 = self.critic(demo_state, policy_action, demo_prev_action)
+						demo_Q1, demo_Q2 = self.critic(demo_state, demo_action, demo_prev_action)
+						filter = torch.where(demo_Q1+demo_Q2 > policy_Q1+policy_Q2, 1, 0)
+						filtered_bc_loss = torch.mean(behavior_cloning_loss*filter)
+						# Compute actor losse
+						actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
+							+ filtered_bc_loss
+					else:
+						# behavior cloing loss
+						behavior_cloning_loss = F.mse_loss(policy_action, demo_action)
+						# Compute actor losse
+						actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
+							+ behavior_cloning_loss
 				else:
-					# behavior cloing loss
-					behavior_cloning_loss = F.mse_loss(policy_action, demo_action)
-					# Compute actor losse
-					actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean() \
-						+ behavior_cloning_loss
-			else:
-				# Compute actor loss
-				actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
-			if self.save_info_for_debugging:
-				self.actor_loss_saver.append(actor_loss.item())
-			# Optimize the actor 
-			self.actor_optimizer.zero_grad()
-			actor_loss.backward()
-			self.actor_optimizer.step()
+					# Compute actor loss
+					actor_loss = -self.critic.Q1(state, self.beta*self.actor(state, prev_action) + (1-self.beta)*prev_action, prev_action).mean()
+				if self.save_info_for_debugging:
+					self.actor_loss_saver.append(actor_loss.item())
+				# Optimize the actor
+				self.actor_optimizer.zero_grad()
+				actor_loss.backward()
+				self.actor_optimizer.step()
 
-			# Update the frozen target models
-			for param, target_param in zip(self.critic.parameters(), self.critic_target.parameters()):
-				target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
+				# Update the frozen target models
+				for param, target_param in zip(self.critic.parameters(), self.critic_target.parameters()):
+					target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
 
-			for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
-				target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
+				for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
+					target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
 
 		if self.total_it % self.save_freq == 0 and self.save_info_for_debugging:
 			np.save(f"./results/{self.file_name_critic}", self.critic_loss_saver)

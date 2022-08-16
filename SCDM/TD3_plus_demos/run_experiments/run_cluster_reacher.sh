@@ -6,8 +6,8 @@ conda activate SCDM
 
 env_name="Reacher-v2"
 
-tag=our_method
-seed=1
+tag=our_method_uniform_noise
+seed=5
 
 demo_tag=""
 

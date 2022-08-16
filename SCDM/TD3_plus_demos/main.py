@@ -120,6 +120,8 @@ if __name__ == "__main__":
 	# Noisy: add noise to the true goal of the segment
 	# Random: randomly sample a goal
 
+	parser.add_argument("--critic_freq", type=int, default=1)  # increase the frequency of updating the critics
+
 	# use wrapper to change the environment
 	parser.add_argument("--use_wrapper", action='store_true')  # tag for using the wrapper
 
@@ -199,12 +201,8 @@ if __name__ == "__main__":
 		# there is not a reward function in the some envs
 		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
 													  None)
-
-	if args.add_artificial_transitions_type == 'ours':
-		scale = 1
-		scale_decay = 0.95
-	episode_reward = []
-	max_discounted_return = -10000
+	# initialize the max reward for setting the bias before start training the policy
+	max_reward = -10000
 
 	if args.load_model != "":
 		policy_file = file_name if args.load_model == "default" else args.load_model
@@ -332,54 +330,33 @@ if __name__ == "__main__":
 		prev_action = action.copy()
 		observation = next_observation.copy()
 		if segment_type == "full":
-			episode_reward.append(reward)
 			if (main_episode_timesteps == env_main._max_episode_steps) or done:
 				main_episode_timesteps = 0
 				prev_action = main_episode_prev_ac = np.zeros((action_dim,))
 				observation_dict = env_main.reset()
 				observation = main_episode_obs = env_statedict_to_state(observation_dict, env_name=args.env)
 
-				# discount_factor = args.discount**np.arange(len(episode_reward))
-				# discounted_return = np.sum(discount_factor*np.array(episode_reward))
-
-				# if discounted_return > max_discounted_return:
-				# 	max_discounted_return = discounted_return
-				if max(episode_reward) > max_discounted_return:
-					max_discounted_return = max(episode_reward)
-				episode_reward = []
-
-
-
-		if t >= args.model_start_timesteps:
-			if args.add_artificial_transitions_type != 'None':
-				transition.train(replay_buffer)
-		if t >= args.start_timesteps:
-			if args.without_demo:
-				policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
-							 args.add_artificial_transitions_type, args.prediction_horizon)
-			else:
-				policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
-							 args.add_artificial_transitions_type, args.prediction_horizon)
-
-		if (t + 1) % args.eval_freq == 0:
-			print("max episode reward so far: ", max_discounted_return)
 		# set the bias
-		# if args.add_artificial_transitions_type == 'ours':
-		# 	if (t + 1) % args.eval_freq == 0:
-		# 		print("max episode return so far: ", max_discounted_return)
-			# if total_timesteps == args.start_timesteps:
-			# 	print("max episode return so far: ", max_discounted_return)
-				# b1 = max_discounted_return+10
-				# b2 = max_discounted_return+10
-				# torch.nn.init.constant_(policy.critic.l3.bias.data, b1)
-				# torch.nn.init.constant_(policy.critic.l6.bias.data, b2)
+		if reward > max_reward:
+			max_reward = reward
+		if args.add_artificial_transitions_type == 'ours':
+			if (t + 1) % args.eval_freq == 0 and total_timesteps < args.start_timesteps:
+				print("max reward so far: ", max_reward)
+			if total_timesteps == args.start_timesteps:
+				print("return upper bound: ", max_reward*env_main._max_episode_steps)
+				if args.env == 'EggCatchUnderarm-v0' or args.env == 'EggCatchOverarm-v0':
+					bias = max_reward*env_main._max_episode_steps/6
+				elif args.env == 'HalfCheetah-v3':
+					bias = max_reward * env_main._max_episode_steps / 30
+				elif args.env == 'Swimmer-v3':
+					bias = max_reward * env_main._max_episode_steps / 30
+				else:
+					bias = max_reward * env_main._max_episode_steps / 6
+				torch.nn.init.constant_(policy.critic.l3.bias.data, bias)
+				torch.nn.init.constant_(policy.critic.l6.bias.data, bias)
+				torch.nn.init.constant_(policy.critic_target.l3.bias.data, bias)
+				torch.nn.init.constant_(policy.critic_target.l6.bias.data, bias)
 
-				# avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
-				# b1 = avg_Q * scale + policy.critic.l3.bias.data.item() * (1 - scale)
-				# b2 = avg_Q * scale + policy.critic.l6.bias.data.item() * (1 - scale)
-				# torch.nn.init.constant_(policy.critic.l3.bias.data, b1)
-				# torch.nn.init.constant_(policy.critic.l6.bias.data, b2)
-				# scale *= scale_decay
 
 				# halfcheetah 30000 48.15
 				# hooper 30000 76.76
@@ -397,6 +374,32 @@ if __name__ == "__main__":
 				# reacher -12
 				# swimmer 7.5
 				# walker 25.8
+
+				# max reward * episode length /10
+				# EggCatchUnderarm 6
+				# EggCatchOverarm 6
+				# PenSpin 280
+				# HalfCheetah 180
+				# Hopper 300
+				# Swimmer 180
+				# Walker 220
+
+		if t >= args.model_start_timesteps:
+			if args.add_artificial_transitions_type != 'None':
+				transition.train(replay_buffer)
+		if t >= args.start_timesteps:
+			if args.without_demo:
+				for _ in range(1, args.critic_freq):
+					policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
+								 args.add_artificial_transitions_type, args.prediction_horizon, True)
+				policy.train(replay_buffer, None, transition, args.batch_size, args.add_bc_loss,
+							 args.add_artificial_transitions_type, args.prediction_horizon)
+			else:
+				for _ in range(1, args.critic_freq):
+					policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
+								 args.add_artificial_transitions_type, args.prediction_horizon, True)
+				policy.train(replay_buffer, demo_replay_buffer, transition, args.batch_size, args.add_bc_loss,
+							 args.add_artificial_transitions_type, args.prediction_horizon)
 
 		if (t+1) % args.eval_freq == 0:
 			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
