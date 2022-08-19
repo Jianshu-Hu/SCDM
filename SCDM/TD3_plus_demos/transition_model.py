@@ -5,6 +5,7 @@ import numpy as np
 import gym.envs.robotics.rotations as rotations
 
 from SCDM.TD3_plus_demos.normaliser import Normaliser
+import joblib
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -40,7 +41,8 @@ class RewardModel(nn.Module):
 
 
 class TransitionModel():
-    def __init__(self, state_dim, action_dim, file_name, env_name, batch_size, compute_reward, train_reward_model=False):
+    def __init__(self, state_dim, action_dim, file_name, env_name, batch_size, compute_reward, train_reward_model=False,
+                 use_reward_wrapper=False):
         self.forward_model = ForwardModel(state_dim, action_dim).to(device)
         self.model_optimizer = torch.optim.Adam(self.forward_model.parameters(), lr=1e-4)
         if train_reward_model:
@@ -61,6 +63,7 @@ class TransitionModel():
 
         self.embed_compute_reward = compute_reward
         self.train_reward_model = train_reward_model
+        self.use_reward_wrapper = use_reward_wrapper
 
         env_list1 = ['EggCatchOverarm-v0', 'EggCatchUnderarm-v0', 'EggCatchUnderarmHard-v0']
         env_list2 = ['PenSpin-v0']
@@ -92,6 +95,9 @@ class TransitionModel():
                 self.ctrl_cost_weight = 0.1
                 self.healthy_reward = 0
                 self.x_vel_index = 8
+
+                if self.use_reward_wrapper:
+                    self.desired_velocity = 15.0
             elif env_name == 'Walker2d-v3':
                 self.forward_reward_weight = 1.0
                 self.ctrl_cost_weight = 0.001
@@ -206,6 +212,11 @@ class TransitionModel():
                     np.clip(state[:, self.contact_index:], self. contact_force_range[0], self.contact_force_range[1])
                     ), axis=1)
                 reward = (forward_reward + self.healthy_reward + ctrl_cost+contact_cost).reshape(-1)
+            elif self.use_reward_wrapper:
+                forward_reward = self.forward_reward_weight * \
+                                 (1-(prev_state[:, self.x_vel_index]/self.desired_velocity-1)**2)
+                ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
+                reward = (forward_reward + self.healthy_reward + ctrl_cost).reshape(-1)
             else:
                 forward_reward = self.forward_reward_weight * (prev_state[:, self.x_vel_index])
                 ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
@@ -244,4 +255,16 @@ class TransitionModel():
             finite = np.all(np.isfinite(state), axis=1)
             done = 1-np.logical_and(finite, health_angle)
         return torch.FloatTensor(done.reshape([-1, 1])).to(device)
+
+    def save(self, filename):
+        torch.save(self.forward_model.state_dict(), filename + "_forward_model")
+        torch.save(self.model_optimizer.state_dict(), filename + "_model_optimizer")
+
+        joblib.dump(self.normaliser, filename + "_normaliser")
+
+    def load(self, filename):
+        self.forward_model.load_state_dict(torch.load(filename + "_forward_model"))
+        self.model_optimizer.load_state_dict(torch.load(filename + "_model_optimizer"))
+
+        self.normaliser = joblib.load(filename + "_normaliser")
 

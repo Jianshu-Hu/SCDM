@@ -3,30 +3,40 @@ import matplotlib.pyplot as plt
 import math
 overarm_prefix = "TD3_EggCatchOverarm-v0_"
 overarm_prefix2 = "DDPG_EggCatchOverarm-v0_"
+overarm_prefix3 = "SAC_EggCatchOverarm-v0_"
 
 underarm_prefix = "TD3_EggCatchUnderarm-v0_"
 underarm_prefix2 = "DDPG_EggCatchUnderarm-v0_"
+underarm_prefix3 = "SAC_EggCatchUnderarm-v0_"
 
 pen_prefix = "TD3_PenSpin-v0_"
 pen_prefix2 = "DDPG_PenSpin-v0_"
+pen_prefix3 = "SAC_PenSpin-v0_"
+
 
 reacher_prefix = "TD3_Reacher-v2_"
 reacher_prefix2 = "DDPG_Reacher-v2_"
+reacher_prefix3 = "SAC_Reacher-v2_"
 
 pusher_prefix = "TD3_Pusher-v2_"
 pusher_prefix2 = "DDPG_Pusher-v2_"
+pusher_prefix3 = "SAC_Pusher-v2_"
 
 cheetah_prefix = "TD3_HalfCheetah-v3_"
 cheetah_prefix2 = "DDPG_HalfCheetah-v3_"
+cheetah_prefix3 = "SAC_HalfCheetah-v3_"
 
 walker_prefix = "TD3_Walker2d-v3_"
 walker_prefix2 = "DDPG_Walker2d-v3_"
+walker_prefix3 = "SAC_Walker2d-v3_"
 
 swimmer_prefix = "TD3_Swimmer-v3_"
 swimmer_prefix2 = "DDPG_Swimmer-v3_"
+swimmer_prefix3 = "SAC_Swimmer-v3_"
 
 hopper_prefix = "TD3_Hopper-v3_"
 hopper_prefix2 = "DDPG_Hopper-v3_"
+hopper_prefix3 = "SAC_Hopper-v3_"
 
 ant_prefix = "TD3_Ant-v3_"
 
@@ -793,7 +803,7 @@ def average_over_experiments(prefix, tag):
     data_np = np.zeros([len(tag), min_len])
     for i in range(len(tag)):
         data_np[i, :] = np.copy(data_list[i][:min_len])
-    if prefix == cheetah_prefix:
+    if prefix in [cheetah_prefix, cheetah_prefix2, cheetah_prefix3]:
         data_np = data_np/1000
     mean = np.mean(data_np, axis=0)
     std = np.std(data_np, axis=0)
@@ -807,7 +817,7 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save', fi
         plt.rcParams['figure.figsize'] = figure_size
     fig, axs = plt.subplots(1, 1)
     for i in range(len(tag_list)):
-        mean, std = average_over_experiments(prefix, tag_list[i])
+        mean, std = average_over_experiments(prefix[i], tag_list[i])
         # plot variance
         axs.fill_between(range(len(mean)), mean - std/math.sqrt(len(tag_list)), mean + std/math.sqrt(len(tag_list)),
                          alpha=0.4)
@@ -819,20 +829,20 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save', fi
         else:
             axs.plot(range(len(mean)), mean, label=tag_list[i][0])
     # axs.set_title(prefix+title)
-    if prefix == reacher_prefix:
+    if prefix[0] == reacher_prefix:
         axs.set_xlabel('timesteps/100')
         plt.ylim(-12, -3)
-    elif prefix == pusher_prefix:
+    elif prefix[0] == pusher_prefix:
         axs.set_xlabel('timesteps/500')
-        plt.ylim(-60, -20)
-    elif prefix == cheetah_prefix:
+        plt.ylim(-60, -15)
+    elif prefix[0] == cheetah_prefix:
         axs.set_xlabel('timesteps/5000')
-    elif prefix == walker_prefix:
+    elif prefix[0] == walker_prefix:
         axs.set_xlabel('timesteps/5000')
     else:
         axs.set_xlabel('timesteps/5000')
 
-    if prefix == cheetah_prefix:
+    if prefix[0] == cheetah_prefix:
         axs.set_ylabel('average rewards/1000')
     else:
         axs.set_ylabel('average rewards')
@@ -840,7 +850,7 @@ def compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save', fi
     if plot_or_save=='plot':
         plt.show()
     else:
-        plt.savefig('saved_fig/'+prefix+title)
+        plt.savefig('saved_fig/'+prefix[0]+title)
 
 
 def compare_policy_critic(prefix, prefix_critic, tag, plot_or_save='save'):
@@ -1410,6 +1420,7 @@ tag_critic5 = ["1_TD3_critic+",
                "4_TD3_critic+",
                "5_TD3_critic+"]
 
+
 # tune parameter
 # compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_2, tag_3, tag_cheetah], title="TD3")
 # compare(prefix=reacher_prefix, tag_list=[tag_1, tag_2, tag_3, tag_reacher, tag_226, tag_224], title="TD3")
@@ -1434,17 +1445,61 @@ tag_critic5 = ["1_TD3_critic+",
 ##########################
 # final version
 # compare(prefix, tag_list, title='', label_list=[""], plot_or_save='save', figure_size=None)
-# label_list = ["TD3", "MAMF(ours)",  "MA-TD3", "MVE-TD3"]
-# figure_size = (5, 4)
-# compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_251, tag_3, tag_2], label_list=label_list, title="TD3", figure_size=figure_size)
-# compare(prefix=reacher_prefix, tag_list=[tag_1, tag_reacher, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
-# compare(prefix=pusher_prefix, tag_list=[tag_1, tag_pusher, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
-# compare(prefix=hopper_prefix, tag_list=[tag_1, tag_253, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
-# compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_251, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
-# compare(prefix=walker_prefix, tag_list=[tag_1, tag_253, tag_3, tag_2],label_list=label_list, title="TD3", figure_size=figure_size)
-# compare(prefix=pen_prefix, tag_list=[tag_7, tag_251, tag_3, tag_214],label_list=label_list, title="TD3", figure_size=figure_size)
-# compare(prefix=overarm_prefix, tag_list=[tag_1, tag_9, tag_3, tag_214],label_list=label_list, title="TD3",figure_size=figure_size)
-# compare(prefix=underarm_prefix, tag_list=[tag_1, tag_9, tag_3, tag_214],label_list=label_list, title="TD3", figure_size=figure_size)
+tag_sac = ["1_SAC", "2_SAC", "3_SAC","4_SAC","5_SAC"]
+tag_sac_ours = ["1_SAC-MAMF", "2_SAC-MAMF", "3_SAC-MAMF", "4_SAC-MAMF", "5_SAC-MAMF"]
+tag_sac_auto_alpha = ["1_SAC_alpha_auto","2_SAC_alpha_auto","3_SAC_alpha_auto"]
+tag_sac_auto_alpha_ours = ["1_SAC_auto_ours","2_SAC_auto_ours","3_SAC_auto_ours"]
+
+label_list = ["TD3", "MAMF(ours)",  "MA-TD3", "MVE-TD3", 'SAC', 'SAC-MAMF(ours)', 'SAC-auto', 'SAC-auto-MAMF(ours)']
+figure_size = (5, 4)
+prefix1 = [cheetah_prefix, cheetah_prefix, cheetah_prefix, cheetah_prefix, cheetah_prefix3, cheetah_prefix3,cheetah_prefix3,cheetah_prefix3]
+compare(prefix=prefix1, tag_list=[tag_1, tag_251, tag_3, tag_2, tag_sac, tag_sac_ours,tag_sac_auto_alpha,tag_sac_auto_alpha_ours], label_list=label_list, title="TD3", figure_size=figure_size)
+prefix2 = [reacher_prefix, reacher_prefix, reacher_prefix, reacher_prefix, reacher_prefix3, reacher_prefix3,reacher_prefix3,reacher_prefix3]
+compare(prefix=prefix2, tag_list=[tag_1, tag_reacher, tag_3, tag_2, tag_sac, tag_sac_ours,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix3 = [pusher_prefix, pusher_prefix, pusher_prefix, pusher_prefix, pusher_prefix3, pusher_prefix3,pusher_prefix3,pusher_prefix3]
+compare(prefix=prefix3, tag_list=[tag_1, tag_pusher, tag_3, tag_2, tag_sac, tag_sac_ours,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix4 = [hopper_prefix, hopper_prefix, hopper_prefix, hopper_prefix, hopper_prefix3, hopper_prefix3,hopper_prefix3,hopper_prefix3]
+compare(prefix=prefix4, tag_list=[tag_1, tag_253, tag_3, tag_2, tag_sac, tag_sac_ours,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix5 = [swimmer_prefix, swimmer_prefix, swimmer_prefix, swimmer_prefix, swimmer_prefix3, swimmer_prefix3,swimmer_prefix3,swimmer_prefix3]
+compare(prefix=prefix5, tag_list=[tag_1, tag_251, tag_3, tag_2, tag_sac, tag_sac_ours,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix6 = [walker_prefix, walker_prefix, walker_prefix, walker_prefix, walker_prefix3, walker_prefix3,walker_prefix3,walker_prefix3]
+compare(prefix=prefix6, tag_list=[tag_1, tag_253, tag_3, tag_2, tag_sac, tag_sac_ours,tag_sac_auto_alpha,tag_sac_auto_alpha_ours], label_list=label_list, title="TD3", figure_size=figure_size)
+
+label_list = ["TD3", "MAMF(ours)",  "MA-TD3", "MVE-TD3", 'SAC-auto']
+prefix7 = [pen_prefix, pen_prefix, pen_prefix, pen_prefix, pen_prefix3]
+compare(prefix=prefix7, tag_list=[tag_7, tag_251, tag_3, tag_214, tag_sac_auto_alpha], label_list=label_list, title="TD3", figure_size=figure_size)
+
+tag_sac = ["1_SAC", "2_SAC", "3_SAC"]
+tag_sac_beta = ["1_SAC_beta_1", "2_SAC_beta_1", "3_SAC_beta_1"]
+tag_sac_alpha = ["1_SAC_alpha_001", "2_SAC_alpha_001", "3_SAC_alpha_001"]
+tag_sac_alpha0 = ["1_SAC_alpha_0", "2_SAC_alpha_0", "3_SAC_alpha_0"]
+tag_sac_alpha1 = ["1_SAC_alpha_01", "2_SAC_alpha_01", "3_SAC_alpha_01"]
+tag_sac_alpha3 = ["1_SAC_alpha_0001", "2_SAC_alpha_0001", "3_SAC_alpha_0001"]
+tag_sac_ours = ["1_SAC-MAMF", "2_SAC-MAMF", "3_SAC-MAMF"]
+label_list = ["TD3", "MAMF(ours)",  "MA-TD3", "MVE-TD3", 'SAC-auto', 'SAC_alpha_0']
+prefix8 = [overarm_prefix, overarm_prefix, overarm_prefix, overarm_prefix, overarm_prefix3, overarm_prefix3]
+compare(prefix=prefix8, tag_list=[tag_1, tag_9, tag_3, tag_214, tag_sac_auto_alpha, tag_sac_alpha0],label_list=label_list, title="TD3", figure_size=figure_size)
+
+label_list = ["TD3", "MAMF(ours)",  "MA-TD3", "MVE-TD3", 'SAC-auto', 'SAC_alpha_001', 'SAC_alpha_0']
+prefix9 = [underarm_prefix, underarm_prefix, underarm_prefix, underarm_prefix, underarm_prefix3, underarm_prefix3,overarm_prefix3]
+compare(prefix=prefix9, tag_list=[tag_1, tag_9, tag_3, tag_214, tag_sac_auto_alpha, tag_sac_alpha, tag_sac_alpha0], label_list=label_list, title="TD3", figure_size=figure_size)
+
+tag_TD3_ignore = ["1_TD3_ignore_rotation"]
+tag_ours_ignore = ["1_ours_ignore_rotation"]
+label_list = ["TD3", "MAMF(ours)"]
+prefix10 = [underarm_prefix, underarm_prefix]
+compare(prefix=prefix10, tag_list=[tag_TD3_ignore, tag_ours_ignore], label_list=label_list, title="generalization_TD3", figure_size=figure_size)
+
+
+tag_TD3_new_reward = ["1_TD3_new_reward", "2_TD3_new_reward", "3_TD3_new_reward"]
+tag_ours_new_reward = ["1_ours_new_reward", "2_ours_new_reward", "3_ours_new_reward"]
+tag_TD3_new_reward1 = ["1_TD3_new_reward_10", "2_TD3_new_reward_10", "3_TD3_new_reward_10"]
+tag_ours_new_reward1 = ["1_ours_new_reward_10", "2_ours_new_reward_10", "3_ours_new_reward_10"]
+tag_TD3_new_reward2 = ["1_TD3_new_reward_15", "2_TD3_new_reward_15", "3_TD3_new_reward_15"]
+tag_ours_new_reward2 = ["1_ours_new_reward_15", "2_ours_new_reward_15", "3_ours_new_reward_15"]
+label_list = ["TD3", "MAMF(ours)","TD3_10", "MAMF(ours)_10","TD3_15", "MAMF(ours)_15"]
+prefix11 = [cheetah_prefix, cheetah_prefix,cheetah_prefix,cheetah_prefix,cheetah_prefix,cheetah_prefix]
+compare(prefix=prefix11, tag_list=[tag_TD3_new_reward, tag_ours_new_reward, tag_TD3_new_reward1, tag_ours_new_reward1, tag_TD3_new_reward2, tag_ours_new_reward2], label_list=label_list, title="generalization_TD3", figure_size=figure_size)
 #
 # label_list = ["TD3", "MAMF(ours)", "MA-TD3",  "w/o-initialization", "w/o-filter", "w/o-decaying-noise"]
 # compare(prefix=overarm_prefix, tag_list=[tag_1, tag_9, tag_3, tag_4, tag_5, tag_6],label_list=label_list, title="ablation",figure_size=figure_size)
@@ -1468,25 +1523,25 @@ tag_critic5 = ["1_TD3_critic+",
 # compare(prefix=pen_prefix, tag_list=[tag_7, tag_251, tag_critic5],label_list=label_list, title="critic_freq",figure_size=figure_size)
 
 
-label_list = ["TD3", "MAMF(ours)", "MAMF-initial-bound", "MAMF-decaying-rate", "MAMF-uniform"]
-figure_size = (5, 4)
-title = "noise_setting"
-compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_251, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=hopper_prefix, tag_list=[tag_1, tag_253, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_251, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=walker_prefix, tag_list=[tag_1, tag_253, tag_263, tag_264, tag_265], label_list=label_list,title=title,figure_size=figure_size)
-compare(prefix=pusher_prefix, tag_list=[tag_1, tag_pusher, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=reacher_prefix, tag_list=[tag_1, tag_reacher, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
-
-label_list = ["DDPG", "MAMF(ours)"]
-figure_size = (5, 4)
-title = "DDPG"
-compare(prefix=reacher_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=pusher_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=cheetah_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=walker_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=swimmer_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
-compare(prefix=hopper_prefix2,tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
+# label_list = ["TD3", "MAMF(ours)", "MAMF-initial-bound", "MAMF-decaying-rate", "MAMF-uniform"]
+# figure_size = (5, 4)
+# title = "noise_setting"
+# compare(prefix=cheetah_prefix, tag_list=[tag_1, tag_251, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=hopper_prefix, tag_list=[tag_1, tag_253, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_251, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=walker_prefix, tag_list=[tag_1, tag_253, tag_263, tag_264, tag_265], label_list=label_list,title=title,figure_size=figure_size)
+# compare(prefix=pusher_prefix, tag_list=[tag_1, tag_pusher, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=reacher_prefix, tag_list=[tag_1, tag_reacher, tag_263, tag_264, tag_265], label_list=label_list, title=title,figure_size=figure_size)
+#
+# label_list = ["DDPG", "MAMF(ours)"]
+# figure_size = (5, 4)
+# title = "DDPG"
+# compare(prefix=reacher_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=pusher_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=cheetah_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=walker_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=swimmer_prefix2, tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
+# compare(prefix=hopper_prefix2,tag_list=[tag_201, tag_8], label_list=label_list, title=title,figure_size=figure_size)
 
 # compare(prefix=swimmer_prefix, tag_list=[tag_1, tag_251, tag_3, tag_2, tag_262], title="TD3")
 

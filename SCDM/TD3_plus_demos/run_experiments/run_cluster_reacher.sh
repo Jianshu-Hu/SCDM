@@ -6,8 +6,8 @@ conda activate SCDM
 
 env_name="Reacher-v2"
 
-tag=our_method_uniform_noise
-seed=5
+tag=SAC_auto_ours
+seed=3
 
 demo_tag=""
 
@@ -16,4 +16,4 @@ demo_tag=""
 echo "start running $env_name $tag with seed $seed"
 
 #reacher
-python main.py --add_artificial_transitions_type='ours' --prediction_horizon=3 --eval_freq=100 --max_timesteps=100000 --model_start_timesteps=1000 --start_timesteps=5000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --policy='SAC' --add_artificial_transitions_type='ours' --prediction_horizon=3 --eval_freq=100 --max_timesteps=100000 --model_start_timesteps=1000 --start_timesteps=5000 --without_demo --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model

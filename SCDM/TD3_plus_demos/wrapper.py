@@ -49,3 +49,27 @@ class BasicWrapper(gym.Wrapper):
         new_obs = np.concatenate((obs, self.status_indicator))
         return new_obs
 
+
+class CheetahRewardWrapper(gym.Wrapper):
+    def __init__(self, env):
+        super().__init__(env)
+        self.env = env
+        self.desired_velocity = 15.0
+        self._max_episode_steps = self.env._max_episode_steps
+        self._forward_reward_weight = 1.0
+
+    def step(self, action):
+        next_state, reward, done, info = self.env.step(action)
+
+        new_forward_reward = self._forward_reward_weight*(1-(info['x_velocity']/self.desired_velocity-1)**2)
+        new_reward = new_forward_reward+info['reward_ctrl']
+
+        new_info = {
+            "x_position": info['x_position'],
+            "x_velocity": info['x_velocity'],
+            "reward_run": new_forward_reward,
+            "reward_ctrl": info['reward_ctrl'],
+        }
+
+        return next_state, new_reward, done, new_info
+

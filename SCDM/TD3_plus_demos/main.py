@@ -10,6 +10,7 @@ import joblib
 
 import SCDM.TD3_plus_demos.utils as utils
 import SCDM.TD3_plus_demos.TD3 as TD3
+import SCDM.TD3_plus_demos.SAC as SAC
 from SCDM.TD3_plus_demos.utils import env_statedict_to_state
 import SCDM.TD3_plus_demos.transition_model as transition_model
 
@@ -18,9 +19,14 @@ import SCDM.TD3_plus_demos.wrapper as wrapper
 # Runs policy for X episodes and returns average reward
 # Runs critic for X episodes and returns average Q value for some states
 # A fixed seed is used for the eval environment
-def eval_policy(policy, env_name, seed, use_wrapper=False, eval_episodes=10, evaluate_critic_t=1):
+def eval_policy(policy, env_name, seed, use_wrapper=False, ignore_ori=False, use_reward_wrapper=False,
+				eval_episodes=10, evaluate_critic_t=1):
 	if use_wrapper:
 		eval_env = wrapper.BasicWrapper(gym.make(env_name))
+	elif ignore_ori:
+		eval_env = gym.make(env_name,target_rotation='ignore')
+	elif use_reward_wrapper:
+		eval_env = wrapper.CheetahRewardWrapper(gym.make(env_name))
 	else:
 		eval_env = gym.make(env_name)
 	eval_env.seed(seed + 100)
@@ -68,15 +74,13 @@ def eval_policy(policy, env_name, seed, use_wrapper=False, eval_episodes=10, eva
 	print(f"Evaluation of Q over {eval_episodes} episodes: {avg_Q:.3f}")
 	print("---------------------------------------")
 
-	print('bias in last layer of critic 1: ', policy.critic.l3.bias.data.item())
-	print('bias in last layer of critic 2: ', policy.critic.l6.bias.data.item())
 	return avg_reward, avg_Q
 
 
 if __name__ == "__main__":
 	
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG)
+	parser.add_argument("--policy", default="TD3")                  # Policy name (TD3, DDPG, SAC)
 	parser.add_argument("--env", default="PenSpin-v0")              # OpenAI gym environment name
 	parser.add_argument("--seed", default=0, type=int)              # Sets Gym, PyTorch and Numpy seeds
 	parser.add_argument("--start_timesteps", default=25000, type=int)# Time steps initial random policy is used
@@ -91,6 +95,7 @@ if __name__ == "__main__":
 	parser.add_argument("--policy_freq", default=2, type=int)       # Frequency of delayed policy updates
 	parser.add_argument("--save_model", action="store_true")        # Save model and optimizer parameters
 	parser.add_argument("--load_model", default="")                 # Model load file name, "" doesn't load, "default" uses file_name
+	parser.add_argument("--load_dynamics_model", default="")  		# Model load file name, "" doesn't load, "default" uses file_name
 
 	parser.add_argument("--beta", type=float, default=0.7)          # action coupling parameter
 	parser.add_argument("--pd_init", type=float, default=0.7)       # initial probability of loading to demo for each segment
@@ -124,6 +129,11 @@ if __name__ == "__main__":
 
 	# use wrapper to change the environment
 	parser.add_argument("--use_wrapper", action='store_true')  # tag for using the wrapper
+	# fix the target orientation
+	parser.add_argument("--ignore_ori", action='store_true')  # tag for fixing target orientation of the object
+	# use wrapper for testing generalization
+	parser.add_argument("--use_reward_wrapper", action='store_true')  # tag for using the wrapper
+
 
 	args = parser.parse_args()
 
@@ -144,6 +154,14 @@ if __name__ == "__main__":
 		env_main = wrapper.BasicWrapper(gym.make(args.env))
 		env_demo = wrapper.BasicWrapper(gym.make(args.env))
 		env_reset = wrapper.BasicWrapper(gym.make(args.env))
+	elif args.ignore_ori:
+		env_main = gym.make(args.env, target_rotation='ignore')
+		env_demo = gym.make(args.env, target_rotation='ignore')
+		env_reset = gym.make(args.env, target_rotation='ignore')
+	elif args.use_reward_wrapper:
+		env_main = wrapper.CheetahRewardWrapper(gym.make(args.env))
+		env_demo = wrapper.CheetahRewardWrapper(gym.make(args.env))
+		env_reset = wrapper.CheetahRewardWrapper(gym.make(args.env))
 	else:
 		env_main = gym.make(args.env)
 		env_demo = gym.make(args.env)
@@ -169,6 +187,8 @@ if __name__ == "__main__":
 
 	if args.use_wrapper:
 		state_dim = env_statedict_to_state(env_main._get_obs(), args.env).shape[0]
+	elif args.use_reward_wrapper:
+		state_dim = env_statedict_to_state(env_main.env.env._get_obs(), args.env).shape[0]
 	else:
 		state_dim = env_statedict_to_state(env_main.env._get_obs(), args.env).shape[0]
 	action_dim = env_main.action_space.shape[0]
@@ -193,10 +213,16 @@ if __name__ == "__main__":
 
 	# Initialize policy
 	# Target policy smoothing is scaled wrt the action scale
-	policy = TD3.TD3(**kwargs)
+	if args.policy == 'SAC':
+		policy = SAC.SAC(**kwargs)
+	else:
+		policy = TD3.TD3(**kwargs)
 	if hasattr(env_main.env, 'compute_reward'):
 		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
 						env_main.env.compute_reward)
+	elif args.use_reward_wrapper:
+		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
+													  None, args.use_reward_wrapper)
 	else:
 		# there is not a reward function in the some envs
 		transition = transition_model.TransitionModel(state_dim, action_dim, file_name, args.env, args.batch_size,
@@ -208,13 +234,17 @@ if __name__ == "__main__":
 		policy_file = file_name if args.load_model == "default" else args.load_model
 		policy.load(f"./models/{policy_file}")
 
+	if args.load_dynamics_model != "":
+		dynamics_model_file = file_name if args.load_model == "default" else args.load_dynamics_model
+		transition.load(f"./models/{dynamics_model_file}")
+
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, args.env)
 	if not args.without_demo:
 		demo_replay_buffer = utils.DemoReplayBuffer(state_dim, action_dim, args.env, args.demo_tag, env_demo)
 
 	
 	# Evaluate untrained policy
-	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
+	avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper, args.ignore_ori,args.use_reward_wrapper)
 	evaluations_policy = [avg_reward]
 	evaluations_critic = [avg_Q]
 
@@ -293,9 +323,12 @@ if __name__ == "__main__":
 				policy.beta*env_main.action_space.sample() + (1-policy.beta)*prev_action
 			).clip(-max_action, max_action)
 		else:
-			noise = np.random.normal(0, max_action * args.expl_noise, size=action_dim)
-			action = (
-				policy.select_action(observation, prev_action, noise=noise)).clip(-max_action, max_action)
+			if args.policy == 'SAC':
+				action = policy.select_action(observation, prev_action, deterministic=False)
+			else:
+				noise = np.random.normal(0, max_action * args.expl_noise, size=action_dim)
+				action = (
+					policy.select_action(observation, prev_action, noise=noise)).clip(-max_action, max_action)
 
 		segment_timestep += 1
 		total_timesteps += 1
@@ -322,9 +355,10 @@ if __name__ == "__main__":
 			if t % args.update_normaliser_every == 0:
 				policy.normaliser.recompute_stats()
 
-			transition.normaliser.update(observation)
-			if t % args.update_normaliser_every == 0:
-				transition.normaliser.recompute_stats()
+			if args.load_dynamics_model == "":
+				transition.normaliser.update(observation)
+				if t % args.update_normaliser_every == 0:
+					transition.normaliser.recompute_stats()
 
 		# set the prev_action and obs
 		prev_action = action.copy()
@@ -383,10 +417,10 @@ if __name__ == "__main__":
 				# Hopper 300
 				# Swimmer 180
 				# Walker 220
-
-		if t >= args.model_start_timesteps:
-			if args.add_artificial_transitions_type != 'None':
-				transition.train(replay_buffer)
+		if args.load_dynamics_model == "":
+			if t >= args.model_start_timesteps:
+				if args.add_artificial_transitions_type != 'None':
+					transition.train(replay_buffer)
 		if t >= args.start_timesteps:
 			if args.without_demo:
 				for _ in range(1, args.critic_freq):
@@ -402,13 +436,16 @@ if __name__ == "__main__":
 							 args.add_artificial_transitions_type, args.prediction_horizon)
 
 		if (t+1) % args.eval_freq == 0:
-			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper)
+			avg_reward, avg_Q = eval_policy(policy, args.env, args.seed, args.use_wrapper,
+											args.ignore_ori, args.use_reward_wrapper)
 
 			evaluations_policy.append(avg_reward)
 			evaluations_critic.append(avg_Q)
 			np.save(f"./results/{file_name}", evaluations_policy)
 			np.save(f"./results_critic/{file_name}", evaluations_critic)
 
-			if args.save_model: policy.save(f"./models/{file_name}")
+			if args.save_model:
+				policy.save(f"./models/{file_name}")
+				transition.save(f"./models/{file_name}")
 			print("Evaluation after %d steps - average reward: %f" % (total_timesteps, evaluations_policy[-1]))
 			print("Evaluation after %d steps - average Q: %f" % (total_timesteps, evaluations_critic[-1]))

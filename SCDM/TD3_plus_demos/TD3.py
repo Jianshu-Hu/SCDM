@@ -204,7 +204,10 @@ class TD3(object):
 				initial_bound = self.max_action
 				max_error_so_far = torch.zeros(1)
 				use_the_filter = True
-				use_the_filter_of_higher_target_Q = True
+				if self.env_name == 'EggCatchUnderarm-v0' or self.env_name == 'EggCatchOverarm-v0':
+					use_the_filter_of_higher_target_Q = False
+				else:
+					use_the_filter_of_higher_target_Q = True
 			elif add_artificial_transitions_type == 'MA':
 				noise_type = 'fixed'
 				initial_bound = self.max_action
