@@ -9,7 +9,7 @@ conda activate SCDM
 env_name="EggCatchUnderarm-v0"
 #env_name="EggCatchOverarm-v0"
 
-tag=SAC_alpha_auto
+tag=SAC_MAMF_transferred_model_continue_ignore_rotation
 seed=1
 
 demo_tag=""
@@ -17,4 +17,4 @@ demo_tag=""
 #CUDA_VISIBLE_DEVICES=0
 
 echo "start running $env_name $tag with seed $seed"
-python main.py --policy='SAC' --add_artificial_transitions_type='None' --prediction_horizon=3 --start_timesteps=25000 --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model
+python main.py --policy='SAC' --ignore_ori --load_dynamics_model="SAC_EggCatchUnderarm-v0_1_SAC_auto_ours" --add_artificial_transitions_type='ours' --prediction_horizon=3 --start_timesteps=25000 --seed=$seed --use_normaliser --env=$env_name --expt_tag="$tag" --demo_tag=$demo_tag --save_model

@@ -5,7 +5,7 @@ source /bigdata/users/jhu/anaconda3/bin/activate
 conda activate SCDM
 
 env_name="Swimmer-v3"
-tag=SAC_auto_ours
+tag=SAC_ours_c_60
 seed=3
 
 demo_tag=""

@@ -97,7 +97,7 @@ class TransitionModel():
                 self.x_vel_index = 8
 
                 if self.use_reward_wrapper:
-                    self.desired_velocity = 15.0
+                    self.forward_reward_weight = 0.6
             elif env_name == 'Walker2d-v3':
                 self.forward_reward_weight = 1.0
                 self.ctrl_cost_weight = 0.001
@@ -212,11 +212,6 @@ class TransitionModel():
                     np.clip(state[:, self.contact_index:], self. contact_force_range[0], self.contact_force_range[1])
                     ), axis=1)
                 reward = (forward_reward + self.healthy_reward + ctrl_cost+contact_cost).reshape(-1)
-            elif self.use_reward_wrapper:
-                forward_reward = self.forward_reward_weight * \
-                                 (1-(prev_state[:, self.x_vel_index]/self.desired_velocity-1)**2)
-                ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)
-                reward = (forward_reward + self.healthy_reward + ctrl_cost).reshape(-1)
             else:
                 forward_reward = self.forward_reward_weight * (prev_state[:, self.x_vel_index])
                 ctrl_cost = -self.ctrl_cost_weight * np.sum(np.square(action), axis=1)

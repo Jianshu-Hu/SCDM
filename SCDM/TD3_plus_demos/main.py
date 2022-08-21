@@ -355,10 +355,10 @@ if __name__ == "__main__":
 			if t % args.update_normaliser_every == 0:
 				policy.normaliser.recompute_stats()
 
-			if args.load_dynamics_model == "":
-				transition.normaliser.update(observation)
-				if t % args.update_normaliser_every == 0:
-					transition.normaliser.recompute_stats()
+			# if args.load_dynamics_model == "":
+			transition.normaliser.update(observation)
+			if t % args.update_normaliser_every == 0:
+				transition.normaliser.recompute_stats()
 
 		# set the prev_action and obs
 		prev_action = action.copy()
@@ -381,9 +381,15 @@ if __name__ == "__main__":
 				if args.env == 'EggCatchUnderarm-v0' or args.env == 'EggCatchOverarm-v0':
 					bias = max_reward*env_main._max_episode_steps/6
 				elif args.env == 'HalfCheetah-v3':
-					bias = max_reward * env_main._max_episode_steps / 30
+					if args.policy == 'SAC':
+						bias = max_reward * env_main._max_episode_steps / 30
+					else:
+						bias = max_reward * env_main._max_episode_steps / 30
 				elif args.env == 'Swimmer-v3':
-					bias = max_reward * env_main._max_episode_steps / 30
+					if args.policy == 'SAC':
+						bias = max_reward * env_main._max_episode_steps / 60
+					else:
+						bias = max_reward * env_main._max_episode_steps / 30
 				else:
 					bias = max_reward * env_main._max_episode_steps / 6
 				torch.nn.init.constant_(policy.critic.l3.bias.data, bias)
@@ -417,10 +423,10 @@ if __name__ == "__main__":
 				# Hopper 300
 				# Swimmer 180
 				# Walker 220
-		if args.load_dynamics_model == "":
-			if t >= args.model_start_timesteps:
-				if args.add_artificial_transitions_type != 'None':
-					transition.train(replay_buffer)
+		# if args.load_dynamics_model == "":
+		if t >= args.model_start_timesteps:
+			if args.add_artificial_transitions_type != 'None':
+				transition.train(replay_buffer)
 		if t >= args.start_timesteps:
 			if args.without_demo:
 				for _ in range(1, args.critic_freq):
