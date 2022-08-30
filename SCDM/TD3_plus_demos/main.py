@@ -235,7 +235,7 @@ if __name__ == "__main__":
 		policy.load(f"./models/{policy_file}")
 
 	if args.load_dynamics_model != "":
-		dynamics_model_file = file_name if args.load_model == "default" else args.load_dynamics_model
+		dynamics_model_file = file_name if args.load_dynamics_model == "default" else args.load_dynamics_model
 		transition.load(f"./models/{dynamics_model_file}")
 
 	replay_buffer = utils.ReplayBuffer(state_dim, action_dim, args.env)
@@ -379,17 +379,14 @@ if __name__ == "__main__":
 			if total_timesteps == args.start_timesteps:
 				print("return upper bound: ", max_reward*env_main._max_episode_steps)
 				if args.env == 'EggCatchUnderarm-v0' or args.env == 'EggCatchOverarm-v0':
-					bias = max_reward*env_main._max_episode_steps/6
+					if args.policy == 'SAC':
+						bias = max_reward*env_main._max_episode_steps/10
+					elif args.policy == 'TD3':
+						bias = max_reward * env_main._max_episode_steps / 6
 				elif args.env == 'HalfCheetah-v3':
-					if args.policy == 'SAC':
-						bias = max_reward * env_main._max_episode_steps / 30
-					else:
-						bias = max_reward * env_main._max_episode_steps / 30
+					bias = max_reward * env_main._max_episode_steps / 30
 				elif args.env == 'Swimmer-v3':
-					if args.policy == 'SAC':
-						bias = max_reward * env_main._max_episode_steps / 60
-					else:
-						bias = max_reward * env_main._max_episode_steps / 30
+					bias = max_reward * env_main._max_episode_steps / 30
 				else:
 					bias = max_reward * env_main._max_episode_steps / 6
 				torch.nn.init.constant_(policy.critic.l3.bias.data, bias)
