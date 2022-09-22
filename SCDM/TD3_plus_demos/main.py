@@ -378,15 +378,28 @@ if __name__ == "__main__":
 				print("max reward so far: ", max_reward)
 			if total_timesteps == args.start_timesteps:
 				print("return upper bound: ", max_reward*env_main._max_episode_steps)
-				if args.env == 'EggCatchUnderarm-v0' or args.env == 'EggCatchOverarm-v0':
+				if args.env == 'EggCatchUnderarm-v0':
+					if args.policy == 'SAC':
+						bias = max_reward*env_main._max_episode_steps/3
+					elif args.policy == 'TD3':
+						bias = max_reward * env_main._max_episode_steps / 6
+				elif args.env == 'EggCatchOverarm-v0':
 					if args.policy == 'SAC':
 						bias = max_reward*env_main._max_episode_steps/10
+					elif args.policy == 'TD3':
+						bias = max_reward * env_main._max_episode_steps / 6
+				elif args.env == 'PenSpin-v0':
+					if args.policy == 'SAC':
+						bias = max_reward*env_main._max_episode_steps/15
 					elif args.policy == 'TD3':
 						bias = max_reward * env_main._max_episode_steps / 6
 				elif args.env == 'HalfCheetah-v3':
 					bias = max_reward * env_main._max_episode_steps / 30
 				elif args.env == 'Swimmer-v3':
-					bias = max_reward * env_main._max_episode_steps / 30
+					if args.policy == 'SAC':
+						bias = max_reward*env_main._max_episode_steps/60
+					elif args.policy == 'TD3':
+						bias = max_reward * env_main._max_episode_steps / 30
 				else:
 					bias = max_reward * env_main._max_episode_steps / 6
 				torch.nn.init.constant_(policy.critic.l3.bias.data, bias)
@@ -394,33 +407,6 @@ if __name__ == "__main__":
 				torch.nn.init.constant_(policy.critic_target.l3.bias.data, bias)
 				torch.nn.init.constant_(policy.critic_target.l6.bias.data, bias)
 
-
-				# halfcheetah 30000 48.15
-				# hooper 30000 76.76
-				# pusher 15000 -19.03
-				# reacher 10000 -1.67
-				# swimmer 30000 19.24
-				# walker 30000 59.79
-				# PenSpin 30000 -27.72
-
-
-				# uniform random policy max return
-				# halfcheetah 1
-				# hopper 76
-				# pusher -40
-				# reacher -12
-				# swimmer 7.5
-				# walker 25.8
-
-				# max reward * episode length /10
-				# EggCatchUnderarm 6
-				# EggCatchOverarm 6
-				# PenSpin 280
-				# HalfCheetah 180
-				# Hopper 300
-				# Swimmer 180
-				# Walker 220
-		# if args.load_dynamics_model == "":
 		if t >= args.model_start_timesteps:
 			if args.add_artificial_transitions_type != 'None':
 				transition.train(replay_buffer)

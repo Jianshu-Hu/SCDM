@@ -1456,31 +1456,59 @@ tag_sac_auto_alpha_ours = ["1_SAC_auto_ours","2_SAC_auto_ours","3_SAC_auto_ours"
 tag_c_15 = ["1_SAC_ours_c_15", "1_SAC_ours_c_15", "1_SAC_ours_c_15"]
 tag_c_60 = ["1_SAC_ours_c_60", "1_SAC_ours_c_60", "1_SAC_ours_c_60"]
 
-label_list = ["TD3", "TD3-MAMF(ours)",  "MA-TD3", "MVE-TD3", 'SAC', 'SAC-MAMF(ours)']
+label_list = ["TD3", "TD3-MAMF(ours)",  "MA-TD3", "MVE-TD3"]
 figure_size = (5, 4)
-prefix1 = [cheetah_prefix, cheetah_prefix, cheetah_prefix, cheetah_prefix,cheetah_prefix3,cheetah_prefix3]
-compare(prefix=prefix1, tag_list=[tag_1, tag_251, tag_3, tag_2,tag_sac_auto_alpha,tag_sac_auto_alpha_ours], label_list=label_list, title="TD3", figure_size=figure_size)
-prefix2 = [reacher_prefix, reacher_prefix, reacher_prefix, reacher_prefix,reacher_prefix3,reacher_prefix3]
-compare(prefix=prefix2, tag_list=[tag_1, tag_reacher, tag_3, tag_2,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
-prefix3 = [pusher_prefix, pusher_prefix, pusher_prefix, pusher_prefix,pusher_prefix3,pusher_prefix3]
-compare(prefix=prefix3, tag_list=[tag_1, tag_pusher, tag_3, tag_2,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
-prefix4 = [hopper_prefix, hopper_prefix, hopper_prefix, hopper_prefix,hopper_prefix3,hopper_prefix3]
-compare(prefix=prefix4, tag_list=[tag_1, tag_253, tag_3, tag_2,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
-prefix5 = [swimmer_prefix, swimmer_prefix, swimmer_prefix, swimmer_prefix,swimmer_prefix3,swimmer_prefix3]
-compare(prefix=prefix5, tag_list=[tag_1, tag_251, tag_3, tag_2,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="TD3",figure_size=figure_size)
-prefix6 = [walker_prefix, walker_prefix, walker_prefix, walker_prefix,walker_prefix3,walker_prefix3]
-compare(prefix=prefix6, tag_list=[tag_1, tag_253, tag_3, tag_2,tag_sac_auto_alpha,tag_sac_auto_alpha_ours], label_list=label_list, title="TD3", figure_size=figure_size)
+prefix1 = [cheetah_prefix, cheetah_prefix, cheetah_prefix, cheetah_prefix]
+compare(prefix=prefix1, tag_list=[tag_1, tag_251, tag_3, tag_2], label_list=label_list, title="TD3", figure_size=figure_size)
+prefix2 = [reacher_prefix, reacher_prefix, reacher_prefix, reacher_prefix]
+compare(prefix=prefix2, tag_list=[tag_1, tag_reacher, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix3 = [pusher_prefix, pusher_prefix, pusher_prefix, pusher_prefix]
+compare(prefix=prefix3, tag_list=[tag_1, tag_pusher, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix4 = [hopper_prefix, hopper_prefix, hopper_prefix, hopper_prefix]
+compare(prefix=prefix4, tag_list=[tag_1, tag_253, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix5 = [swimmer_prefix, swimmer_prefix, swimmer_prefix, swimmer_prefix]
+compare(prefix=prefix5, tag_list=[tag_1, tag_251, tag_3, tag_2],label_list=label_list, title="TD3",figure_size=figure_size)
+prefix6 = [walker_prefix, walker_prefix, walker_prefix, walker_prefix]
+compare(prefix=prefix6, tag_list=[tag_1, tag_253, tag_3, tag_2], label_list=label_list, title="TD3", figure_size=figure_size)
 
-prefix7 = [pen_prefix, pen_prefix, pen_prefix, pen_prefix, pen_prefix3, pen_prefix3]
-compare(prefix=prefix7, tag_list=[tag_7, tag_251, tag_3, tag_214, tag_sac_auto_alpha, tag_sac_auto_alpha_ours], label_list=label_list, title="TD3", figure_size=figure_size)
+label_list = ["TD3", "TD3-MAMF(ours)", 'SAC', 'SAC-MAMF(ours)']
+figure_size = (5, 4)
+prefix1 = [cheetah_prefix, cheetah_prefix,cheetah_prefix3,cheetah_prefix3]
+compare(prefix=prefix1, tag_list=[tag_1, tag_251,tag_sac_auto_alpha,tag_sac_auto_alpha_ours], label_list=label_list, title="SAC", figure_size=figure_size)
+prefix2 = [reacher_prefix, reacher_prefix,reacher_prefix3,reacher_prefix3]
+compare(prefix=prefix2, tag_list=[tag_1, tag_reacher,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="SAC",figure_size=figure_size)
+prefix3 = [pusher_prefix, pusher_prefix,pusher_prefix3,pusher_prefix3]
+compare(prefix=prefix3, tag_list=[tag_1, tag_pusher,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="SAC",figure_size=figure_size)
+prefix4 = [hopper_prefix, hopper_prefix,hopper_prefix3,hopper_prefix3]
+compare(prefix=prefix4, tag_list=[tag_1, tag_253,tag_sac_auto_alpha,tag_sac_auto_alpha_ours],label_list=label_list, title="SAC",figure_size=figure_size)
+prefix5 = [swimmer_prefix, swimmer_prefix,swimmer_prefix3,swimmer_prefix3]
+compare(prefix=prefix5, tag_list=[tag_1, tag_251,tag_sac_auto_alpha, tag_c_60],label_list=label_list, title="SAC",figure_size=figure_size)
+prefix6 = [walker_prefix, walker_prefix,walker_prefix3,walker_prefix3]
+compare(prefix=prefix6, tag_list=[tag_1, tag_253,tag_sac_auto_alpha,tag_sac_auto_alpha_ours], label_list=label_list, title="SAC", figure_size=figure_size)
 
-label_list = ["TD3", "TD3-MAMF(ours)",  "MA-TD3", "MVE-TD3", 'SAC', 'SAC-MAMF(ours)','SAC-MAMF(ours)_c_3','SAC-MAMF(ours)_c_10']
+label_list = ["TD3", "TD3-MAMF(ours)",  "MA-TD3", "MVE-TD3"]
+prefix7 = [pen_prefix, pen_prefix, pen_prefix, pen_prefix]
+compare(prefix=prefix7, tag_list=[tag_7, tag_251, tag_3, tag_214], label_list=label_list, title="TD3", figure_size=figure_size)
+
+label_list = ["TD3", "TD3-MAMF(ours)", 'SAC', 'SAC-MAMF(ours)','SAC-MAMF(ours)_c_1','SAC-MAMF(ours)_c_15']
+tag_sac_ours_c_1 = ["1_SAC_auto_ours_c_1","2_SAC_auto_ours_c_1","3_SAC_auto_ours_c_1"]
+tag_sac_ours_c_15 = ["1_SAC_auto_ours_c_15","2_SAC_auto_ours_c_15","3_SAC_auto_ours_c_15"]
+prefix7 = [pen_prefix, pen_prefix, pen_prefix3, pen_prefix3]
+compare(prefix=prefix7, tag_list=[tag_7, tag_251, tag_sac_auto_alpha, tag_sac_ours_c_15], label_list=label_list, title="SAC", figure_size=figure_size)
+
+label_list = ["TD3", "TD3-MAMF(ours)",  "MA-TD3", "MVE-TD3"]
+prefix8 = [overarm_prefix, overarm_prefix, overarm_prefix, overarm_prefix]
+compare(prefix=prefix8, tag_list=[tag_1, tag_9, tag_3, tag_214],label_list=label_list, title="TD3", figure_size=figure_size)
+prefix9 = [underarm_prefix, underarm_prefix, underarm_prefix, underarm_prefix]
+compare(prefix=prefix9, tag_list=[tag_1, tag_9, tag_3, tag_214], label_list=label_list, title="TD3", figure_size=figure_size)
+
 tag_sac_ours_c_3 = ["1_SAC_auto_ours_c_3","2_SAC_auto_ours_c_3","3_SAC_auto_ours_c_3"]
 tag_sac_ours_c_10 = ["1_SAC_auto_ours_c_10","2_SAC_auto_ours_c_10","3_SAC_auto_ours_c_10"]
-prefix8 = [overarm_prefix, overarm_prefix, overarm_prefix, overarm_prefix, overarm_prefix3, overarm_prefix3, overarm_prefix3, overarm_prefix3]
-compare(prefix=prefix8, tag_list=[tag_1, tag_9, tag_3, tag_214, tag_sac_auto_alpha, tag_sac_auto_alpha_ours, tag_sac_ours_c_3, tag_sac_ours_c_10],label_list=label_list, title="TD3", figure_size=figure_size)
-prefix9 = [underarm_prefix, underarm_prefix, underarm_prefix, underarm_prefix, underarm_prefix3, underarm_prefix3, underarm_prefix3, underarm_prefix3]
-compare(prefix=prefix9, tag_list=[tag_1, tag_9, tag_3, tag_214, tag_sac_auto_alpha, tag_sac_auto_alpha_ours, tag_sac_ours_c_3, tag_sac_ours_c_10], label_list=label_list, title="TD3", figure_size=figure_size)
+label_list = ["TD3", "TD3-MAMF(ours)", 'SAC', 'SAC-MAMF(ours)']
+prefix8 = [overarm_prefix, overarm_prefix, overarm_prefix3, overarm_prefix3]
+compare(prefix=prefix8, tag_list=[tag_1, tag_9, tag_sac_auto_alpha, tag_sac_ours_c_10],label_list=label_list, title="SAC", figure_size=figure_size)
+prefix9 = [underarm_prefix, underarm_prefix, underarm_prefix3, underarm_prefix3]
+compare(prefix=prefix9, tag_list=[tag_1, tag_9, tag_sac_auto_alpha, tag_sac_ours_c_3], label_list=label_list, title="SAC", figure_size=figure_size)
 
 tag_TD3_ignore = ["1_TD3_ignore_rotation"]
 tag_ours_ignore = ["1_ours_ignore_rotation"]
